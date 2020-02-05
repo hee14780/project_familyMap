@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamilyMap</title>
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="familyWrap">
+        <div class="header">
+            <h3 class="title">PROJECT:족보</h3>
+            <div class="inner">
+                <!-- <div class="group">
+                    <div class="label">이름</div>
+                    <input type="text" size="10">
+                </div>
+                <div class="group">
+                    <div class="label">책상세</div>
+                    <input type="text" size="5">권
+                    <input type="text" size="5">페이지
+                </div> -->
+                <div class="group">
+                    <div class="label">세대조회</div>
+                    <input type="text" size="5" v-model="sesuStart">~
+                    <input type="text" size="5" v-model="sesuEnd">
+                </div>
+                <button type="button" class="btn" @click="getFamilyMap()">검색</button>
+            </div>
+        </div>
+        <div class="content" v-if="isShowContent == true">
+            <div class="tree-row" v-for="(family, index) in familyMap">
+                <!-- 같은 가족-->
+                <div class="tree-group">
+                    <!-- member-->
+                    <div class="tree-item" v-for="(children,j) in family.member"
+                        :class="{ single: family.member.length - 1 == 0, frist : children.family_idx == 0 }">
+                        <div class="member-info">
+                            <div class="name">
+                                <div class="sex">
+                                    <span v-if="children.sex == 0">&#23376;</span>
+                                    <span v-else>&#22899;</span>
+                                </div>
+                                {{ children.name }}
+                            </div>
+                            <div class="life-time">
+                                <ul class="life-wrap">
+                                    <li class="list">
+                                        <div>형제순서: {{children.seq}}</div>
+                                    </li>
+                                    <li class="list">
+                                        <div>세대: {{children.sesu}}</div>
+                                    </li>
+                                    <li class="list" v-for="lifeTime in children.lifeTime">
+                                        <div>{{lifeTime}}</div>
+                                    </li>
+                                    <li class="list">
+                                        <div>{{ children.pa}}권 {{ children.page }}페이지 참조</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#familyWrap',
+        data: {
+            originData: [{
+                    no: 1, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: null, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 1, //세수
+                    seq: 1, //형제순서
+                    sex: 0, //성별 (0:남자, 1:여자)
+                    name: '강도윤', //이름 
+                    lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"] //일생
+                },
+                {
+                    no: 2, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 1, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 2, //세수
+                    seq: 1, //형제순서
+                    sex: 1, //성별 (0:남자, 1:여자)
+                    name: '강지안',
+                },
+                {
+                    no: 3, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 1, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 2, //세수
+                    seq: 2, //형제순서
+                    sex: 0, //성별 (0:남자, 1:여자)
+                    name: '강서준',
+                },
+                {
+                    no: 4, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 1, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 2, //세수
+                    seq: 3, //형제순서
+                    sex: 0, //성별 (0:남자, 1:여자)
+                    name: '강하준',
+                },
+                {
+                    no: 5, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 2, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 3, //세수
+                    seq: 1, //형제순서
+                    sex: 1, //성별 (0:남자, 1:여자)
+                    name: '강서아',
+                },
+                {
+                    no: 6, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 3, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 3, //세수
+                    seq: 1, //형제순서
+                    sex: 0, //성별 (0:남자, 1:여자)
+                    name: '강하은',
+                },
+                {
+                    no: 7, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 3, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 3, //세수
+                    seq: 2, //형제순서
+                    sex: 0, //성별 (0:남자, 1:여자)
+                    name: '강유준',
+                },
+                {
+                    no: 8, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 7, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 4, //세수
+                    seq: 1, //형제순서
+                    sex: 1, //성별 (0:남자, 1:여자)
+                    name: '강나은',
+                },
+                {
+                    no: 9, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 1, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 2, //세수
+                    seq: 4, //형제순서
+                    sex: 0, //성별 (0:남자, 1:여자)
+                    name: '강주원',
+                },
+                {
+                    no: 10, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                    parent: 8, //부모번호
+                    pa: 1, //권수
+                    page: 1, //페이지
+                    sesu: 5, //세수
+                    seq: 1, //형제순서
+                    sex: 0, //성별 (0:남자, 1:여자)
+                    name: '강민준',
+                }
+            ],
+            familyMap: [],
+            sesuStart: "",
+            sesuEnd: "",
+            isShowContent: false
+        },
+        created: function () {
+
+        },
+        methods: {
+
+            //조회
+            getFamilyMap: function () {
+
+                if (this.sesuStart == "" || this.sesuEnd == "") {
+                    alert("세대조회를 위한 값이 빠졌어요!");
+                    return false
+                }
+
+                this.isShowContent = true;
+                this.familyMap = [];
+
+                // 조회된 세대 배열
+                for (let i = this.sesuStart; i <= this.sesuEnd; i++) {
+                    this.familyMap.push({
+                        group_idx: i,
+                        member: []
+                    })
+                }
+
+                this.familyMap.forEach(person => {
+                    this.originData.forEach(data => {
+                        if (person.group_idx == data.sesu) {
+                            person.member.push(data)
+                        }
+                    })
+                })
+
+                console.log(this.familyMap)
+
+            }
+        }
+    })
+</script>
+
+</html>
