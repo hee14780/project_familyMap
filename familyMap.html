@@ -23,7 +23,7 @@
             <div class="tree-node"  :class="{notChildren: !item.children }">
                 <div class="inner">
                     <div class="member-info">
-                        <div class="name" @click="toggle">
+                        <div class="name" @click="toggle" :class="{active: isShowLifeTime, notParent: !item.parent, rootParent: item.root == 'true'}">
                             <div class="sex">
                                 <span v-if="item.sex == 0">&#23376;</span>
                                 <span v-else>&#22899;</span>
@@ -31,8 +31,7 @@
                             {{ item.name }}
                         </div>
                         <div class="life-time">
-                            <!-- v-show="isShowLifeTime" -->
-                            <ul class="life-wrap" >
+                            <ul class="life-wrap" v-show="isShowLifeTime">
                                 <li class="list">
                                     <div>부모: {{item.parent}}</div>
                                 </li>
@@ -70,32 +69,45 @@
     <!-- the family root element -->
     <div id="familyWrap">
         <div class="header">
-            <h3 class="title">PROJECT:족보</h3>
             <div class="inner">
-                <!-- <div class="group">
-                    <div class="label">이름</div>
-                    <input type="text" size="10">
+                <h3 class="title">PROJECT:족보</h3>
+                <div class="filterWrap">
+                    <!-- <div class="group">
+                        <div class="label">이름</div>
+                        <input type="text" size="10">
+                    </div>
+                    <div class="group">
+                        <div class="label">책상세</div>
+                        <input type="text" size="5">권
+                        <input type="text" size="5">페이지
+                    </div> -->
+                    <div class="group">
+                        <div class="label">세대조회</div>
+                        <input type="text" size="5" v-model="sesuStart">~
+                        <input type="text" size="5" v-model="sesuEnd">
+                    </div>
+                    <button type="button" class="btn" @click="getFamilyMap()">검색</button>
                 </div>
-                <div class="group">
-                    <div class="label">책상세</div>
-                    <input type="text" size="5">권
-                    <input type="text" size="5">페이지
-                </div> -->
-                <div class="group">
-                    <div class="label">세대조회</div>
-                    <input type="text" size="5" v-model="sesuStart">~
-                    <input type="text" size="5" v-model="sesuEnd">
-                </div>
-                <button type="button" class="btn" @click="getFamilyMap()">검색</button>
             </div>
         </div>
         <div class="content">
-            <div class="tree-child first">
-                <ul class="tree-child">
-                    <li class="child parent" v-for="family in familyMap">
-                        <ul class="tree-child">
-                            <tree-item class="member" :item="family"></tree-item>
-                        </ul>
+            <div class="tree-map">
+                <div class="tree-child first">
+                    <ul class="tree-child">
+                        <li class="child" v-for="family in familyMap">
+                            <ul class="tree-child">
+                                <tree-item class="member" :item="family"></tree-item>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tree-sesu">
+                <ul>
+                    <li class="list" v-for="sesu in familSesu">
+                        <div class="inner">
+                            <div>{{sesu}}세대</div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -253,6 +265,7 @@
                     },
                 ],
                 familyMap: [],
+                familSesu: [],
                 sesuStart: "",
                 sesuEnd: "",
             }
@@ -282,6 +295,11 @@
                 //형제순서대로 멤버 정렬
                 this.sortChild()
 
+                //화면 sesu 표시
+                for (let i = this.sesuStart; i <= this.sesuEnd; i++) {
+                    this.familSesu.push(i)
+                }
+
                 console.log("familyMap->", this.familyMap)
             },
 
@@ -289,6 +307,7 @@
 
                 // 조회하고자하는 시작세대와 세수가 일치하면 최초 부모
                 if (this.sesuStart == person.sesu) {
+                    person.root = "true";
                     this.familyMap.push(person)
                     this.deletePerson(person)
 

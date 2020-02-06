@@ -3,37 +3,60 @@ html {
     font-size: 16px;
 }
 body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
     font-family: "Noto Sans KR", sans-serif;
+    background-color: #f8f8f8;
 }
 
 /* search head */
 .header {
+    width: 100%;
+    color: #ad59ac;
+    border-bottom: solid 2px #e7e7e7;
+    background-color: #fff;
+}
+.header .inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    color: #f5f5f5;
-    background-color: #131313;
 }
-.header .inner {
+.header .filterWrap {
     display: flex;
     justify-content: flex-end;
 }
-.header .inner .group {
+.header .filterWrap .btn {
+    color: #ad59ac;
+    border: solid 1px #ad59ac;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+.header .filterWrap .group {
     margin: 0 1.6rem;
 }
-.header .group .label {
+.header .filterWrap .group .label {
     margin-bottom: 5px;
 }
-.header .group input {
+.header .filterWrap .group input {
     padding: 5px;
-    border: none;
+    border-radius: 5px;
+    border: solid 1px #e7e7e7;
 }
 
 /* tree style */
 .content {
     position: relative;
     padding: 16px;
+}
+.content .tree-map,
+.content .tree-sesu {
+    position: absolute;
+    left: 100px;
+    top: 0;
 }
 .content .tree-node {
     margin: 20px 16px;
@@ -42,15 +65,29 @@ body {
 }
 .content .tree-node .member-info {
     min-height: 150px;
-    color: #fff;
+    color: #616161;
+    border: solid 1px #ad59ac;
     writing-mode: vertical-lr;
     text-orientation: upright;
     vertical-align: top;
+    -webkit-box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
+    -moz-box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
+    box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
 }
 .content .tree-node .member-info .name {
     position: relative;
     padding: 16px;
-    background-color: #131313;
+    color: #ad59ac;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+.content .tree-node .member-info .name.active {
+    color: #fff;
+    background-color: #ad59ac;
+}
+.content .tree-node .member-info .name.notParent {
+    color: #616161;
+    background-color: #e7e7e7;
 }
 .content .tree-node .member-info .sex {
     display: inline;
@@ -65,9 +102,9 @@ body {
     display: inline-block;
     width: 6px;
     height: 20px;
-    top: -20px;
+    top: -21px;
     left: calc(50% - 3px);
-    background-color: #c5c5c5;
+    background-color: #ad59ac;
 }
 .content .tree-node .member-info .name::after {
     content: "";
@@ -75,10 +112,11 @@ body {
     display: inline-block;
     width: 6px;
     height: 20px;
-    bottom: -20px;
+    bottom: -21px;
     left: calc(50% - 3px);
-    background-color: #c5c5c5;
+    background-color: #ad59ac;
 }
+.content .tree-node .member-info .name.rootParent::before,
 .content .tree-node.notChildren .member-info .name::after {
     display: none;
 }
@@ -86,7 +124,7 @@ body {
     max-height: 150px;
     color: #131313;
     text-align: left;
-    border: solid 1px #131313;
+    /* border: solid 1px #131313; */
     box-sizing: border-box;
     background-color: #fff;
 }
@@ -96,10 +134,10 @@ body {
     font-size: 0.8rem;
     letter-spacing: 3px;
     word-spacing: -12px;
-    border-right: solid 1px #c5c5c5;
+    border-left: solid 1px #e7e7e7;
 }
-.content .tree-node .member-info .life-wrap .list:last-child {
-    border-right-width: 0;
+.content .tree-node .member-info .life-wrap .list:first-child {
+    border-color: #ad59ac;
 }
 
 .content .tree-child {
@@ -120,10 +158,33 @@ body {
     width: calc(100% + 6px);
     height: 6px;
     top: -3px;
-    left: 37px;
-    background-color: #c5c5c5;
+    left: 38px;
+    background-color: #ad59ac;
 }
 .content .tree-child .child.last > .tree-node > .inner::before,
 .content .tree-child .child.single > .tree-node > .inner::before {
     width: 0;
+}
+
+/* tree-sesu */
+.content .tree-sesu {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    z-index: -10;
+    width: 100%;
+}
+.content .tree-sesu .list {
+    width: 100%;
+    padding: 20px 0px;
+    min-height: 150px;
+    font-weight: 900;
+    border-bottom: solid 1px #dadada;
+}
+.content .tree-sesu .list .inner {
+    display: inline-block;
+    padding-left: 10px;
+}
+.content .tree-sesu .list:nth-child(2n) {
+    background-color: #f7f7f7;
 }
