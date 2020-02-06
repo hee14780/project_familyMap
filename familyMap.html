@@ -36,6 +36,9 @@
                                 <li class="list">
                                     <div>세대순서: {{item.seq}}</div>
                                 </li>
+                                <li class="list">
+                                    <div>자기번호: {{item.no}}</div>
+                                </li>
                                 <li class="list" v-for="lifeTime in item.lifeTime">
                                     <div>{{lifeTime}}</div>
                                 </li>
@@ -151,7 +154,7 @@
                         pa: 1, //권수
                         page: 1, //페이지
                         sesu: 2, //세수
-                        seq: 2, //세대순서
+                        seq: 3, //세대순서
                         sex: 0, //성별 (0:남자, 1:여자)
                         name: '강서준',
                     },
@@ -161,7 +164,7 @@
                         pa: 1, //권수
                         page: 1, //페이지
                         sesu: 2, //세수
-                        seq: 3, //세대순서
+                        seq: 2, //세대순서
                         sex: 0, //성별 (0:남자, 1:여자)
                         name: '강하준',
                     },
@@ -181,7 +184,7 @@
                         pa: 1, //권수
                         page: 1, //페이지
                         sesu: 3, //세수
-                        seq: 1, //세대순서
+                        seq: 3, //세대순서
                         sex: 0, //성별 (0:남자, 1:여자)
                         name: '강하은',
                     },
@@ -191,9 +194,9 @@
                         pa: 1, //권수
                         page: 1, //페이지
                         sesu: 3, //세수
-                        seq: 3, //세대순서
+                        seq: 1, //세대순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강유준',
+                        name: '강찬혁',
                     },
                     {
                         no: 8, //자신의 키값이면서 자녀가 부모를 찾을때의 값
@@ -225,6 +228,26 @@
                         sex: 0, //성별 (0:남자, 1:여자)
                         name: '강민준',
                     },
+                    {
+                        no: 11, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                        parent: 2, //부모번호
+                        pa: 1, //권수
+                        page: 1, //페이지
+                        sesu: 3, //세수
+                        seq: 4, //세대순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: '강준우',
+                    },
+                    {
+                        no: 12, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                        parent: 7, //부모번호
+                        pa: 1, //권수
+                        page: 1, //페이지
+                        sesu: 4, //세수
+                        seq: 2, //세대순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: '강주영',
+                    },
                 ],
                 familyMap: [],
                 sesuStart: "",
@@ -254,9 +277,9 @@
                 }
 
                 //형제순서대로 멤버 정렬
-                // this.sortChild()
+                this.sortChild()
 
-                console.log(this.familyMap)
+                console.log("familyMap->", this.familyMap)
             },
 
             addFamily(family, person) {
@@ -309,20 +332,19 @@
                 }
             },
 
-            //형제순서대로 멤버 정렬
+            // 같은세대의 멤버 오름차순 정렬
             sortChild: function (children) {
-                if (!children) children = this.familyMap.children
 
-                // 형제정렬 기준 1.성별, 2형제순서
+                if (!children) children = this.familyMap
+
+                //정렬 1.세대순서
                 children.sort((child1, child2) => {
-
-                    if (child1.sex < child2.sex) {
-                        let x = child1.sex;
-                        let y = child2.sex;
-                        return x < y ? -1 : x > y ? 1 : 0;
-                    }
-
                     return child1.seq - child2.seq
+                })
+
+                //정렬 2.성별
+                children.sort((child1, child2) => {
+                    return child1.sex - child2.sex
                 })
 
                 children.forEach(child => {
