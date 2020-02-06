@@ -7,7 +7,7 @@ body {
 }
 
 /* search head */
-#familyWrap > .header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,50 +15,51 @@ body {
     color: #f5f5f5;
     background-color: #131313;
 }
-#familyWrap > .header .inner {
+.header .inner {
     display: flex;
     justify-content: flex-end;
 }
-#familyWrap > .header .inner .group {
+.header .inner .group {
     margin: 0 1.6rem;
 }
-#familyWrap > .header .group .label {
+.header .group .label {
     margin-bottom: 5px;
 }
-#familyWrap > .header .group input {
+.header .group input {
     padding: 5px;
     border: none;
 }
 
-#familyWrap > .content .tree-row {
+/* tree style */
+.content {
+    position: relative;
     padding: 16px;
-    border-bottom: solid 1px #131313;
 }
-#familyWrap > .content .tree-group {
-    display: flex;
+.content .tree-node {
+    margin: 20px 16px;
+    font-weight: 900;
+    text-align: center;
 }
-
-#familyWrap .content .tree-item .member-info {
-    padding-right: 16px;
+.content .tree-node .member-info {
     min-height: 150px;
     color: #fff;
     writing-mode: vertical-lr;
     text-orientation: upright;
     vertical-align: top;
 }
-#familyWrap .content .tree-item .member-info .name {
+.content .tree-node .member-info .name {
     position: relative;
     padding: 16px;
     background-color: #131313;
 }
-#familyWrap .content .tree-item .member-info .sex {
+.content .tree-node .member-info .sex {
     display: inline;
     writing-mode: horizontal-tb;
 }
-#familyWrap .content .tree-item .member-info .name:hover {
+.content .tree-node .member-info .name:hover {
     cursor: pointer;
 }
-#familyWrap .content .tree-item .member-info .name::before {
+.content .tree-node .member-info .name::before {
     content: "";
     position: absolute;
     display: inline-block;
@@ -68,7 +69,7 @@ body {
     left: calc(50% - 3px);
     background-color: #c5c5c5;
 }
-#familyWrap .content .tree-item .member-info .name::after {
+.content .tree-node .member-info .name::after {
     content: "";
     position: absolute;
     display: inline-block;
@@ -78,10 +79,10 @@ body {
     left: calc(50% - 3px);
     background-color: #c5c5c5;
 }
-#familyWrap .content .tree-item.not.Children .member-info .name::after {
+.content .tree-node.notChildren .member-info .name::after {
     display: none;
 }
-#familyWrap .content .tree-item .member-info .life-time {
+.content .tree-node .member-info .life-time {
     max-height: 150px;
     color: #131313;
     text-align: left;
@@ -89,7 +90,7 @@ body {
     box-sizing: border-box;
     background-color: #fff;
 }
-#familyWrap .content .tree-item .member-info .life-wrap .list {
+.content .tree-node .member-info .life-wrap .list {
     max-height: 150px;
     padding: 10px;
     font-size: 0.8rem;
@@ -97,6 +98,32 @@ body {
     word-spacing: -12px;
     border-right: solid 1px #c5c5c5;
 }
-#familyWrap .content .tree-item .member-info .life-wrap .list:last-child {
+.content .tree-node .member-info .life-wrap .list:last-child {
     border-right-width: 0;
+}
+
+.content .tree-child {
+    display: flex;
+}
+.content .tree-child .child {
+    display: inline-block;
+    padding: 0;
+    vertical-align: top;
+}
+.content .tree-child .child {
+    position: relative;
+}
+.content .tree-child .child > .tree-node > .inner::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: calc(100% + 6px);
+    height: 6px;
+    top: -3px;
+    left: 37px;
+    background-color: #c5c5c5;
+}
+.content .tree-child .child.last > .tree-node > .inner::before,
+.content .tree-child .child.single > .tree-node > .inner::before {
+    width: 0;
 }
