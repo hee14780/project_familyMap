@@ -34,6 +34,9 @@
                             <!-- v-show="isShowLifeTime" -->
                             <ul class="life-wrap" >
                                 <li class="list">
+                                    <div>부모: {{item.parent}}</div>
+                                </li>
+                                <li class="list">
                                     <div>세대순서: {{item.seq}}</div>
                                 </li>
                                 <li class="list">
@@ -170,7 +173,7 @@
                     },
                     {
                         no: 5, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 2, //부모번호
+                        parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
                         sesu: 3, //세수
@@ -296,8 +299,7 @@
                         if (person.parent == null) {
                             if (familyMember.sesu == person.sesu) {
                                 console.log("부모가 없는 아이", person, person.name, person.sesu)
-                                familyMember.notParent = [];
-                                familyMember.notParent.push(person)
+                                family.push(person)
                                 this.deletePerson(person)
                             }
 
@@ -345,6 +347,12 @@
                 //정렬 2.성별
                 children.sort((child1, child2) => {
                     return child1.sex - child2.sex
+                })
+
+                //정렬 3.부모정보
+                if (children.parent == null) children.parent = -1
+                children.sort((child1, child2) => {
+                    return child2.parent - child1.parent
                 })
 
                 children.forEach(child => {
