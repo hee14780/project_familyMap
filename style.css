@@ -3,17 +3,24 @@ html {
     font-size: 16px;
 }
 body {
-    display: flex;
-    flex-direction: column;
     width: 100%;
     height: 100%;
     font-family: "Noto Sans KR", sans-serif;
     background-color: #f8f8f8;
 }
+#familyWrap {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 
 /* search head */
 .header {
     width: 100%;
+    max-height: 83px;
     color: #ad59ac;
     border-bottom: solid 2px #e7e7e7;
     background-color: #fff;
@@ -49,14 +56,24 @@ body {
 
 /* tree style */
 .content {
-    position: relative;
-    padding: 16px;
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: calc(100% - 85px);
 }
-.content .tree-map,
-.content .tree-sesu {
-    position: absolute;
-    left: 100px;
-    top: 0;
+.content > .group {
+    position: relative;
+    height: 100%;
+    overflow: scroll;
+}
+.content > .group.treeWrap {
+    width: 60%;
+    padding-left: 100px;
+    overflow-y: scroll;
+}
+.content > .group.previewWrap {
+    width: 40%;
+    background-color: #fff;
 }
 .content .tree-node {
     margin: 20px 16px;
@@ -74,7 +91,8 @@ body {
     -moz-box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
     box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
 }
-.content .tree-node .member-info .name {
+.content .tree-node .member-info .name,
+.content .tree-node .member-info .name.notParent.rootParent {
     position: relative;
     padding: 16px;
     color: #ad59ac;
@@ -117,14 +135,14 @@ body {
     background-color: #ad59ac;
 }
 .content .tree-node .member-info .name.rootParent::before,
-.content .tree-node.notChildren .member-info .name::after {
+.content .tree-node.notChildren .member-info .name::after,
+.content .not-parent .tree-node .member-info .name::before {
     display: none;
 }
 .content .tree-node .member-info .life-time {
     max-height: 150px;
     color: #131313;
     text-align: left;
-    /* border: solid 1px #131313; */
     box-sizing: border-box;
     background-color: #fff;
 }
@@ -164,6 +182,16 @@ body {
 .content .tree-child .child.last > .tree-node > .inner::before,
 .content .tree-child .child.single > .tree-node > .inner::before {
     width: 0;
+}
+
+/* not-parent */
+.content .not-parent .list {
+    padding: 22px 20px 19px;
+    height: 152px;
+    max-height: 150px;
+}
+.content .not-parent .list .tree-node {
+    margin: 0;
 }
 
 /* tree-sesu */

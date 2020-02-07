@@ -23,7 +23,7 @@
             <div class="tree-node"  :class="{notChildren: !item.children }">
                 <div class="inner">
                     <div class="member-info">
-                        <div class="name" @click="toggle" :class="{active: isShowLifeTime, notParent: !item.parent, rootParent: item.root == 'true'}">
+                        <div class="name" @click="toggle" :class="{active: isShowLifeTime, notParent: !item.parent, rootParent: item.root == 1}">
                             <div class="sex">
                                 <span v-if="item.sex == 0">&#23376;</span>
                                 <span v-else>&#22899;</span>
@@ -91,25 +91,32 @@
             </div>
         </div>
         <div class="content">
-            <div class="tree-map">
-                <div class="tree-child first">
-                    <ul class="tree-child">
-                        <li class="child" v-for="family in familyMap">
-                            <ul class="tree-child">
-                                <tree-item class="member" :item="family"></tree-item>
-                            </ul>
+            <div class="group treeWrap">
+                <div class="tree-map">
+                    <div class="tree-child first">
+                        <ul class="tree-child">
+                            <li class="child" v-for="family in familyMap">
+                                <ul class="tree-child">
+                                    <tree-item class="member" :item="family"></tree-item>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tree-sesu">
+                    <ul>
+                        <li class="list" v-for="sesu in familSesu">
+                            <div class="inner">
+                                <div>{{sesu}}세대</div>
+                            </div>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="tree-sesu">
-                <ul>
-                    <li class="list" v-for="sesu in familSesu">
-                        <div class="inner">
-                            <div>{{sesu}}세대</div>
-                        </div>
-                    </li>
-                </ul>
+            <div class="group previewWrap">
+                <div class="group">
+                    <img src="http://placehold.it/500x800" />
+                </div>
             </div>
         </div>
     </div>
@@ -307,7 +314,7 @@
 
                 // 조회하고자하는 시작세대와 세수가 일치하면 최초 부모
                 if (this.sesuStart == person.sesu) {
-                    person.root = "true";
+                    person.root = 1;
                     this.familyMap.push(person)
                     this.deletePerson(person)
 
@@ -369,7 +376,6 @@
                 })
 
                 //정렬 3.부모정보
-                if (children.parent == null) children.parent = -1
                 children.sort((child1, child2) => {
                     return child2.parent - child1.parent
                 })
