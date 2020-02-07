@@ -75,6 +75,10 @@ body {
     width: 40%;
     background-color: #fff;
 }
+.content .tree-map {
+    display: flex;
+    flex: 1;
+}
 .content .tree-node {
     margin: 20px 16px;
     font-weight: 900;
@@ -136,7 +140,8 @@ body {
 }
 .content .tree-node .member-info .name.rootParent::before,
 .content .tree-node.notChildren .member-info .name::after,
-.content .not-parent .tree-node .member-info .name::before {
+.content .not-parent .tree-node .member-info .name::before,
+.content .not-child > .tree-node .member-info .name::before {
     display: none;
 }
 .content .tree-node .member-info .life-time {
@@ -185,13 +190,19 @@ body {
 }
 
 /* not-parent */
-.content .not-parent .list {
-    padding: 22px 20px 19px;
-    height: 152px;
-    max-height: 150px;
-}
-.content .not-parent .list .tree-node {
+.content .not-child > .tree-node {
     margin: 0;
+    padding: 20px 16px;
+    min-height: 150px;
+}
+.content .not-child .tree-node {
+    margin: 0;
+}
+.content .not-child .tree-node > ul {
+    display: flex;
+}
+.content .not-child .tree-node > ul > .member {
+    margin-right: 16px;
 }
 
 /* tree-sesu */
