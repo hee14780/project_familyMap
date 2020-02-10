@@ -13,7 +13,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
 </head>
 
 <body>
@@ -103,7 +105,7 @@
                         <ul class="tree-child">
                             <li class="child" v-for="family in familyMap">
                                 <ul class="tree-child">
-                                    <tree-item class="member" :item="family" @join="parentInfo"></tree-item>
+                                    <tree-item class="member" :item="family"></tree-item>
                                 </ul>
                             </li>
                         </ul>
@@ -180,11 +182,11 @@
                     <div class="content">
                         <div class="fild">
                             <div class="label">부모 이름 :</div>
-                            <input type="text" size="10" v-model="joinParentInfo.name" disabled>
+                            <input type="text" size="10" :value="joinParentInfo.name" disabled>
                         </div>
                         <div class="fild" v-for="(child,index) in joinChildrenInfo">
                             <div class="label">추가자녀{{index + 1}} 이름 :</div>
-                            <input type="text" size="10" disabled v-model="child.name">
+                            <input type="text" size="10" disabled :value="child.name">
                             <button type="button" class="btn delete" @click="deleteChild(index)">-</button>
                         </div>
                     </div>
@@ -204,6 +206,24 @@
 </body>
 
 <script>
+    Vue.use(Vuex)
+    Vue.config.silent = true
+
+    const store = new Vuex.Store({
+        state: {
+            selectedPerson: {
+                name: ''
+            },
+            
+        },
+        mutations: {
+            personSelect(state, person) {
+                state.selectedPerson = person;
+            }
+        }
+    })
+
+
     // define the tree-item component
     Vue.component('tree-item', {
         template: '#item-template',
@@ -223,8 +243,8 @@
 
             // 자녀컴포넌트에서 부모컴포넌트로 클릭한 부모정보 전달
             selectedChild: function (person) {
-                console.log("join", person)
-                this.$emit("join", person)
+                store.commit('personSelect', person)
+                console.log(store.state.selectedPerson)
             }
         }
 
@@ -363,13 +383,23 @@
                 notParentMember: [],
                 sesuStart: "",
                 sesuEnd: "",
-                isShowJoinMember: false, // 부모-자녀 연결 영역 토글
-                joinParentInfo: {}, // 연결할 부모의 정보
                 joinChildrenInfo: [] //연결할 자녀의 정보
             }
         },
         created: function () {
 
+        },
+        computed: {
+            joinParentInfo: function(){
+                if (store.state.selectedPerson) {
+                    return store.state.selectedPerson
+                } else {
+                    return {}
+                }
+            },
+            isShowJoinMember: function() {
+                return this.joinParentInfo.name && this.joinParentInfo.name.length != 0
+            }
         },
         methods: {
             getFamilyMap: function () {
@@ -492,16 +522,6 @@
                 children.forEach(child => {
                     if (child.children && child.children.length > 0) this.sortChild(child.children)
                 })
-
-            },
-
-            // 부모-자녀 연결의 자녀컴포넌트에서 받은 부모정보 
-            parentInfo: function (user) {
-
-                this.isShowJoinMember = this.isShowJoinMember ? false : true;
-
-                this.joinParentInfo = user
-                console.log("check", user, this.joinParentInfo, this.joinParentInfo.name)
 
             },
 
