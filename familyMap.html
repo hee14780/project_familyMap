@@ -7,8 +7,9 @@
     <title>FamilyMap</title>
     <!-- font -->
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="reset.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -49,10 +50,15 @@
                                 </li>
                             </ul>
                         </div>
+                        <button type="button" class="btn addPerson" v-show="isShowLifeTime" @click="selectedChild(item)">
+                            <i class="material-icons">
+                                person_add
+                            </i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <!-- 자식리스트 -->
+            <!-- 자녀리스트 -->
             <ul class="tree-child">
                 <tree-item
                 class="child"
@@ -97,7 +103,7 @@
                         <ul class="tree-child">
                             <li class="child" v-for="family in familyMap">
                                 <ul class="tree-child">
-                                    <tree-item class="member" :item="family"></tree-item>
+                                    <tree-item class="member" :item="family" @join="parentInfo"></tree-item>
                                 </ul>
                             </li>
                         </ul>
@@ -110,6 +116,12 @@
                                     <div class="tree-node" :class="{notChildren: !person.children }">
                                         <div class="inner">
                                             <div class="member-info">
+                                                <button type="button" class="btn addPerson" @click="addChild(person)"
+                                                    v-show="isShowJoinMember">
+                                                    <i class="material-icons">
+                                                        person_add
+                                                    </i>
+                                                </button>
                                                 <div class="name"
                                                     :class="{ notParent: !person.parent, rootParent: person.root == 1}">
                                                     <div class="sex">
@@ -156,9 +168,34 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- 족보 디테일 영역-->
             <div class="group previewWrap">
-                <div class="group">
-                    <img src="http://placehold.it/500x800" />
+                <div class="sec joinMember" v-show="isShowJoinMember">
+                    <div class="head">
+                        <span class="title">부모-자녀 연결</span>
+                        <button type="button" class="btn join" @click="joinChild"
+                            v-if="joinChildrenInfo.length >= 1">연결</button>
+                    </div>
+                    <div class="content">
+                        <div class="fild">
+                            <div class="label">부모 이름 :</div>
+                            <input type="text" size="10" v-model="joinParentInfo.name" disabled>
+                        </div>
+                        <div class="fild" v-for="(child,index) in joinChildrenInfo">
+                            <div class="label">추가자녀{{index + 1}} 이름 :</div>
+                            <input type="text" size="10" disabled v-model="child.name">
+                            <button type="button" class="btn delete" @click="deleteChild(index)">-</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sec">
+                    <div class="head">
+                        <h3 class="title">족보 페이지</h3>
+                    </div>
+                    <div class="content">
+                        <img class="width-100" src="http://placehold.it/500x800" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -182,6 +219,12 @@
             // 일생(?) 컨텐츠 토글
             toggle: function () {
                 this.isShowLifeTime = this.isShowLifeTime ? false : true;
+            },
+
+            // 자녀컴포넌트에서 부모컴포넌트로 클릭한 부모정보 전달
+            selectedChild: function (person) {
+                console.log("join", person)
+                this.$emit("join", person)
             }
         }
 
@@ -225,7 +268,7 @@
                     },
                     {
                         no: 4, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 1, //부모번호
+                        parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
                         sesu: 2, //세수
@@ -320,6 +363,9 @@
                 notParentMember: [],
                 sesuStart: "",
                 sesuEnd: "",
+                isShowJoinMember: false, // 부모-자녀 연결 영역 토글
+                joinParentInfo: {}, // 연결할 부모의 정보
+                joinChildrenInfo: [] //연결할 자녀의 정보
             }
         },
         created: function () {
@@ -365,8 +411,8 @@
                     })
                 })
 
-                console.log("familyMap->", this.familyMap, "notParentMember->", this.notParentMember,
-                    "notParentMap->", this.notParentMap)
+                // console.log("familyMap->", this.familyMap, "notParentMember->", this.notParentMember,
+                //     "notParentMap->", this.notParentMap)
             },
 
             addFamily(family, person) {
@@ -386,18 +432,12 @@
                             let checkMember = this.notParentMember.findIndex(obj => obj.no == person
                                 .no);
 
+                            // 배열에 해당멤버의 정보가 없으면 추가
                             if (checkMember == -1) {
-                                console.log("부모가 없는 아이", person, person.name, person.sesu)
+                                // console.log("부모가 없는 아이", person, person.name, person.sesu)
                                 this.notParentMember.push(person)
                                 this.deletePerson(person)
                             }
-
-                            // if (familyMember.sesu == person.sesu) {
-                            //     console.log("부모가 없는 아이", person, person.name, person.sesu)
-                            //     this.notParentMember.push(person)
-                            //     this.deletePerson(person)
-                            // }
-
                         }
 
                         // 부모번호가 일치하면 자녀로 추가
@@ -453,7 +493,45 @@
                     if (child.children && child.children.length > 0) this.sortChild(child.children)
                 })
 
+            },
+
+            // 부모-자녀 연결의 자녀컴포넌트에서 받은 부모정보 
+            parentInfo: function (user) {
+
+                this.isShowJoinMember = this.isShowJoinMember ? false : true;
+
+                this.joinParentInfo = user
+                console.log("check", user, this.joinParentInfo, this.joinParentInfo.name)
+
+            },
+
+            // 연결할 자녀 추가
+            addChild: function (child) {
+
+                if ((this.joinParentInfo.sesu - child.sesu) < -1) {
+                    alert("2세대 이상 차이나는 자녀는 연결이 안되요!")
+                    return false;
+                }
+
+                let checkMember = this.joinChildrenInfo.findIndex(obj => obj.no == child
+                    .no);
+
+                // 배열에 해당자녀의 정보가 없으면 추가
+                if (checkMember == -1) this.joinChildrenInfo.push(child)
+            },
+
+            // 연결할 자녀 삭제
+            deleteChild: function (index) {
+                this.joinChildrenInfo.splice(index - 1, 1)
+            },
+
+            // 부모-자녀 연결
+            joinChild: function () {
+                let check = confirm("해당 부모와 자녀를 연결하실껀가요?")
+
+                if (check) alert("성공!")
             }
+
         },
     })
 </script>
