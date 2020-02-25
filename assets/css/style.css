@@ -109,7 +109,7 @@ body {
     flex: 1;
 }
 #familyWrap > .content .tree-node {
-    margin: 20px 16px;
+    margin: 20px 8px;
     font-weight: 900;
     text-align: center;
 }
@@ -120,9 +120,6 @@ body {
     writing-mode: vertical-lr;
     text-orientation: upright;
     vertical-align: top;
-    -webkit-box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
-    -moz-box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
-    box-shadow: 2px 2px 0px 0px rgba(173, 89, 172, 1);
 }
 #familyWrap > .content .tree-node .member-info .name,
 #familyWrap > .content .tree-node .member-info .name.notParent.rootParent {
@@ -174,10 +171,8 @@ body {
 #familyWrap > .content .not-child > .tree-node .member-info .name::before {
     display: none;
 }
-#familyWrap > .content .tree-node.notChildren .member-info {
-    background-color: #ad59ac;
-}
-#familyWrap > .content .tree-node .member-info .btn.addPerson {
+#familyWrap > .content .tree-node .member-info .btn.person {
+    position: relative;
     margin: 10px;
     width: 40px;
     height: 40px;
@@ -186,6 +181,21 @@ body {
     box-sizing: border-box;
     border-radius: 50%;
     background-color: #fff;
+}
+#familyWrap > .content .tree-node .member-info .btn.person.add {
+    color: #4440ff;
+}
+#familyWrap > .content .tree-node .member-info .btn.person.not {
+    color: #ff4040;
+}
+#familyWrap > .content .tree-node .member-info .btn.person .txt {
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 100%;
+    text-align: center;
+    writing-mode: horizontal-tb;
+    font-size: 0.8rem;
 }
 #familyWrap > .content .tree-node .member-info .life-time {
     max-height: 150px;
@@ -224,7 +234,7 @@ body {
     width: calc(100% + 6px);
     height: 6px;
     top: -3px;
-    left: 38px;
+    left: 30px;
     background-color: #ad59ac;
 }
 #familyWrap > .content .tree-child .child.last > .tree-node > .inner::before,
@@ -245,7 +255,7 @@ body {
     display: flex;
 }
 #familyWrap > .content .not-child .tree-node > ul > .member {
-    margin-right: 16px;
+    margin: 0 8px;
 }
 
 /* tree-sesu */
@@ -295,16 +305,16 @@ body {
     align-items: center;
 }
 .connect_area {
-    width:148px;
-    height:153px;
-    background-color:red;
+    width: 148px;
+    height: 153px;
+    background-color: red;
     position: absolute;
-    z-index:999;
-    display:none;
+    z-index: 999;
+    display: none;
 }
 
 .menu {
-    text-align:right;
-    height:20px;
-    line-height:20px;
+    text-align: right;
+    height: 20px;
+    line-height: 20px;
 }

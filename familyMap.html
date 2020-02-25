@@ -10,7 +10,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -52,11 +53,31 @@
                                 </li>
                             </ul>
                         </div>
-                        <button type="button" class="btn addPerson" v-show="isShowLifeTime" @click="selectedChild(item)">
-                            <i class="material-icons">
-                                person_add
-                            </i>
-                        </button>
+                        <div v-if="showContent == false">
+                            <button type="button" class="btn person" v-show="isShowLifeTime" @click="selectedChild(item)">
+                                <i class="material-icons">
+                                    person
+                                </i>
+                            </button>
+                        </div>
+
+                        <div v-else>
+                            <button type="button" class="btn person add" v-show="isShowLifeTime" 
+                                @click="$emit('childs-event', 'add')">
+                                <i class="material-icons">
+                                    person_add
+                                </i>
+                                <span class="txt">연결</span>
+                            </button>
+                            <button type="button" class="btn person not" v-show="isShowLifeTime" 
+                                @click="$emit('childs-event', 'dis')">
+                                <i class="material-icons">
+                                    person_add_disabled
+                                </i>
+                                <span class="txt">해제</span>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -79,7 +100,7 @@
     <!-- the family root element -->
     <div id="familyWrap">
 
-        <div class="connect_area">
+        <!-- <div class="connect_area">
             <div class="menu">
                 <p class="close_connect">닫기</p>
             </div>
@@ -87,7 +108,7 @@
                 <button @click="connect()">연결</button>
                 <button @click="disConnect()">해제</button>
             </div>
-        </div>
+        </div> -->
 
         <div class="header">
             <div class="inner">
@@ -119,7 +140,7 @@
                         <ul class="tree-child">
                             <li class="child" v-for="family in familyMap">
                                 <ul class="tree-child">
-                                    <tree-item class="member" :item="family"></tree-item>
+                                    <tree-item class="member" :item="family" @childs-event="parentsMethod"></tree-item>
                                 </ul>
                             </li>
                         </ul>
@@ -132,13 +153,16 @@
                                     <div class="tree-node" :class="{notChildren: !person.children }">
                                         <div class="inner">
                                             <div class="member-info">
-                                                <button type="button" class="btn addPerson" @click="addChild(person)" v-show="isShowJoinMember">
+                                                <button type="button" class="btn addPerson" @click="addChild(person)"
+                                                    v-show="isShowJoinMember">
                                                     <i class="material-icons">
                                                         person_add
                                                     </i>
                                                 </button>
-                                                <div class="name" :class="{ notParent: !person.parent, rootParent: person.root == 1}"
-                                                    @click="selectNoParent(person.no)" v-bind:id="'noParent_' + person.no">
+                                                <div class="name"
+                                                    :class="{ notParent: !person.parent, rootParent: person.root == 1}"
+                                                    @click="selectNoParent(person.no)"
+                                                    v-bind:id="'noParent_' + person.no">
                                                     <div class="sex">
                                                         <span v-if="person.sex == 0">&#23376;</span>
                                                         <span v-else>&#22899;</span>
@@ -189,7 +213,8 @@
                 <div class="sec joinMember" v-show="isShowJoinMember">
                     <div class="head">
                         <span class="title">부모-자녀 연결</span>
-                        <button type="button" class="btn join" @click="joinChild" v-if="joinChildrenInfo.length >= 1">연결</button>
+                        <button type="button" class="btn join" @click="joinChild"
+                            v-if="joinChildrenInfo.length >= 1">연결</button>
                     </div>
                     <div class="content">
                         <div class="fild">
@@ -257,7 +282,8 @@
         data: function () {
             return {
                 isShowLifeTime: false,
-                jogbo_img: ""
+                jogbo_img: "",
+                showContent: false,
             }
         },
         methods: {
@@ -289,13 +315,13 @@
 
                             if (lastFlag == "node_" + no) {
                                 console.log("good");
-                                thisWidth = $('.sesu_' + i).last().outerWidth() - 82;
+                                thisWidth = $('.sesu_' + i).last().outerWidth() - 66;
                             } else {
                                 console.log("bad");
                                 thisWidth = 0;
                             }
 
-                            var obj_left = $('.sesu_' + i).last().offset().left + 82;
+                            var obj_left = $('.sesu_' + i).last().offset().left + 66;
                             var obj = thisWidth + obj_left;
                         }
 
@@ -307,22 +333,22 @@
 
             // 자녀컴포넌트에서 부모컴포넌트로 클릭한 부모정보 전달
             selectedChild: function (person) {
+                this.showContent = true;
 
                 store.state.connect_state = 1;
                 store.state.parent = person.no;
 
-                $(document).ready(function () {
-                    let targetNode = $(".node_" + person.no);
-                    let showLeft = targetNode.offset().left;
-                    let showTop = targetNode.offset().top;
+                // $(document).ready(function () {
+                //     let targetNode = $(".node_" + person.no);
+                //     let showLeft = targetNode.offset().left;
+                //     let showTop = targetNode.offset().top;
 
-                    $(".connect_area").css("top", showTop).css("left", showLeft + 48);
-                    $(".connect_area").show();
-                });
+                //     $(".connect_area").css("top", showTop).css("left", showLeft + 48);
+                //     $(".connect_area").show();
+                // });
                 // store.commit('personSelect', person)
                 // console.log(store.state.selectedPerson)
-            }
-
+            },
         }
 
     })
@@ -483,8 +509,17 @@
         },
         methods: {
 
-            connect() {
+            //자식컴포넌트로 부터 받은 데이터로 자녀 추가, 해제
+            parentsMethod: function (message) {
+                if (message == 'add') {
+                    this.connect();
+                } else {
+                    this.disConnect()
+                }
+            },
 
+            // 자녀연결
+            connect() {
                 let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
 
                 let length = store.state.select_children.length;
@@ -509,9 +544,9 @@
                     count++;
 
                 })
-
             },
 
+            // 자녀해제
             disConnect() {
 
                 // console.log(store.state.parent);
@@ -729,9 +764,9 @@
                     for (let i = start; i <= end; i++) {
                         let chk_element = $(".sesu_" + i).length;
                         if (chk_element == 0) {
-                            var obj = 116;
+                            var obj = 100;
                         } else {
-                            var obj = $('.sesu_' + i).last().offset().left + 82;
+                            var obj = $('.sesu_' + i).last().offset().left + 66;
                         }
                         $(".notP_" + i).css("left", obj + "px");
                     }
