@@ -4,14 +4,14 @@ Vue.component("tree-item", {
     props: {
         item: Object
     },
-    data: function() {
+    data: function () {
         return {
             isShowLifeTime: false
         };
     },
     methods: {
         // 일생(?) 컨텐츠 토글
-        toggle: function() {
+        toggle: function () {
             this.isShowLifeTime = this.isShowLifeTime ? false : true;
         }
     }
@@ -133,9 +133,57 @@ var family = new Vue({
             tempArray: []
         };
     },
-    created: function() {},
+    created: function () { },
     methods: {
-        getFamily: function() {
+        getFamily2: function () {
+            let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
+
+            let send_data = {
+                sesu: 1,
+                limit: 3
+            };
+
+            axios.post(url, send_data).then(res => {
+
+                console.log(res);
+                console.log(this.familyMap);
+                // res.forEach(data => {
+
+                //     if (data.sesu == 1) {
+
+                //         this.familyMap.push(data);
+
+                //     }
+
+                // });
+
+                // console.log(this.familyMap);
+
+            });
+
+
+
+            // let send_data = {
+            //     sesu: 1,
+            //     limit: 3
+            // };
+
+            // let form = new FormData();
+            // form.append('sesu', 1);
+            // // form.append('pwd',this.userPass);
+
+            // axios.post(url, {
+            //     headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+
+
+            //     sesu: '1',
+
+            // }).then(res => {
+            //     console.log(res);
+            // });
+        },
+
+        getFamily: function () {
             let diffSesu = this.sesuEnd - this.sesuStart;
             this.tempArray = [];
 
@@ -152,7 +200,7 @@ var family = new Vue({
             console.log(this.tempArray);
         },
 
-        getFamilyMap: function() {
+        getFamilyMap: function () {
             let loopcount = 0;
             this.isShowContent = true;
 
@@ -223,7 +271,7 @@ var family = new Vue({
         },
 
         // 재귀호출로 인한 자녀 무한생성 방지를 위한 자녀 추가 후 해당 자녀 제거
-        deletePerson: function(targetPerson) {
+        deletePerson: function (targetPerson) {
             for (let i = 0; i < this.originData.length; i++) {
                 if (this.originData[i].no == targetPerson.no) {
                     this.originData.splice(i, 1);
@@ -232,7 +280,7 @@ var family = new Vue({
         },
 
         //형제순서대로 멤버 정렬
-        sortChild: function(children) {
+        sortChild: function (children) {
             if (!children) children = this.familyMap.children;
 
             // 형제정렬 기준 1.성별, 2형제순서

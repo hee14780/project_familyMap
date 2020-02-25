@@ -294,3 +294,17 @@ body {
     padding: 5px 0;
     align-items: center;
 }
+.connect_area {
+    width:148px;
+    height:153px;
+    background-color:red;
+    position: absolute;
+    z-index:999;
+    display:none;
+}
+
+.menu {
+    text-align:right;
+    height:20px;
+    line-height:20px;
+}

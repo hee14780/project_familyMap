@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
@@ -21,17 +21,17 @@
 <body>
     <!-- family list -->
     <script type="text/x-template" id="item-template">
-        <li>
+        <li v-bind:class="'sesu_'+item.sesu" v-bind:id="'node_' + item.no">
             <!-- 부모정보 -->
             <div class="tree-node"  :class="{notChildren: !item.children }">
                 <div class="inner">
-                    <div class="member-info">
-                        <div class="name" @click="toggle" :class="{active: isShowLifeTime, notParent: !item.parent, rootParent: item.root == 1}">
+                    <div class="member-info" v-bind:class="'node_' + item.no">
+                        <div class="name" @click="toggle(item)" :class="{active: isShowLifeTime, notParent: !item.parent, rootParent: item.root == 1}">
                             <div class="sex">
                                 <span v-if="item.sex == 0">&#23376;</span>
                                 <span v-else>&#22899;</span>
                             </div>
-                            {{ item.name }}
+                            {{ item.no }}
                         </div>
                         <div class="life-time">
                             <ul class="life-wrap" v-show="isShowLifeTime">
@@ -74,8 +74,21 @@
         </li>
     </script>
 
+
+
     <!-- the family root element -->
     <div id="familyWrap">
+
+        <div class="connect_area">
+            <div class="menu">
+                <p class="close_connect">닫기</p>
+            </div>
+            <div>
+                <button @click="connect()">연결</button>
+                <button @click="disConnect()">해제</button>
+            </div>
+        </div>
+
         <div class="header">
             <div class="inner">
                 <h3 class="title">PROJECT:족보</h3>
@@ -91,10 +104,11 @@
                     </div> -->
                     <div class="group">
                         <div class="label">세대조회</div>
-                        <input type="text" size="5" v-model="sesuStart">~
-                        <input type="text" size="5" v-model="sesuEnd">
+                        <input type="text" size="5" v-model="sesuStart" id="sesuStart">~
+                        <input type="text" size="5" v-model="sesuEnd" id="sesuEnd">
                     </div>
-                    <button type="button" class="btn" @click="getFamilyMap()">검색</button>
+                    <!-- <button type="button" class="btn" @click="getFamilyMap()">검색</button> -->
+                    <button type="button" class="btn" @click="getFamily2()">검색</button>
                 </div>
             </div>
         </div>
@@ -113,26 +127,25 @@
 
                     <ul class="not-child">
                         <li class="tree-node" v-for="member in notParentMap">
-                            <ul>
+                            <ul style="position: absolute;" v-bind:class="'notP_' + member.sesu">
                                 <li class="member" v-for="person in member.member">
                                     <div class="tree-node" :class="{notChildren: !person.children }">
                                         <div class="inner">
                                             <div class="member-info">
-                                                <button type="button" class="btn addPerson" @click="addChild(person)"
-                                                    v-show="isShowJoinMember">
+                                                <button type="button" class="btn addPerson" @click="addChild(person)" v-show="isShowJoinMember">
                                                     <i class="material-icons">
                                                         person_add
                                                     </i>
                                                 </button>
-                                                <div class="name"
-                                                    :class="{ notParent: !person.parent, rootParent: person.root == 1}">
+                                                <div class="name" :class="{ notParent: !person.parent, rootParent: person.root == 1}"
+                                                    @click="selectNoParent(person.no)" v-bind:id="'noParent_' + person.no">
                                                     <div class="sex">
                                                         <span v-if="person.sex == 0">&#23376;</span>
                                                         <span v-else>&#22899;</span>
                                                     </div>
-                                                    {{ person.name }}
+                                                    {{ person.no }}
                                                 </div>
-                                                <div class="life-time">
+                                                <div class="life-time" style="display:none;">
                                                     <ul class="life-wrap">
                                                         <li class="list">
                                                             <div>부모: {{person.parent}}</div>
@@ -155,7 +168,7 @@
                                         </div>
                                     </div>
                                 </li>
-                            </ul>
+                                </u>
                         </li>
                     </ul>
 
@@ -176,8 +189,7 @@
                 <div class="sec joinMember" v-show="isShowJoinMember">
                     <div class="head">
                         <span class="title">부모-자녀 연결</span>
-                        <button type="button" class="btn join" @click="joinChild"
-                            v-if="joinChildrenInfo.length >= 1">연결</button>
+                        <button type="button" class="btn join" @click="joinChild" v-if="joinChildrenInfo.length >= 1">연결</button>
                     </div>
                     <div class="content">
                         <div class="fild">
@@ -196,7 +208,8 @@
                         <h3 class="title">족보 페이지</h3>
                     </div>
                     <div class="content">
-                        <img class="width-100" src="http://placehold.it/500x800" />
+                        <img class="width-100" src="http://placehold.it/500x800" v-if="jogbo_img == ''" />
+                        <img class="width-100" :src="jogbo_img" v-if="jogbo_img != ''" />
                     </div>
                 </div>
             </div>
@@ -204,6 +217,13 @@
     </div>
 
 </body>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js">
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <script>
     Vue.use(Vuex)
@@ -214,7 +234,11 @@
             selectedPerson: {
                 name: ''
             },
-            
+            connect_state: 0,
+            parent: "",
+            select_children: [],
+            jogbo_img: ""
+
         },
         mutations: {
             personSelect(state, person) {
@@ -232,20 +256,73 @@
         },
         data: function () {
             return {
-                isShowLifeTime: false
+                isShowLifeTime: false,
+                jogbo_img: ""
             }
         },
         methods: {
             // 일생(?) 컨텐츠 토글
-            toggle: function () {
+            toggle: function (item) {
                 this.isShowLifeTime = this.isShowLifeTime ? false : true;
+                this.listingElement(item.no);
+
+                let img_path = "http://jogboapi.appmowa.com/source/" + item.pa + item.page + ".png";
+                this.jogbo_img = img_path;
+                console.log(this.jogbo_img);
+            },
+
+            listingElement(no) {
+
+                $(document).ready(function () {
+
+                    let sesuStart = $("#sesuStart").val();
+                    let sesuEnd = $("#sesuEnd").val();
+
+                    for (let i = sesuStart; i <= sesuEnd; i++) {
+                        let chk_element = $(".sesu_" + i).length;
+                        if (chk_element == 0) {
+                            var obj = 116;
+                        } else {
+
+                            let lastFlag = $('.sesu_' + i).last().attr("id");
+                            let thisWidth = "";
+
+                            if (lastFlag == "node_" + no) {
+                                console.log("good");
+                                thisWidth = $('.sesu_' + i).last().outerWidth() - 82;
+                            } else {
+                                console.log("bad");
+                                thisWidth = 0;
+                            }
+
+                            var obj_left = $('.sesu_' + i).last().offset().left + 82;
+                            var obj = thisWidth + obj_left;
+                        }
+
+                        $(".notP_" + i).css("left", obj + "px");
+                    }
+                });
+
             },
 
             // 자녀컴포넌트에서 부모컴포넌트로 클릭한 부모정보 전달
             selectedChild: function (person) {
-                store.commit('personSelect', person)
-                console.log(store.state.selectedPerson)
+
+                store.state.connect_state = 1;
+                store.state.parent = person.no;
+
+                $(document).ready(function () {
+                    let targetNode = $(".node_" + person.no);
+                    let showLeft = targetNode.offset().left;
+                    let showTop = targetNode.offset().top;
+
+                    $(".connect_area").css("top", showTop).css("left", showLeft + 48);
+                    $(".connect_area").show();
+                });
+                // store.commit('personSelect', person)
+                // console.log(store.state.selectedPerson)
             }
+
         }
 
     })
@@ -255,6 +332,8 @@
         el: '#familyWrap',
         data: () => {
             return {
+                allFamilyMember: [],
+
                 originData: [{
                         no: 1, //자신의 키값이면서 자녀가 부모를 찾을때의 값
                         parent: null, //부모번호
@@ -383,25 +462,223 @@
                 notParentMember: [],
                 sesuStart: "",
                 sesuEnd: "",
-                joinChildrenInfo: [] //연결할 자녀의 정보
+                joinChildrenInfo: [], //연결할 자녀의 정보
+                showConnect: false
             }
         },
         created: function () {
 
         },
         computed: {
-            joinParentInfo: function(){
+            joinParentInfo: function () {
                 if (store.state.selectedPerson) {
                     return store.state.selectedPerson
                 } else {
                     return {}
                 }
             },
-            isShowJoinMember: function() {
+            isShowJoinMember: function () {
                 return this.joinParentInfo.name && this.joinParentInfo.name.length != 0
             }
         },
         methods: {
+
+            connect() {
+
+                let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
+
+                let length = store.state.select_children.length;
+                let count = 1;
+
+                store.state.select_children.forEach(child => {
+
+                    let form = new FormData()
+                    form.append('no', child);
+                    form.append('parent', store.state.parent);
+                    form.append('chk', "1");
+
+                    axios.post(url, form);
+
+                    if (count == length) {
+
+                        this.getFamily2();
+                        store.state.select_children = [];
+
+                    }
+
+                    count++;
+
+                })
+
+            },
+
+            disConnect() {
+
+                // console.log(store.state.parent);
+
+                // console.log(this.familyMap);
+                let chkChild = this.familyMap.filter(val => {
+                    return val.no == store.state.parent;
+                });
+
+                let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
+                let length = chkChild[0]['children'].length;
+                let count = 1;
+
+                chkChild[0]['children'].forEach(child => {
+
+                    let form = new FormData()
+                    form.append('no', child.no);
+                    form.append('chk', "1");
+
+                    axios.post(url, form);
+
+                    if (count == length) {
+
+                        this.getFamily2();
+
+                    }
+
+                    count++;
+
+                });
+
+
+            },
+
+            selectNoParent(no) {
+
+                if (store.state.connect_state == 1) {
+
+                    store.state.select_children.push(no);
+                    console.log(store.state.select_children);
+
+                    $("#noParent_" + no).css("border", "2px solid black");
+
+                }
+
+            },
+
+            getFamily2: function () {
+
+                this.originData = [];
+                this.familyMap = [];
+                this.notParentMember = [];
+                this.notParentMap = [];
+                this.familSesu = [];
+                $(".connect_area").hide();
+
+
+                let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
+                let tempFamilyData = [];
+
+                for (let i = this.sesuStart; i <= this.sesuEnd; i++) {
+
+                    let form = new FormData()
+                    form.append('sesu', i);
+                    form.append('limit', 20);
+
+                    axios.post(url, form).then(res => {
+
+                        let familyData = res.data;
+                        if (res.data) {
+                            familyData.forEach(data => {
+
+                                let name;
+                                if (!data.option) {
+                                    name = "미등록";
+                                } else {
+
+                                    if (data.option[0]['jogbo_fieldType'] == "名") {
+
+                                        name = data.option[0]['jogbo_field'];
+
+                                    } else {
+
+                                        name = "미등록";
+
+                                    }
+
+                                }
+
+
+                                let parent = data.parent == 0 ? null : data.parent;
+                                let sex = data.sex == "남" ? 0 : 1;
+
+                                this.originData.push({
+
+                                    no: data.no,
+                                    parent: parent,
+                                    pa: data.pa,
+                                    page: data.page,
+                                    sesu: data.sesu,
+                                    seq: data.seq,
+                                    sex: sex,
+                                    name: name
+
+                                });
+
+                            });
+
+                        }
+
+                    });
+
+                }
+
+                setTimeout(() => {
+
+                    // this.originData.push({
+
+                    //     no: "12",
+                    //     parent: 31,
+                    //     pa: "1권",
+                    //     page: 212,
+                    //     sesu: 2,
+                    //     seq: 2,
+                    //     sex: 0,
+                    //     name: "테스트"
+
+                    // }, {
+
+                    //     no: "14",
+                    //     parent: 31,
+                    //     pa: "1권",
+                    //     page: 212,
+                    //     sesu: 2,
+                    //     seq: 2,
+                    //     sex: 0,
+                    //     name: "테스트2"
+
+                    // }, {
+
+                    //     no: "15",
+                    //     parent: 30,
+                    //     pa: "1권",
+                    //     page: 212,
+                    //     sesu: 2,
+                    //     seq: 2,
+                    //     sex: 0,
+                    //     name: "테스트2"
+
+                    // }, {
+
+                    //     no: "44",
+                    //     parent: 14,
+                    //     pa: "1권",
+                    //     page: 212,
+                    //     sesu: 3,
+                    //     seq: 2,
+                    //     sex: 0,
+                    //     name: "테스트2"
+
+                    // });
+
+                    this.getFamilyMap();
+                }, 1000);
+
+            },
+
             getFamilyMap: function () {
                 let loopcount = 0;
 
@@ -441,8 +718,25 @@
                     })
                 })
 
-                // console.log("familyMap->", this.familyMap, "notParentMember->", this.notParentMember,
-                //     "notParentMap->", this.notParentMap)
+
+                this.listingElement(this.sesuStart, this.sesuEnd);
+
+            },
+
+            listingElement(start, end) {
+
+                $(document).ready(function () {
+                    for (let i = start; i <= end; i++) {
+                        let chk_element = $(".sesu_" + i).length;
+                        if (chk_element == 0) {
+                            var obj = 116;
+                        } else {
+                            var obj = $('.sesu_' + i).last().offset().left + 82;
+                        }
+                        $(".notP_" + i).css("left", obj + "px");
+                    }
+                });
+
             },
 
             addFamily(family, person) {
