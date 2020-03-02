@@ -10,8 +10,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -53,31 +52,11 @@
                                 </li>
                             </ul>
                         </div>
-                        <div v-if="showContent == false">
-                            <button type="button" class="btn person" v-show="isShowLifeTime" @click="selectedChild(item)">
-                                <i class="material-icons">
-                                    person
-                                </i>
-                            </button>
-                        </div>
-
-                        <div v-else>
-                            <button type="button" class="btn person add" v-show="isShowLifeTime" 
-                                @click="$emit('childs-event', 'add')">
-                                <i class="material-icons">
-                                    person_add
-                                </i>
-                                <span class="txt">연결</span>
-                            </button>
-                            <button type="button" class="btn person not" v-show="isShowLifeTime" 
-                                @click="$emit('childs-event', 'dis')">
-                                <i class="material-icons">
-                                    person_add_disabled
-                                </i>
-                                <span class="txt">해제</span>
-                            </button>
-                        </div>
-
+                        <button type="button" class="btn addPerson" v-show="isShowLifeTime" @click="selectedChild(item)">
+                            <i class="material-icons">
+                                person_add
+                            </i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -100,15 +79,22 @@
     <!-- the family root element -->
     <div id="familyWrap">
 
-        <!-- <div class="connect_area">
+        <div class="connect_area">
             <div class="menu">
                 <p class="close_connect">닫기</p>
             </div>
-            <div>
+            <div class="value_area">
+                <p>
+                    <span class="selected_sesu"></span>
+                    <span>세수</span>
+                </p>
+                <h3 class="selected_name">회원이름</h3>
+            </div>
+            <div class="bottom_area">
                 <button @click="connect()">연결</button>
                 <button @click="disConnect()">해제</button>
             </div>
-        </div> -->
+        </div>
 
         <div class="header">
             <div class="inner">
@@ -129,7 +115,7 @@
                         <input type="text" size="5" v-model="sesuEnd" id="sesuEnd">
                     </div>
                     <!-- <button type="button" class="btn" @click="getFamilyMap()">검색</button> -->
-                    <button type="button" class="btn" @click="getFamily2()">검색</button>
+                    <button type="button" class="btn" @click="test()">검색</button>
                 </div>
             </div>
         </div>
@@ -140,7 +126,7 @@
                         <ul class="tree-child">
                             <li class="child" v-for="family in familyMap">
                                 <ul class="tree-child">
-                                    <tree-item class="member" :item="family" @childs-event="parentsMethod"></tree-item>
+                                    <tree-item class="member" :item="family"></tree-item>
                                 </ul>
                             </li>
                         </ul>
@@ -152,24 +138,16 @@
                                 <li class="member" v-for="person in member.member">
                                     <div class="tree-node" :class="{notChildren: !person.children }">
                                         <div class="inner">
-                                            <div class="member-info">
-                                                <button type="button" class="btn addPerson" @click="addChild(person)"
-                                                    v-show="isShowJoinMember">
-                                                    <i class="material-icons">
-                                                        person_add
-                                                    </i>
-                                                </button>
-                                                <div class="name"
-                                                    :class="{ notParent: !person.parent, rootParent: person.root == 1}"
-                                                    @click="selectNoParent(person.no)"
-                                                    v-bind:id="'noParent_' + person.no">
+                                            <div class="member-info" :class="'notPnode_' + person.no">
+                                                <div class="name" :class="{ notParent: !person.parent, rootParent: person.root == 1}"
+                                                    @click="selectNoParent(person)" v-bind:id="'noParent_' + person.no">
                                                     <div class="sex">
                                                         <span v-if="person.sex == 0">&#23376;</span>
                                                         <span v-else>&#22899;</span>
                                                     </div>
                                                     {{ person.no }}
                                                 </div>
-                                                <div class="life-time" style="display:none;">
+                                                <div class="life-time" :class="'lifeTime_' + person.no" style="display:none;">
                                                     <ul class="life-wrap">
                                                         <li class="list">
                                                             <div>부모: {{person.parent}}</div>
@@ -188,6 +166,12 @@
                                                         </li>
                                                     </ul>
                                                 </div>
+                                                <button type="button" class="btn addPerson" :class="'lifeTime_' + person.no"
+                                                    @click="selectedChild(person)" style="display:none;">
+                                                    <i class="material-icons">
+                                                        person_add
+                                                    </i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -210,11 +194,10 @@
 
             <!-- 족보 디테일 영역-->
             <div class="group previewWrap">
-                <div class="sec joinMember" v-show="isShowJoinMember">
+                <!-- <div class="sec joinMember" v-show="isShowJoinMember">
                     <div class="head">
                         <span class="title">부모-자녀 연결</span>
-                        <button type="button" class="btn join" @click="joinChild"
-                            v-if="joinChildrenInfo.length >= 1">연결</button>
+                        <button type="button" class="btn join" @click="joinChild" v-if="joinChildrenInfo.length >= 1">연결</button>
                     </div>
                     <div class="content">
                         <div class="fild">
@@ -227,14 +210,14 @@
                             <button type="button" class="btn delete" @click="deleteChild(index)">-</button>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="sec">
                     <div class="head">
                         <h3 class="title">족보 페이지</h3>
                     </div>
                     <div class="content">
-                        <img class="width-100" src="http://placehold.it/500x800" v-if="jogbo_img == ''" />
-                        <img class="width-100" :src="jogbo_img" v-if="jogbo_img != ''" />
+                        <!-- <img class="width-100" src="http://placehold.it/500x800" /> -->
+                        <img class="width-100" :src="jogbo_img" />
                     </div>
                 </div>
             </div>
@@ -260,7 +243,7 @@
                 name: ''
             },
             connect_state: 0,
-            parent: "",
+            parent: [],
             select_children: [],
             jogbo_img: ""
 
@@ -282,50 +265,63 @@
         data: function () {
             return {
                 isShowLifeTime: false,
-                jogbo_img: "",
-                showContent: false,
+                jogbo_img: ""
             }
         },
         methods: {
             // 일생(?) 컨텐츠 토글
             toggle: function (item) {
                 this.isShowLifeTime = this.isShowLifeTime ? false : true;
-                this.listingElement(item.no);
+                this.listingElement(item.no, item.sesu);
 
                 let img_path = "http://jogboapi.appmowa.com/source/" + item.pa + item.page + ".png";
+                console.log(img_path);
                 this.jogbo_img = img_path;
-                console.log(this.jogbo_img);
+                $(".connect_area").hide();
             },
 
-            listingElement(no) {
+            listingElement(no, sesu) {
 
                 $(document).ready(function () {
 
+                    // console.log(sesu);
+                    // let lastLfet = $('.sesu_' + sesu).last().offset().left;
+                    // let lastWidth = $('.sesu_' + sesu).last().outerWidth();
+                    // let extentionWidth = parseInt(lastLfet) + parseInt(lastWidth);
+
+                    // $(".notP_" + sesu).css("left", extentionWidth + "px");
+
                     let sesuStart = $("#sesuStart").val();
                     let sesuEnd = $("#sesuEnd").val();
+                    let extentionWidth = ""
 
                     for (let i = sesuStart; i <= sesuEnd; i++) {
                         let chk_element = $(".sesu_" + i).length;
                         if (chk_element == 0) {
-                            var obj = 116;
+                            extentionWidth = 100;
                         } else {
 
-                            let lastFlag = $('.sesu_' + i).last().attr("id");
-                            let thisWidth = "";
+                            let lastLfet = $('.sesu_' + i).last().offset().left;
+                            let lastWidth = $('.sesu_' + i).last().outerWidth();
+                            extentionWidth = parseInt(lastLfet) + parseInt(lastWidth);
 
-                            if (lastFlag == "node_" + no) {
-                                console.log("good");
-                                thisWidth = $('.sesu_' + i).last().outerWidth() - 66;
-                            } else {
-                                console.log("bad");
-                                thisWidth = 0;
-                            }
+                            // let lastFlag = $('.sesu_' + i).last().attr("id");
+                            // let thisWidth = "";
 
-                            var obj_left = $('.sesu_' + i).last().offset().left + 66;
-                            var obj = thisWidth + obj_left;
+                            // if (lastFlag == "node_" + no) {
+                            //     console.log("good");
+                            //     thisWidth = $('.sesu_' + i).last().outerWidth() - 67;
+                            // } else {
+                            //     console.log("bad");
+                            //     thisWidth = 0;
+                            // }
+
+                            // var obj_left = $('.sesu_' + i).last().offset().left + 67;
+                            // var obj = thisWidth + obj_left;
                         }
 
-                        $(".notP_" + i).css("left", obj + "px");
+                        $(".notP_" + i).css("left", extentionWidth + "px");
+                        // $(".notP_" + i).css("left", obj + "px");
                     }
                 });
 
@@ -333,22 +329,22 @@
 
             // 자녀컴포넌트에서 부모컴포넌트로 클릭한 부모정보 전달
             selectedChild: function (person) {
-                this.showContent = true;
 
                 store.state.connect_state = 1;
-                store.state.parent = person.no;
+                store.state.parent = person;
 
-                // $(document).ready(function () {
-                //     let targetNode = $(".node_" + person.no);
-                //     let showLeft = targetNode.offset().left;
-                //     let showTop = targetNode.offset().top;
+                $(document).ready(function () {
+                    let targetNode = $(".node_" + person.no);
+                    let showLeft = targetNode.offset().left;
+                    let showTop = targetNode.offset().top;
 
-                //     $(".connect_area").css("top", showTop).css("left", showLeft + 48);
-                //     $(".connect_area").show();
-                // });
-                // store.commit('personSelect', person)
-                // console.log(store.state.selectedPerson)
-            },
+                    $(".connect_area").css("top", showTop).css("left", showLeft + 48);
+                    $(".selected_name").text(person.name);
+                    $(".selected_sesu").text(person.sesu);
+                    $(".connect_area").show();
+                });
+            }
+
         }
 
     })
@@ -360,128 +356,137 @@
             return {
                 allFamilyMember: [],
 
-                originData: [{
+                originData: [
+                    // 0: [
+                    {
                         no: 1, //자신의 키값이면서 자녀가 부모를 찾을때의 값
                         parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 1, //세수
-                        seq: 1, //세대순서
+                        sesu: 0, //세수
+                        seq: 1, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강도윤', //이름 
+                        name: "강도윤", //이름
                         lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"] //일생
                     },
                     {
                         no: 2, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 1, //부모번호
+                        parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 1, //세대순서
+                        sesu: 0, //세수
+                        seq: 2, //형제순서
                         sex: 1, //성별 (0:남자, 1:여자)
-                        name: '강지안',
+                        name: "강지안"
                     },
                     {
                         no: 3, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 1, //부모번호
+                        parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 3, //세대순서
+                        sesu: 0, //세수
+                        seq: 3, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강서준',
+                        name: "강서준"
                     },
                     {
                         no: 4, //자신의 키값이면서 자녀가 부모를 찾을때의 값
                         parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 2, //세대순서
+                        sesu: 0, //세수
+                        seq: 4, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강하준',
+                        name: "강하준"
                     },
+                    // ],
+                    // 1: [
                     {
                         no: 5, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
+                        parent: 1, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 2, //세대순서
-                        sex: 1, //성별 (0:남자, 1:여자)
-                        name: '강서아',
+                        sesu: 1, //세수
+                        seq: 1, //형제순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: "강도윤", //이름
+                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"] //일생
                     },
                     {
                         no: 6, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 3, //부모번호
+                        parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 3, //세대순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강하은',
+                        sesu: 1, //세수
+                        seq: 2, //형제순서
+                        sex: 1, //성별 (0:남자, 1:여자)
+                        name: "강지안"
                     },
                     {
                         no: 7, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 3, //부모번호
+                        parent: 1, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 1, //세대순서
+                        sesu: 1, //세수
+                        seq: 3, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강찬혁',
+                        name: "강서준"
                     },
                     {
                         no: 8, //자신의 키값이면서 자녀가 부모를 찾을때의 값
                         parent: null, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 1, //세대순서
-                        sex: 1, //성별 (0:남자, 1:여자)
-                        name: '강나은',
+                        sesu: 1, //세수
+                        seq: 4, //형제순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: "강하준"
                     },
+                    // ],
+                    // 2: [
                     {
                         no: 9, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
+                        parent: 7, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
                         sesu: 2, //세수
-                        seq: 4, //세대순서
+                        seq: 1, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강주원',
+                        name: "강도윤", //이름
+                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"] //일생
                     },
                     {
                         no: 10, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
+                        parent: 7, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 5, //세수
-                        seq: 1, //세대순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강민준',
+                        sesu: 2, //세수
+                        seq: 2, //형제순서
+                        sex: 1, //성별 (0:남자, 1:여자)
+                        name: "강지안"
                     },
                     {
                         no: 11, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 2, //부모번호
+                        parent: 8, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 4, //세대순서
+                        sesu: 2, //세수
+                        seq: 3, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강준우',
+                        name: "강서준"
                     },
                     {
                         no: 12, //자신의 키값이면서 자녀가 부모를 찾을때의 값
                         parent: 7, //부모번호
                         pa: 1, //권수
                         page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 2, //세대순서
+                        sesu: 2, //세수
+                        seq: 4, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
-                        name: '강주영',
-                    },
+                        name: "강하준"
+                    }
                 ],
+
                 familyMap: [],
                 familSesu: [],
                 notParentMap: [],
@@ -489,7 +494,8 @@
                 sesuStart: "",
                 sesuEnd: "",
                 joinChildrenInfo: [], //연결할 자녀의 정보
-                showConnect: false
+                showConnect: false,
+                isShowLifeTimeChild: false
             }
         },
         created: function () {
@@ -509,67 +515,142 @@
         },
         methods: {
 
-            //자식컴포넌트로 부터 받은 데이터로 자녀 추가, 해제
-            parentsMethod: function (message) {
-                if (message == 'add') {
-                    this.connect();
-                } else {
-                    this.disConnect()
-                }
+
+            test() {
+
+                let tempData = [];
+
+                this.originData.forEach(family => {
+
+                    this.test2(family);
+                });
+
+                console.log(this.originData);
+                this.familyMap = this.originData;
+
             },
 
-            // 자녀연결
+            test2(array) {
+
+                let chk = this.originData.filter(obj => {
+
+                    return obj.parent == array.no;
+
+                });
+
+                let childNo = this.originData.findIndex(obj => obj.no == array.no);
+
+                if (chk.length == 0 && childNo != -1) {
+                    // 자녀가 없으면
+                    return;
+                } else {
+                    // 자녀가 있으면 재귀
+                    array.children = [];
+                    chk.forEach(val => {
+
+                        array.children.push(val);
+                        let childNo = this.originData.findIndex(obj => obj.no == val.no);
+                        this.originData.splice(childNo, 1);
+                        this.test2(val);
+
+                    });
+
+                }
+
+            },
+
+
+
             connect() {
+
                 let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
 
                 let length = store.state.select_children.length;
                 let count = 1;
 
+                if (length == 0) {
+
+                    alert("연결한 자손을 선택해 주세요!");
+                    return;
+
+                }
+
                 store.state.select_children.forEach(child => {
 
                     let form = new FormData()
                     form.append('no', child);
-                    form.append('parent', store.state.parent);
+                    form.append('parent', store.state.parent.no);
                     form.append('chk', "1");
 
                     axios.post(url, form);
 
                     if (count == length) {
 
-                        this.getFamily2();
+                        store.state.parent = [];
                         store.state.select_children = [];
+                        store.state.connect_state = 0;
+                        this.getFamily2();
 
                     }
 
                     count++;
 
                 })
+
             },
 
-            // 자녀해제
             disConnect() {
 
-                // console.log(store.state.parent);
-
-                // console.log(this.familyMap);
-                let chkChild = this.familyMap.filter(val => {
-                    return val.no == store.state.parent;
-                });
+                // alert("준비중입니다.");
 
                 let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
-                let length = chkChild[0]['children'].length;
+                let chkChild;
+                let length;
+                let child;
+
+                console.log(store.state.parent.parent);
+
+                if (store.state.parent.parent == null) {
+                    chkChild = this.familyMap.filter(val => {
+                        return val.no == store.state.parent.no;
+                    });
+
+                    length = chkChild[0]['children'].length;
+                    child = chkChild[0]['children'];
+
+                } else {
+
+                    let parent_no = store.state.parent.parent;
+                    chkChild = this.familyMap.filter(val => {
+                        return val.no == parent_no;
+                    });
+
+                    console.log(this.originData);
+                    console.log(chkChild[0]['children'][0]['children']);
+
+                    length = chkChild[0]['children'][0]['children'].length;
+                    child = chkChild[0]['children'][0]['children'];
+
+                }
+
+
                 let count = 1;
 
-                chkChild[0]['children'].forEach(child => {
+                child.forEach(child => {
 
                     let form = new FormData()
                     form.append('no', child.no);
                     form.append('chk', "1");
 
+                    console.log(child.no);
+                    console.log(count);
+                    console.log(length);
+
                     axios.post(url, form);
 
                     if (count == length) {
 
+                        store.state.parent = [];
                         this.getFamily2();
 
                     }
@@ -578,23 +659,167 @@
 
                 });
 
+            },
+
+            selectedChild(person) {
+
+                store.state.connect_state = 1;
+                store.state.parent = person;
+
+                $(document).ready(function () {
+                    let targetNode = $(".notPnode_" + person.no);
+                    let showLeft = targetNode.offset().left;
+                    let showTop = targetNode.offset().top;
+
+                    $(".connect_area").css("top", showTop).css("left", showLeft + 48);
+                    $(".selected_name").text(person.name);
+                    $(".selected_sesu").text(person.sesu);
+                    $(".connect_area").show();
+                });
 
             },
 
-            selectNoParent(no) {
+            selectNoParent(person) {
+
+                if (store.state.connect_state == 0) {
+
+                    $(".lifeTime_" + person.no).toggle();
+
+                }
+
 
                 if (store.state.connect_state == 1) {
 
-                    store.state.select_children.push(no);
-                    console.log(store.state.select_children);
+                    let parentSesu = store.state.parent.sesu;
+                    let childSesu = person.sesu;
 
-                    $("#noParent_" + no).css("border", "2px solid black");
+                    if (childSesu != parseInt(parentSesu) + 1) {
+
+                        alert("부모 - 자손 연결은 한 세대간만 연결 가능합니다.");
+                        return;
+
+                    }
+
+                    let chk_array = store.state.select_children.indexOf(person.no);
+                    console.log(chk_array);
+
+                    if (chk_array == -1) {
+                        store.state.select_children.push(person.no);
+                        $("#noParent_" + person.no).css("border", "2px solid black");
+                    } else {
+                        store.state.select_children.splice(chk_array, 1);
+                        $("#noParent_" + person.no).css("border", "0px solid");
+                    }
 
                 }
 
             },
 
+
+            getFamily3: function () {
+
+                this.familyMap = [{
+                        no: "1-1",
+                        parent: 99999999,
+                        pa: "1권",
+                        page: 212,
+                        sesu: 1,
+                        seq: 2,
+                        sex: 0,
+                        name: "테스트",
+                        children: [{
+                            no: "2-1",
+                            parent: 1232,
+                            pa: "1권",
+                            page: 212,
+                            sesu: 3,
+                            seq: 2,
+                            sex: 0,
+                            name: "테스트"
+                        }]
+                    },
+                    {
+                        no: "1-2",
+                        parent: null,
+                        pa: "1권",
+                        page: 212,
+                        sesu: 1,
+                        seq: 2,
+                        sex: 0,
+                        name: "테스트",
+                        children: [{
+                            no: "2-2",
+                            parent: 1232,
+                            pa: "1권",
+                            page: 212,
+                            sesu: 3,
+                            seq: 2,
+                            sex: 0,
+                            name: "테스트"
+                        }]
+                    }
+                ]
+
+
+                for (let i = 1; i <= 3; i++) {
+                    this.familSesu.push(i);
+                    this.notParentMap.push({
+                        sesu: i,
+                        member: []
+                    });
+                }
+
+                console.log(this.notParentMap);
+
+
+                let notParentMapOrigin = [{
+                    no: "2-3",
+                    parent: null,
+                    pa: "1권",
+                    page: 212,
+                    sesu: 2,
+                    seq: 2,
+                    sex: 0,
+                    name: "테스트",
+                }]
+
+                notParentMapOrigin.forEach(person => {
+
+                    let sesu = person.sesu;
+                    console.log(sesu);
+
+                    this.notParentMap[person.sesu - 1]['member'].push({
+                        no: person.no,
+                        parent: null,
+                        pa: person.pa,
+                        page: person.page,
+                        sesu: person.sesu,
+                        seq: person.seq,
+                        sex: 0,
+                        name: "부모없음",
+                        children: [{
+                            no: "3-1",
+                            parent: person.no,
+                            pa: "11",
+                            page: "11",
+                            sesu: "11",
+                            seq: "1",
+                            sex: 0,
+                            name: "부모없음",
+                        }]
+                    });
+
+                })
+
+            },
+
+
             getFamily2: function () {
+
+                if (!this.sesuStart || !this.sesuEnd) {
+                    alert("검색조건을 입력하세요.");
+                    return;
+                }
 
                 this.originData = [];
                 this.familyMap = [];
@@ -611,7 +836,7 @@
 
                     let form = new FormData()
                     form.append('sesu', i);
-                    form.append('limit', 20);
+                    form.append('limit', 10);
 
                     axios.post(url, form).then(res => {
 
@@ -662,53 +887,6 @@
                 }
 
                 setTimeout(() => {
-
-                    // this.originData.push({
-
-                    //     no: "12",
-                    //     parent: 31,
-                    //     pa: "1권",
-                    //     page: 212,
-                    //     sesu: 2,
-                    //     seq: 2,
-                    //     sex: 0,
-                    //     name: "테스트"
-
-                    // }, {
-
-                    //     no: "14",
-                    //     parent: 31,
-                    //     pa: "1권",
-                    //     page: 212,
-                    //     sesu: 2,
-                    //     seq: 2,
-                    //     sex: 0,
-                    //     name: "테스트2"
-
-                    // }, {
-
-                    //     no: "15",
-                    //     parent: 30,
-                    //     pa: "1권",
-                    //     page: 212,
-                    //     sesu: 2,
-                    //     seq: 2,
-                    //     sex: 0,
-                    //     name: "테스트2"
-
-                    // }, {
-
-                    //     no: "44",
-                    //     parent: 14,
-                    //     pa: "1권",
-                    //     page: 212,
-                    //     sesu: 3,
-                    //     seq: 2,
-                    //     sex: 0,
-                    //     name: "테스트2"
-
-                    // });
-
                     this.getFamilyMap();
                 }, 1000);
 
@@ -729,7 +907,7 @@
 
                     //무한루프 방지를 위해 임시 카운트가 100을 초과하면 강제종료
                     loopcount++
-                    if (loopcount > 100) break
+                    if (loopcount > 300) break
                 }
 
                 //형제순서대로 멤버 정렬
@@ -753,6 +931,7 @@
                     })
                 })
 
+                // console.log(2);
 
                 this.listingElement(this.sesuStart, this.sesuEnd);
 
@@ -766,7 +945,7 @@
                         if (chk_element == 0) {
                             var obj = 100;
                         } else {
-                            var obj = $('.sesu_' + i).last().offset().left + 66;
+                            var obj = $('.sesu_' + i).last().offset().left + 67;
                         }
                         $(".notP_" + i).css("left", obj + "px");
                     }
@@ -776,6 +955,8 @@
 
             addFamily(family, person) {
 
+                // console.log(person);
+
                 // 조회하고자하는 시작세대와 세수가 일치하면 최초 부모
                 if (this.sesuStart == person.sesu) {
                     person.root = 1;
@@ -783,24 +964,65 @@
                     this.deletePerson(person)
 
                 } else {
+
                     family.forEach(familyMember => {
 
                         // 부모가 없는 자녀이면
                         if (person.parent == null) {
 
-                            let checkMember = this.notParentMember.findIndex(obj => obj.no == person
-                                .no);
+                            if (person.no != 85) {
 
-                            // 배열에 해당멤버의 정보가 없으면 추가
-                            if (checkMember == -1) {
-                                // console.log("부모가 없는 아이", person, person.name, person.sesu)
-                                this.notParentMember.push(person)
-                                this.deletePerson(person)
+                                // let chk1 = family.filter(val => {
+                                //     return val.parent == person.no;
+                                // });
+
+                                // let chk2 = this.notParentMember.filter(val => {
+                                //     return val.parent == person.no;
+                                // });
+
+                                // if (person.no == 85) {
+
+                                //     person.children = [];
+                                //     person.children.push({
+                                //         no: "1212",
+                                //         parent: "85",
+                                //         pa: "data.pa",
+                                //         page: "data.page",
+                                //         sesu: 19,
+                                //         seq: 2,
+                                //         sex: 0,
+                                //         name: "name"
+                                //     });
+
+                                //     console.log(person);
+
+                                // }
+
+                                // if (chk1) {
+                                //     console.log(person.no);
+                                // }
+
+
+                                let checkMember = this.notParentMember.findIndex(obj => obj.no == person
+                                    .no);
+
+                                // 배열에 해당멤버의 정보가 없으면 추가
+                                if (checkMember == -1) {
+                                    // console.log("부모가 없는 아이", person, person.name, person.sesu)
+                                    this.notParentMember.push(person)
+                                    this.deletePerson(person)
+                                }
+
                             }
+
+                            // console.log(1);
+
                         }
 
                         // 부모번호가 일치하면 자녀로 추가
                         if (familyMember.no == person.parent) {
+
+                            console.log(familyMember);
 
                             // 자녀의 데이터 값이 없으면 빈배열 추가 
                             if (!familyMember.children) familyMember.children = []
@@ -815,6 +1037,9 @@
                         if (familyMember.children && familyMember.children.length > 0) {
                             this.addFamily(familyMember.children, person) // 재귀호출
                         }
+
+                        // 
+
                     })
                 }
             },

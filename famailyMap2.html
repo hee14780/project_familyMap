@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamilyMap</title>
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+</head>
+
+<body>
+
+
+    <script type="text/x-template" id="item-template">
+        <li v-bind:class="'sesu_'+item.sesu" v-bind:id="'node_' + item.no">
+            <!-- 부모정보 -->
+            <div class="tree-node"  :class="{notChildren: !item.children }">
+                <div class="inner">
+                    <div class="member-info" v-bind:class="'node_' + item.no">
+                        <div class="name" @click="toggle(item)" :class="{active: isShowLifeTime, notParent: !item.parent, rootParent: item.root == 1}">
+                            <div class="sex">
+                                <span v-if="item.sex == 0">&#23376;</span>
+                                <span v-else>&#22899;</span>
+                            </div>
+                            {{ item.no }}
+                        </div>
+                        <div class="life-time">
+                            <ul class="life-wrap" v-show="isShowLifeTime">
+                                <li class="list">
+                                    <div>부모: {{item.parent}}</div>
+                                </li>
+                                <li class="list">
+                                    <div>세대순서: {{item.seq}}</div>
+                                </li>
+                                <li class="list">
+                                    <div>자기번호: {{item.no}}</div>
+                                </li>
+                                <li class="list" v-for="lifeTime in item.lifeTime">
+                                    <div>{{lifeTime}}</div>
+                                </li>
+                                <li class="list">
+                                    <div>{{ item.pa}}권 {{ item.page }}페이지 참조</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn addPerson" v-show="isShowLifeTime" @click="selectedChild(item)">
+                            <i class="material-icons">
+                                person_add
+                            </i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- 자녀리스트 -->
+            <ul class="tree-child">
+                <tree-item
+                class="child"
+                v-for="(child, index) in item.children"
+                :key="index"
+                :item="child"
+                :class="{first : index == 0, last: index == item.children.length - 1 }"
+                >
+                </tree-item>
+            </ul>
+        </li>
+    </script>
+
+
+    <div id="familyWrap">
+
+        <p @click="test()">test</p>
+
+        <div class="tree-child first">
+            <ul class="tree-child">
+                <li class="child" v-for="family in familyMap">
+                    <ul class="tree-child">
+                        <tree-item class="member" :item="family"></tree-item>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="familyMap2.js"></script>
+
+</body>
+
+</html>
