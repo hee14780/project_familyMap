@@ -1,3 +1,28 @@
+// define the tree-item component
+Vue.component("tree-item", {
+    template: "#item-template",
+    props: {
+        item: Object
+    },
+    data: function() {
+        return {
+            isShowLifeTime: false,
+            jogbo_img: ""
+        };
+    },
+    methods: {
+        // 일생(?) 컨텐츠 토글
+        toggle: function(item) {
+            this.isShowLifeTime = this.isShowLifeTime ? false : true;
+
+            let img_path = "http://jogboapi.appmowa.com/source/" + item.pa + item.page + ".png";
+            console.log(img_path);
+            this.jogbo_img = img_path;
+            $(".connect_area").hide();
+        }
+    }
+});
+
 // boot up the family
 var family = new Vue({
     el: "#familyWrap",
@@ -45,7 +70,7 @@ var family = new Vue({
                         seq: 4, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
                         name: "강하준"
-                    },
+                    }
                 ],
                 1: [
                     {
@@ -89,6 +114,26 @@ var family = new Vue({
                         sex: 0, //성별 (0:남자, 1:여자)
                         name: "강하준"
                     },
+                    {
+                        no: 13, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                        parent: null, //부모번호
+                        pa: 1, //권수
+                        page: 1, //페이지
+                        sesu: 1, //세수
+                        seq: 4, //형제순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: "강하준"
+                    },
+                    {
+                        no: 14, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                        parent: null, //부모번호
+                        pa: 1, //권수
+                        page: 1, //페이지
+                        sesu: 1, //세수
+                        seq: 4, //형제순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: "강하준"
+                    }
                 ],
                 2: [
                     {
@@ -131,38 +176,48 @@ var family = new Vue({
                         seq: 4, //형제순서
                         sex: 0, //성별 (0:남자, 1:여자)
                         name: "강하준"
+                    },
+                    {
+                        no: 15, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                        parent: null, //부모번호
+                        pa: 1, //권수
+                        page: 1, //페이지
+                        sesu: 2, //세수
+                        seq: 4, //형제순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: "강하준"
+                    },
+                    {
+                        no: 16, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                        parent: null, //부모번호
+                        pa: 1, //권수
+                        page: 1, //페이지
+                        sesu: 2, //세수
+                        seq: 4, //형제순서
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        name: "강하준"
                     }
                 ]
             },
             showFamilyMap: 0
         };
     },
-    created: function () { },
+    created: function() {},
     methods: {
         getFamilyMap() {
-
             for (let i = 0; i <= 2; i++) {
-
-
                 this.originData[i].forEach(person => {
-
                     this.checkChildren(person, i);
-
                 });
-
             }
 
             setTimeout(() => {
-
                 console.log(this.originData);
                 this.showFamilyMap = 1;
-
             }, 500);
-
         },
 
         checkChildren(person, i) {
-
             let index = i + 1;
 
             if (!this.originData[index]) {
@@ -170,9 +225,7 @@ var family = new Vue({
             }
 
             let chkChildred = this.originData[index].filter(obj => {
-
                 return obj.parent == person.no;
-
             });
 
             let persionIndex = this.originData[i].findIndex(obj => obj.no == person.no);
@@ -180,21 +233,15 @@ var family = new Vue({
             if (chkChildred.length == 0 && persionIndex != -1) {
                 return;
             } else {
-
                 person.children = [];
-                chkChildred.forEach(children => {
 
+                chkChildred.forEach(children => {
                     person.children.push(children);
                     let child_no = this.originData[index].findIndex(obj => obj.no == children.no);
                     this.originData[index].splice(child_no, 1);
                     this.checkChildren(children, children.sesu);
-
                 });
-
             }
-
-
         }
-
     }
 });
