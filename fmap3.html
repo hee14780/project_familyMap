@@ -23,7 +23,7 @@
     <script type="text/x-template" id="item-template">
         <li>
             <!-- 부모정보 -->
-            <div class="tree-node"  :class="{notChildren: !item.children }">
+            <div class="tree-node">
                 <div class="inner">
                     <div class="member-info" v-bind:class="'node_' + item.no">
                         <div class="name" @click="toggle(item)" :class="{active: isShowLifeTime, notParent: !item.parent, rootParent: item.root == 1}">
@@ -89,18 +89,21 @@
         <div class="content" v-if="showFamilyMap == 1">
             <div class="group treeWrap">
 
-                <div v-for="family in originData" style="display:flex; flex-direction: row;">
+                <div v-for="family in originData" style="display:flex; flex-wrap: nowrap; overflow: auto; width:100%;">
 
-                    <div v-for="person in family" v-bind:style="{
-                             backgroundColor:'red',
-                             width : 50 + 'px',
+                    <div style="display:flex; flex-direction: row; border:1px solid black; background-color:#f2f2f2; margin:15px 5px;"
+                        v-for="person in family" v-bind:style="{
                              height : 120 + 'px',
-                             marginRight : (person.marginRight) * 50 + 'px',
-                             marginBottom:15 + 'px',
-                             marginTop : 15 + 'px',
-                             marginLeft : person.marginLeft + 'px'
-                         }" v-bind:class="{'parent' : person.parent, 'children' : person.childrenCount >= 1}">
-                        {{person.no}}</div>
+                             marginRight : (person.marginRight * 52) + (person.marginRight * 5) + 'px'
+                         }" :class="'node_' + person.no" :id="'name_' + person.no">
+
+                        <div style="width:50px; height:120px;" @click="toggleHistory(person.no)">
+                            {{person.no}} {{person.tempSort}}
+                        </div>
+
+                        <div style="width:200px; height:120px; background-color:red; display:none;" class="historyCard">
+                        </div>
+                    </div>
 
                 </div>
 

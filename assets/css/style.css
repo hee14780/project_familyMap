@@ -97,7 +97,6 @@ body {
 }
 #familyWrap > .content > .group.treeWrap {
     width: 60%;
-    padding-left: 100px;
     overflow-y: scroll;
 }
 #familyWrap > .content > .group.previewWrap {
