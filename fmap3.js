@@ -582,6 +582,27 @@ var family = new Vue({
 
         },
 
+        connect() {
+
+            let next_tree = this.targetParentSesu + 1;
+
+            // 연결동작
+
+
+            // 연결 후처리 동작
+            this.targetParent = 0;
+            this.targetParentSesu = 0;
+            this.targetChildren = [];
+
+            $(".member-info").css('border', '1px solid #ad59ac');
+            $(".name").css("background-color", "#FFFFFF");
+
+            $("#tree_" + this.targetParentSesu).removeClass('selectedParent');
+            $("#tree_" + next_tree).removeClass('rowScroll');
+            $(".moreInfo").fadeOut(300);
+
+        },
+
         selectePerson(person) {
 
             if (this.targetParent == 0) {
@@ -590,7 +611,7 @@ var family = new Vue({
                 let myTop = $("#name_" + person.no).children().children().children('.member-info').offset().top;
 
                 $(".moreInfo").css("left", myLeft).css("top", myTop);
-                $(".moreInfo").show();
+                $(".moreInfo").fadeIn(300);
 
                 this.targetParent = person.no;
                 this.targetParentSesu = person.sesu;
@@ -611,13 +632,26 @@ var family = new Vue({
 
                 if (person.sesu == this.targetParentSesu + 1) {
 
-                    $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid red');
-                    $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "pink");
+                    let existChildrenArray = this.targetChildren.indexOf(person.no);
 
-                    this.targetChildren.push(person.no);
+                    if (existChildrenArray == -1) {
+
+
+                        $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid red');
+                        $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "pink");
+
+                        this.targetChildren.push(person.no);
+
+                    } else {
+
+                        $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid #ad59ac');
+                        $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#FFFFFF");
+
+                        this.targetChildren.splice(existChildrenArray, 1);
+
+                    }
 
                     console.log(this.targetChildren);
-
 
                 } else {
 
@@ -626,6 +660,8 @@ var family = new Vue({
                 }
 
             }
+
+
 
         },
 
