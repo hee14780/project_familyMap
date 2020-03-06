@@ -181,6 +181,10 @@ body {
     left: 30px;
     background-color: #ad59ac;
 }
+/* 같은 가족의 멤버이면서 마지막 자식의 스타일 */
+#familyWrap > .content .child-member.parentNo_24.lastChildren .inner::before {
+    display: none;
+}
 
 #familyWrap > .content .tree-node .member-info .name.rootParent::before,
 #familyWrap > .content .tree-node.notChildren .member-info .name::after,
