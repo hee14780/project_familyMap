@@ -10,8 +10,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -97,7 +96,7 @@
 
                 <ul class="tree-child" v-for="family in originData">
                     <li class="child-member" v-for="person in family" v-bind:style="{
-                            marginRight : (person.marginRight * 52) + (person.marginRight * 5) + 'px'
+                            marginRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
                         }" :class="'node_' + person.no" :id="'name_' + person.no">
 
                         <div class="tree-node">
