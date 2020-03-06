@@ -350,3 +350,17 @@ body {
 .bottom_area {
     text-align: center;
 }
+
+.moreInfo {
+    width:200px;
+    height:150px;
+    border: 1px solid gray;
+    background-color:#FFFFFF;
+    position: absolute;
+    display:none;
+}
+
+.moreInfo > div {
+    padding:10px;
+    text-align:center;
+}

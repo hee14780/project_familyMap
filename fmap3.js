@@ -414,7 +414,8 @@ var family = new Vue({
             startSesu: 0,
             endSesu: 3,
             targetParent: 0,
-            targetParentSesu: 0
+            targetParentSesu: 0,
+            targetChildren: []
 
         };
     },
@@ -585,6 +586,12 @@ var family = new Vue({
 
             if (this.targetParent == 0) {
 
+                let myLeft = $("#name_" + person.no).children().children().children('.member-info').offset().left + 50;
+                let myTop = $("#name_" + person.no).children().children().children('.member-info').offset().top;
+
+                $(".moreInfo").css("left", myLeft).css("top", myTop);
+                $(".moreInfo").show();
+
                 this.targetParent = person.no;
                 this.targetParentSesu = person.sesu;
 
@@ -593,6 +600,7 @@ var family = new Vue({
 
                 let next_tree = person.sesu + 1;
                 $("#tree_" + next_tree).addClass("rowScroll");
+                $("#tree_" + person.sesu).addClass("selectedParent");
 
                 console.log(this.targetParent);
 
@@ -605,6 +613,11 @@ var family = new Vue({
 
                     $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid red');
                     $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "pink");
+
+                    this.targetChildren.push(person.no);
+
+                    console.log(this.targetChildren);
+
 
                 } else {
 
