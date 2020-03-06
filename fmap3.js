@@ -535,7 +535,7 @@ var family = new Vue({
 
                         }
 
-                    }, 1000);
+                    }, 100);
 
                 }); // foreach
 
@@ -550,9 +550,6 @@ var family = new Vue({
 
                 firstChildrenArray.forEach(child => {
 
-                    console.log(child.no);
-                    console.log(child.parent);
-
                     setTimeout(() => {
 
                         let parentElementLeft = $("#name_" + child.parent).offset().left;
@@ -560,7 +557,7 @@ var family = new Vue({
 
                         if (myElementLeft < parentElementLeft) {
 
-                            $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + 5 + "px");
+                            $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
 
                             console.log(child.no);
                             console.log("부모위치 => " + parentElementLeft);
@@ -569,7 +566,7 @@ var family = new Vue({
 
                         }
 
-                    }, 1000);
+                    }, 100);
 
                 });
 
