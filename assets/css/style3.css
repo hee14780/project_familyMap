@@ -148,6 +148,7 @@ body {
 #familyWrap > .content .child-member {
     position: relative;
 }
+
 /* 부모를 가진 엘리먼트 스타일 */
 #familyWrap > .content .child-member.existParent .name::before {
     content: "";
@@ -182,8 +183,16 @@ body {
     background-color: #ad59ac;
 }
 /* 같은 가족의 멤버이면서 마지막 자식의 스타일 */
-#familyWrap > .content .child-member.parentNo_24.lastChildren .inner::before {
-    display: none;
+#familyWrap > .content .child-member.parentNo_24.lastChildren .inner::before,
+#familyWrap > .content .tree-child.rowScroll .child-member.existParent .name::before,
+#familyWrap > .content .tree-child.selectedParent .child-member.existChildren .name::after {
+    display: none !important;
+}
+
+/* 부모선택시 다음세수 하단 스크롤 생성 */
+#familyWrap > .content .tree-child.rowScroll {
+    overflow-x: auto;
+    background-color: #ad59ac;
 }
 
 #familyWrap > .content .tree-node .member-info .name.rootParent::before,
