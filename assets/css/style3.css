@@ -149,15 +149,29 @@ body {
     position: relative;
 }
 
+/* 세대 표기 */
+#familyWrap > .content .wrapper {
+    position: relative;
+}
+#familyWrap > .content .wrapper .tit {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+}
+#familyWrap > .content .wrapper .tree-child {
+    padding-left: 100px;
+}
+
 /* 부모를 가진 엘리먼트 스타일 */
 #familyWrap > .content .child-member.existParent .name::before {
     content: "";
     position: absolute;
     display: inline-block;
     width: 6px;
-    height: 20px;
-    top: -21px;
+    height: 22px;
+    top: -22px;
     left: calc(50% - 3px);
+    z-index: 10;
     background-color: #ad59ac;
 }
 /* 자식을 가진 엘리먼트 스타일 */
@@ -248,6 +262,8 @@ body {
 
 #familyWrap > .content .tree-child {
     display: flex;
+    border-bottom: solid 1px #e7e7e7;
+    box-sizing: border-box;
 }
 #familyWrap > .content .tree-child .child {
     display: inline-block;
@@ -352,15 +368,15 @@ body {
 }
 
 .moreInfo {
-    width:200px;
-    height:150px;
+    width: 200px;
+    height: 150px;
     border: 1px solid gray;
-    background-color:#FFFFFF;
+    background-color: #ffffff;
     position: absolute;
-    display:none;
+    display: none;
 }
 
 .moreInfo > div {
-    padding:10px;
-    text-align:center;
+    padding: 10px;
+    text-align: center;
 }
