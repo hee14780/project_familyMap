@@ -8,9 +8,10 @@
     <!-- font -->
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -82,6 +83,11 @@
             <div class="inner">
                 <h3 class="title">PROJECT:족보</h3>
                 <div class="filterWrap">
+                    <div class="group">
+                        <div class="label">세대조회</div>
+                        <input type="text" size="5" id="sesuStart">~
+                        <input type="text" size="5" id="sesuEnd">
+                    </div>
                     <button type="button" class="btn" @click="getFamilyMap2()">검색</button>
                 </div>
             </div>
@@ -89,7 +95,28 @@
         <div class="content" v-if="showFamilyMap == 1">
             <div class="group treeWrap">
 
-                <div v-for="family in originData" style="display:flex; flex-wrap: nowrap; overflow: auto; width:100%;">
+                <ul class="tree-child" v-for="family in originData">
+                    <li class="child-member" v-for="person in family" v-bind:style="{
+                            marginRight : (person.marginRight * 52) + (person.marginRight * 5) + 'px'
+                        }" :class="'node_' + person.no" :id="'name_' + person.no">
+
+                        <div class="tree-node">
+                            <div class="inner">
+                                <div class="member-info">
+                                    <div class="name" @click="toggle(person)">
+                                        <div class="sex">
+                                            <span v-if="person.sex == 0">&#23376;</span>
+                                            <span v-else>&#22899;</span>
+                                        </div>
+                                        {{ person.no }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- <div v-for="family in originData" style="display:flex; flex-wrap: nowrap; overflow: auto; width:100%;">
 
                     <div style="display:flex; flex-direction: row; border:1px solid black; background-color:#f2f2f2; margin:15px 5px;"
                         v-for="person in family" v-bind:style="{
@@ -105,7 +132,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
 
             </div>
         </div>

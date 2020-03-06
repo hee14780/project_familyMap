@@ -1,0 +1,339 @@
+/*common*/
+html {
+    font-size: 16px;
+}
+body {
+    width: 100%;
+    height: 100%;
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #f8f8f8;
+}
+/* google icon*/
+.material-icons {
+    font-family: "Material Icons";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: "liga";
+}
+.width-100 {
+    width: 100%;
+}
+#familyWrap {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* search head */
+.header {
+    width: 100%;
+    max-height: 83px;
+    color: #ad59ac;
+    border-bottom: solid 2px #e7e7e7;
+    background-color: #fff;
+}
+.header .inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+}
+.header .filterWrap {
+    display: flex;
+    justify-content: flex-end;
+}
+.header .filterWrap .btn,
+.group.previewWrap .head .btn {
+    color: #ad59ac;
+    border: solid 1px #ad59ac;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+.header .filterWrap .group {
+    margin: 0 1.6rem;
+}
+.header .filterWrap .group .label {
+    margin-bottom: 5px;
+}
+.header .filterWrap .group input {
+    padding: 5px;
+    border-radius: 5px;
+    border: solid 1px #e7e7e7;
+}
+
+/* tree style */
+#familyWrap > .content {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: calc(100% - 85px);
+}
+#familyWrap > .content > .group {
+    position: relative;
+    height: 100%;
+    overflow: scroll;
+}
+#familyWrap > .content > .group.treeWrap {
+    width: 60%;
+    overflow-y: scroll;
+}
+#familyWrap > .content > .group.previewWrap {
+    width: 40%;
+    background-color: #fff;
+}
+#familyWrap > .content .tree-map {
+    display: flex;
+    flex: 1;
+}
+#familyWrap > .content .tree-node {
+    margin: 20px 8px;
+    font-weight: 900;
+    text-align: center;
+}
+#familyWrap > .content .tree-node .member-info {
+    min-height: 150px;
+    color: #616161;
+    border: solid 1px #ad59ac;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    vertical-align: top;
+}
+#familyWrap > .content .tree-node .member-info .name,
+#familyWrap > .content .tree-node .member-info .name.notParent.rootParent {
+    position: relative;
+    padding: 16px;
+    color: #ad59ac;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+#familyWrap > .content .tree-node .member-info .name.rootParent.active,
+#familyWrap > .content .tree-node .member-info .name.active {
+    color: #fff;
+    background-color: #ad59ac;
+}
+#familyWrap > .content .tree-node .member-info .name.notParent {
+    color: #616161;
+    background-color: #e7e7e7;
+}
+#familyWrap > .content .tree-node .member-info .sex {
+    display: inline;
+    writing-mode: horizontal-tb;
+}
+#familyWrap > .content .tree-node .member-info .name:hover {
+    cursor: pointer;
+}
+
+#familyWrap > .content .child-member {
+    position: relative;
+}
+/* 부모를 가진 엘리먼트 스타일 */
+#familyWrap > .content .child-member.existParent .name::before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 6px;
+    height: 20px;
+    top: -21px;
+    left: calc(50% - 3px);
+    background-color: #ad59ac;
+}
+/* 자식을 가진 엘리먼트 스타일 */
+#familyWrap > .content .child-member.existChildren .name::after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 6px;
+    height: 20px;
+    bottom: -21px;
+    left: calc(50% - 3px);
+    background-color: #ad59ac;
+}
+/* 같은 가족의 멤버들 엘리먼트 스타일 */
+#familyWrap > .content .child-member.parentNo_24 .inner::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: calc(100% + 6px);
+    height: 6px;
+    top: -3px;
+    left: 30px;
+    background-color: #ad59ac;
+}
+
+#familyWrap > .content .tree-node .member-info .name.rootParent::before,
+#familyWrap > .content .tree-node.notChildren .member-info .name::after,
+#familyWrap > .content .not-parent .tree-node .member-info .name::before,
+#familyWrap > .content .not-child > .tree-node .member-info .name::before {
+    display: none;
+}
+#familyWrap > .content .tree-node .member-info .btn.person {
+    position: relative;
+    margin: 10px;
+    width: 40px;
+    height: 40px;
+    color: #ad59ac;
+    border: solid 1px #e7e7e7;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background-color: #fff;
+}
+#familyWrap > .content .tree-node .member-info .btn.person.add {
+    color: #4440ff;
+}
+#familyWrap > .content .tree-node .member-info .btn.person.not {
+    color: #ff4040;
+}
+#familyWrap > .content .tree-node .member-info .btn.person .txt {
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 100%;
+    text-align: center;
+    writing-mode: horizontal-tb;
+    font-size: 0.8rem;
+}
+#familyWrap > .content .tree-node .member-info .life-time {
+    max-height: 150px;
+    color: #131313;
+    text-align: left;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+#familyWrap > .content .tree-node .member-info .life-wrap .list {
+    max-height: 150px;
+    padding: 10px;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    word-spacing: -12px;
+    border-left: solid 1px #e7e7e7;
+}
+#familyWrap > .content .tree-node .member-info .life-wrap .list:first-child {
+    border-color: #ad59ac;
+}
+
+#familyWrap > .content .tree-child {
+    display: flex;
+}
+#familyWrap > .content .tree-child .child {
+    display: inline-block;
+    padding: 0;
+    vertical-align: top;
+}
+#familyWrap > .content .tree-child .child {
+    position: relative;
+}
+#familyWrap > .content .tree-child .child.last > .tree-node > .inner::before,
+#familyWrap > .content .tree-child .child.single > .tree-node > .inner::before {
+    width: 0;
+}
+
+/* not-parent */
+#familyWrap > .content .not-child > .tree-node {
+    margin: 0;
+    padding: 20px 16px;
+    min-height: 150px;
+}
+#familyWrap > .content .not-child .tree-node {
+    margin: 0;
+}
+#familyWrap > .content .not-child .tree-node > ul {
+    display: flex;
+}
+#familyWrap > .content .not-child .tree-node > ul > .member {
+    margin: 0 8px;
+}
+
+/* tree-sesu */
+#familyWrap > .content .tree-sesu {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    z-index: -10;
+    width: 100%;
+}
+#familyWrap > .content .tree-sesu .list {
+    width: 100%;
+    padding: 20px 0px;
+    min-height: 150px;
+    font-weight: 900;
+    border-bottom: solid 1px #dadada;
+}
+#familyWrap > .content .tree-sesu .list .inner {
+    display: inline-block;
+    padding-left: 10px;
+}
+#familyWrap > .content .tree-sesu .list:nth-child(2n) {
+    background-color: #f7f7f7;
+}
+
+/* 족보디테일 영역 */
+#familyWrap .group.previewWrap .sec {
+    padding: 16px 16px 32px;
+}
+#familyWrap .group.previewWrap .sec .head {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ad59ac;
+    border-bottom: solid 1px #e7e7e7;
+}
+#familyWrap .group.previewWrap input {
+    margin-left: 16px;
+    padding: 5px;
+    border-radius: 5px;
+    border: solid 1px #e7e7e7;
+}
+#familyWrap .group.previewWrap .sec.joinMember .fild {
+    display: flex;
+    padding: 5px 0;
+    align-items: center;
+}
+.connect_area {
+    width: 136px;
+    height: 140px;
+    background-color: #eaeaea;
+    position: absolute;
+    z-index: 999;
+    display: none;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+.menu {
+    text-align: right;
+    height: 20px;
+    line-height: 20px;
+}
+
+.value_area {
+    text-align: center;
+    height: 100px;
+    line-height: 40px;
+}
+
+.bottom_area {
+    text-align: center;
+}
