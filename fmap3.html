@@ -94,7 +94,7 @@
         <div class="content" v-if="showFamilyMap == 1">
             <div class="group treeWrap">
 
-                <ul class="tree-child" v-for="family in originData">
+                <ul class="tree-child" v-for="(family, index) in originData" :id="'tree_' + index">
                     <li class="child-member" v-for="person in family" v-bind:style="{
                             marginRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
                         }" :class="'node_' + person.no" :id="'name_' + person.no">
@@ -102,7 +102,7 @@
                         <div class="tree-node">
                             <div class="inner">
                                 <div class="member-info">
-                                    <div class="name" @click="toggle(person)">
+                                    <div class="name" @click="selectePerson(person)">
                                         <div class="sex">
                                             <span v-if="person.sex == 0">&#23376;</span>
                                             <span v-else>&#22899;</span>

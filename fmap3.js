@@ -412,7 +412,8 @@ var family = new Vue({
             showFamilyMap: 0,
             myFamilyCount: [],
             startSesu: 0,
-            endSesu: 3
+            endSesu: 3,
+            addChildren: []
         };
     },
     created: function () { },
@@ -578,12 +579,15 @@ var family = new Vue({
 
         },
 
+        selectePerson(person) {
 
+            $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid black');
+            $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
 
+            let next_tree = person.sesu + 1;
+            $("#tree_" + next_tree).addClass("rowScroll");
 
-
-
-
+        },
 
         getFamilyMap() {
 
