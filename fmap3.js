@@ -489,19 +489,33 @@ var family = new Vue({
                     if (person.parent != null && this.originData[prevIndex]) {
 
                         person.firstchildren = "";
+                        person.lastChildren = "";
 
+                        // 내가 첫째인지 확인
                         let myBro = this.originData[i].filter(bro => {
                             return bro.parent == person.parent && bro.seq < person.seq;
                         });
 
-                        let myBroCount = myBro.length;
+                        // 내가 막내인지 확인
+                        let myBro2 = this.originData[i].filter(bro => {
+                            return bro.parent == person.parent && bro.seq > person.seq;
+                        })
 
+                        // console.log(person.no);
+                        // console.log(myBro2.length);
+                        // console.log("++++++++++++");
+
+
+                        let myBroCount = myBro.length;
                         // 내가 첫째라는 소리
                         if (myIndex == 0 || myBroCount == 0) {
-
                             person.firstchildren = 1;
-
                         }
+
+                        if (myBro2.length == 0) {
+                            person.lastChildren = 1;
+                        }
+
 
                     }
 
@@ -512,6 +526,12 @@ var family = new Vue({
                             $("#name_" + person.no).addClass('existParent');
                             $("#name_" + person.parent).addClass('existChildren');
                             $("#name_" + person.no).addClass('parentNo_' + person.parent);
+
+                        }
+
+                        if (person.lastChildren == 1) {
+
+                            $("#name_" + person.no).addClass('lastChildren');
 
                         }
 
