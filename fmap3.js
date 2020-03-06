@@ -413,7 +413,9 @@ var family = new Vue({
             myFamilyCount: [],
             startSesu: 0,
             endSesu: 3,
-            addChildren: []
+            targetParent: 0,
+            targetParentSesu: 0
+
         };
     },
     created: function () { },
@@ -581,11 +583,36 @@ var family = new Vue({
 
         selectePerson(person) {
 
-            $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid black');
-            $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
+            if (this.targetParent == 0) {
 
-            let next_tree = person.sesu + 1;
-            $("#tree_" + next_tree).addClass("rowScroll");
+                this.targetParent = person.no;
+                this.targetParentSesu = person.sesu;
+
+                $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid black');
+                $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
+
+                let next_tree = person.sesu + 1;
+                $("#tree_" + next_tree).addClass("rowScroll");
+
+                console.log(this.targetParent);
+
+            }
+
+
+            if (this.targetParent != person.no) {
+
+                if (person.sesu == this.targetParentSesu + 1) {
+
+                    $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid red');
+                    $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "pink");
+
+                } else {
+
+                    alert("부모 - 자녀 연결이 불가합니다.");
+
+                }
+
+            }
 
         },
 
