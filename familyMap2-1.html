@@ -10,8 +10,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -125,7 +124,7 @@
 
                 <div v-for="family in originData" v-if="showFamilyMap == 1" style="margin-bottom:100px; display: flex">
 
-                    <div v-for="person in family" style="background-color:red; padding:20px; margin-left:10px;">
+                    <div v-for="person in family" style="padding:20px; margin-left:10px; background-color:red;" :class="'node_' + person.sesu">
                         {{person.no}}
                         <ul>
                             <tree-item class="member" :item="person"></tree-item>

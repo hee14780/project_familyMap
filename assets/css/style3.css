@@ -96,11 +96,11 @@ body {
     overflow: scroll;
 }
 #familyWrap > .content > .group.treeWrap {
-    width: 60%;
+    width: 100%;
     overflow-y: scroll;
 }
 #familyWrap > .content > .group.previewWrap {
-    width: 40%;
+    /* width: 40%; */
     background-color: #fff;
 }
 #familyWrap > .content .tree-map {
@@ -186,7 +186,7 @@ body {
     background-color: #ad59ac;
 }
 /* 같은 가족의 멤버들 엘리먼트 스타일 */
-#familyWrap > .content .child-member.parentNo_24 .inner::before {
+#familyWrap > .content .child-member.existParent .inner::before {
     content: "";
     display: inline-block;
     position: absolute;
@@ -197,7 +197,7 @@ body {
     background-color: #ad59ac;
 }
 /* 같은 가족의 멤버이면서 마지막 자식의 스타일 */
-#familyWrap > .content .child-member.parentNo_24.lastChildren .inner::before,
+#familyWrap > .content .child-member.lastChildren .inner::before,
 #familyWrap > .content .tree-child.rowScroll .child-member.existParent .name::before,
 #familyWrap > .content .tree-child.selectedParent .child-member.existChildren .name::after {
     display: none !important;
@@ -380,4 +380,14 @@ body {
 .moreInfo > div {
     padding: 10px;
     text-align: center;
+}
+
+.moreInfoArea {
+    text-align:center !important;
+}
+
+.moreInfoArea>div {
+    margin-top:20px;
+    margin-left:20px;
+    text-align:center;
 }
