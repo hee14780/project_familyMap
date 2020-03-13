@@ -269,6 +269,8 @@ var family = new Vue({
                         if (myElementLeft < parentElementLeft) {
                             $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
                         }
+
+                        this.$refs.treeWrap.addEventListener("scroll", this.handleScroll);
                     }, 50);
                 });
             } // for
@@ -428,6 +430,18 @@ var family = new Vue({
                         .children(".disconnectBtn")
                         .show();
                 }
+            }
+        },
+
+        handleScroll(event) {
+            let getScrollWidth = this.$refs.treeWrap.scrollWidth;
+            let getScrollLeft = this.$refs.treeWrap.scrollLeft;
+            let getScrollEnd = getScrollWidth - window.innerWidth;
+
+            console.log("scrollWidth", getScrollWidth, getScrollEnd, getScrollLeft);
+
+            if (getScrollLeft === getScrollEnd) {
+                alert("스크롤이 가로 끝에 왔어요!!");
             }
         }
     }

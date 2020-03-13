@@ -93,11 +93,10 @@ body {
 #familyWrap > .content > .group {
     position: relative;
     height: 100%;
-    overflow: scroll;
+    overflow-x: scroll;
 }
 #familyWrap > .content > .group.treeWrap {
     width: 100%;
-    overflow-y: scroll;
 }
 #familyWrap > .content > .group.previewWrap {
     /* width: 40%; */
@@ -374,8 +373,8 @@ body {
     border: 1px solid gray;
     background-color: #ffffff;
     position: absolute;
-    display:none;
-    z-index:10;
+    display: none;
+    z-index: 10;
 }
 
 .moreInfo > div {
@@ -384,30 +383,31 @@ body {
 }
 
 .moreInfoArea {
-    text-align:center !important;
+    text-align: center !important;
 }
 
-.moreInfoArea>div {
-    margin-top:20px;
-    margin-left:20px;
-    text-align:center;
+.moreInfoArea > div {
+    margin-top: 20px;
+    margin-left: 20px;
+    text-align: center;
 }
 
-.connectBtn, .disconnectBtn {
-    width:60%;
-    height:30px;
-    line-height:30px;    
-    font-size:12px;
-    text-align:center;
-    margin:0 auto;
-    border:1px solid black;
-    display:none;
-    position:relative;
-    top:-10px;
-    background-color:#FFFFFF;
+.connectBtn,
+.disconnectBtn {
+    width: 60%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    text-align: center;
+    margin: 0 auto;
+    border: 1px solid black;
+    display: none;
+    position: relative;
+    top: -10px;
+    background-color: #ffffff;
 }
 
 .conn {
-    display:flex;
+    display: flex;
     justify-content: space-between;
 }
