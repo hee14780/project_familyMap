@@ -102,7 +102,6 @@ var family = new Vue({
                 return;
             }
 
-            console.log(this.parentSesu + 1);
 
             let form2 = new FormData()
             form2.append('sesu', parseInt(this.parentSesu) + 1);
@@ -196,6 +195,7 @@ var family = new Vue({
                 this.originData[i].forEach(person => {
 
                     person.tempSort = 0;
+                    person.marginRight = 0;
 
                     if (i == 0) {
 
@@ -204,6 +204,9 @@ var family = new Vue({
                         });
 
                         person.marginRight = myChildren.length - 1;
+                        if (person.marginRight < 0) {
+                            person.marginRight = 0;
+                        }
 
                     }
 
@@ -233,8 +236,18 @@ var family = new Vue({
 
                                 }
 
+                                if (this.originData[0].length - 1 == j) {
+                                    temp = j;
+                                    break;
+                                }
+
                             }
                             person.tempSort = myIndex + temp;
+
+                            // console.log(person.no);
+                            // console.log(myIndex);
+                            // console.log("==============");
+
                         }
 
                     }
@@ -302,7 +315,7 @@ var family = new Vue({
                     if (child1.tempSort == child2.tempSort) {
 
                         if (child2.parent == child1.parent) {
-                            return child1.seq - child2.seq;
+                            return child1.no - child2.no;
                         } else {
                             return child2.parent - child1.parent;
                         }
@@ -319,14 +332,20 @@ var family = new Vue({
 
                 firstChildrenArray.forEach(child => {
 
-                    console.log(child.no);
+                    let checkMyParent = this.originData[0].findIndex(obj => obj.no == child.parent);
+
 
                     setTimeout(() => {
-                        let parentElementLeft = $("#name_" + child.parent).offset().left;
-                        let myElementLeft = $("#name_" + child.no).offset().left;
 
-                        if (myElementLeft < parentElementLeft) {
-                            $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
+                        if (checkMyParent != -1) {
+
+                            let parentElementLeft = $("#name_" + child.parent).offset().left;
+                            let myElementLeft = $("#name_" + child.no).offset().left;
+
+                            if (myElementLeft < parentElementLeft) {
+                                $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
+                            }
+
                         }
                     }, 50);
 
@@ -374,20 +393,41 @@ var family = new Vue({
 
             });
 
-            $(".child-member").removeClass("existParent");
-            $(".child-member").removeClass("existChildren");
-            $(".child-member").removeClass("firstChildren");
-            $(".child-member").removeClass("lastChildren");
-            $(".child-member").css("margin-left", "0px");
-            $(".conn").children().hide();
-            this.selectedParent = "";
-            this.selectedChildren = [];
+            setTimeout(() => {
 
-            this.originData[1].sort((child1, child2) => {
-                return child1.seq - child2.seq;
-            });
+                let parentIndex = this.originData[0].findIndex(obj => obj.no == this.selectedParent);
+                this.originData[0][parentIndex].marginRight = 0;
 
-            this.getFamilyMap2();
+                console.log(this.originData[0][parentIndex])
+
+                $("#tree_1").removeClass("rowScroll");
+                $(".child-member").removeClass("existParent");
+                $(".child-member").removeClass("existChildren");
+                $(".child-member").removeClass("firstChildren");
+                $(".child-member").removeClass("lastChildren");
+                $(".child-member").css("margin-left", "0px");
+                $(".conn").children().hide();
+                this.selectedParent = "";
+                this.selectedChildren = [];
+
+                // this.originData[1].sort((child1, child2) => {
+
+                //     if (child1.tempSort == child2.tempSort) {
+
+                //         if (child2.parent == child1.parent) {
+                //             return child1.no - child2.no;
+                //         } else {
+                //             return child2.parent - child1.parent;
+                //         }
+
+                //     }
+
+                //     return child1.tempSort - child2.tempSort;
+                // });
+
+                this.getFamilyMap2();
+
+            }, 50);
         },
 
         connect() {
@@ -416,6 +456,7 @@ var family = new Vue({
 
             setTimeout(() => {
 
+                $("#tree_1").removeClass("rowScroll");
                 $(".child-member").removeClass("existParent");
                 $(".child-member").removeClass("existChildren");
                 $(".child-member").removeClass("firstChildren");
@@ -426,7 +467,7 @@ var family = new Vue({
                 this.selectedChildren = [];
                 this.getFamilyMap2();
 
-            }, 500);
+            }, 50);
         },
 
         selectePerson(person) {
@@ -435,6 +476,8 @@ var family = new Vue({
             let checkIndex = this.originData[0].findIndex(obj => obj.no == person.no);
 
             if (checkIndex != -1) {
+
+                $("#tree_1").addClass("rowScroll");
 
                 if (this.selectedParent == "") {
 
@@ -491,6 +534,30 @@ var family = new Vue({
             }
 
         },
+
+        tempMove(direction) {
+
+            if (direction == 0) {
+
+                if (this.parentSesu == 0) {
+                    return;
+                } else {
+
+                    this.parentSesu = parseInt(this.parentSesu) - 1;
+                    this.serach();
+
+                }
+
+            }
+
+            if (direction == 1) {
+
+                this.parentSesu = parseInt(this.parentSesu) + 1;
+                this.serach();
+
+            }
+
+        }
     }
 
 });

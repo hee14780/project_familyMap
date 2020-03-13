@@ -23,23 +23,6 @@
     <!-- the family root element -->
     <div id="familyWrap" v-on:mousewheel="findData()">
 
-        <div class=" moreInfo">
-
-            <div>
-                <p>회원 정보</p>
-                <br>
-                <p>이름 : </p>
-                <br>
-                <br>
-                <br>
-                <div>
-                    <button @click="connect()">연결</button>
-                    <button @click="connect()">취소</button>
-                </div>
-            </div>
-
-        </div>
-
         <div class="header">
             <div class="inner">
                 <h3 class="title">PROJECT:족보</h3>
@@ -55,7 +38,9 @@
                 </div>
             </div>
         </div>
-        <div class="content" v-if="showFamilyMap == 1">
+
+        <div @click="tempMove(0)">윗세대 이동</div>
+        <div class="content" v-if="showFamilyMap == 1" style="margin-top:200px;">
 
             <!-- 족보 리스트 -->
             <div class="group treeWrap">
@@ -95,6 +80,7 @@
             </div>
 
         </div>
+        <div @click="tempMove(1)">아래세대 이동</div>
 
     </div>
 
