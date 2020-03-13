@@ -92,12 +92,13 @@ body {
 }
 #familyWrap > .content > .group {
     position: relative;
-    height: 100%;
-    overflow: scroll;
+    overflow: auto;
 }
 #familyWrap > .content > .group.treeWrap {
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
+    border-top: solid 1px #e7e7e7;
+    box-sizing: border-box;
 }
 #familyWrap > .content > .group.previewWrap {
     /* width: 40%; */
@@ -374,8 +375,8 @@ body {
     border: 1px solid gray;
     background-color: #ffffff;
     position: absolute;
-    display:none;
-    z-index:10;
+    display: none;
+    z-index: 10;
 }
 
 .moreInfo > div {
@@ -384,30 +385,74 @@ body {
 }
 
 .moreInfoArea {
-    text-align:center !important;
+    text-align: center !important;
 }
 
-.moreInfoArea>div {
-    margin-top:20px;
-    margin-left:20px;
-    text-align:center;
+.moreInfoArea > div {
+    margin-top: 20px;
+    margin-left: 20px;
+    text-align: center;
 }
 
-.connectBtn, .disconnectBtn {
-    width:60%;
-    height:30px;
-    line-height:30px;    
-    font-size:12px;
-    text-align:center;
-    margin:0 auto;
-    border:1px solid black;
-    display:none;
-    position:relative;
-    top:-10px;
-    background-color:#FFFFFF;
+.connectBtn,
+.disconnectBtn {
+    width: 60%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    text-align: center;
+    margin: 0 auto;
+    border: 1px solid black;
+    display: none;
+    position: relative;
+    top: -10px;
+    background-color: #ffffff;
 }
 
 .conn {
-    display:flex;
+    display: flex;
     justify-content: space-between;
+}
+
+/* 세대 이동 버튼 */
+#familyWrap > .content .btn_wrap {
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+#familyWrap > .content .btn_wrap .inner {
+    position: relative;
+    height: 400px;
+}
+#familyWrap > .content .btn_wrap .btn {
+    position: absolute;
+    left: calc(50% - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 45px;
+    color: #ad59ac;
+    line-height: 45px;
+    border: solid 1px #e7e7e7;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+#familyWrap > .content .btn_wrap .btn i {
+    margin-right: 10px;
+    font-weight: bold;
+}
+#familyWrap > .content .btn_wrap .btn.prev {
+    top: -55px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+#familyWrap > .content .btn_wrap .btn.next {
+    bottom: -55px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+#familyWrap > .content .btn_wrap .btn:hover {
+    color: #fff;
+    background-color: #ad59ac;
 }

@@ -10,7 +10,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -39,11 +40,9 @@
             </div>
         </div>
 
-        <div @click="tempMove(0)">윗세대 이동</div>
         <div class="content" v-if="showFamilyMap == 1">
-
             <!-- 족보 리스트 -->
-            <div class="group treeWrap">
+            <div class="group treeWrap" ref="treeWrap">
                 <div class="wrapper" v-for="(family, index) in originData">
                     <div class="tit">{{parentSesu + index}}세대</div>
                     <ul class="tree-child" :id="'tree_' + index">
@@ -76,12 +75,25 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
 
+            <!-- 세대이동버튼 -->
+            <div class="btn_wrap">
+                <div class="inner">
+                    <button type="button" class="btn prev" @click="tempMove(0)">
+                        <i class="material-icons">
+                            keyboard_arrow_up
+                        </i>윗세대 이동
+                    </button>
+                    <button type="button" class="btn next" @click="tempMove(1)">
+                        <i class="material-icons">
+                            keyboard_arrow_down
+                        </i>
+                        아래세대 이동
+                    </button>
+                </div>
+            </div>
         </div>
-        <div @click="tempMove(1)">아래세대 이동</div>
-
     </div>
 
 </body>
