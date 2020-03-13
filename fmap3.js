@@ -51,6 +51,7 @@ var family = new Vue({
 
             this.originData[0] = [];
             this.originData[1] = [];
+            this.selectObject = [];
             let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
 
             let form = new FormData()
@@ -356,12 +357,20 @@ var family = new Vue({
                 return obj.parent == this.selectedParent;
             });
 
+            let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
+
             findChildren.forEach(obj => {
 
                 let findIndex = this.originData[1].findIndex(object => object.no == obj.no);
 
                 this.originData[1][findIndex].parent = null;
                 this.selectObject.push(obj.no);
+
+                let form = new FormData()
+                form.append('no', obj.no);
+                form.append('chk', "1");
+
+                axios.post(url, form);
 
             });
 
@@ -388,12 +397,20 @@ var family = new Vue({
             $(".child-member").children().children().children('.member-info').children().css("background-color", "#FFFFFF");
             this.selectObject.push(this.selectedParent);
 
+            let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
+
             this.selectedChildren.forEach(child => {
 
                 let chkIndex = this.originData[1].findIndex(obj => obj.no == child);
 
                 this.originData[1][chkIndex].parent = this.selectedParent;
                 this.selectObject.push(child);
+
+                let form = new FormData()
+                form.append('no', child);
+                form.append('parent', this.selectedParent);
+                form.append('chk', "1");
+                axios.post(url, form);
 
             });
 
