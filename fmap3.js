@@ -287,7 +287,7 @@ var family = new Vue({
                         // 컨텐츠 가운데 정렬 (윈도우이너높이 - 헤더높이) / 2 - 세대높이
                         let contMargin = (window.innerHeight - 83) / 2 - 193;
 
-                        $(".group.treeWrap").css("margin-top", contMargin + "px");
+                        $(".group.treeWrap").css("padding-top", contMargin + "px");
                         $(".content > .btn_wrap").css("top", contMargin + 83 + "px");
                         console.log("scrollWidth", this.$refs.treeWrap.scrollWidth);
                     }, 50);

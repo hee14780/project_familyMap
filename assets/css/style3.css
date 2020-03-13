@@ -154,6 +154,9 @@ body {
 #familyWrap > .content .wrapper {
     position: relative;
 }
+#familyWrap > .content .wrapper:first-child {
+    border-top: solid 1px #e7e7e7;
+}
 #familyWrap > .content .wrapper .tit {
     position: absolute;
     left: 15px;
@@ -415,16 +418,7 @@ body {
 }
 
 /* 세대 이동 버튼 */
-#familyWrap > .content .btn_wrap {
-    position: absolute;
-    left: 0;
-    width: 100%;
-}
-#familyWrap > .content .btn_wrap .inner {
-    position: relative;
-    height: 400px;
-}
-#familyWrap > .content .btn_wrap .btn {
+.btn.move {
     position: absolute;
     left: calc(50% - 100px);
     display: flex;
@@ -438,21 +432,21 @@ body {
     box-sizing: border-box;
     background-color: #fff;
 }
-#familyWrap > .content .btn_wrap .btn i {
+.btn.move i {
     margin-right: 10px;
     font-weight: bold;
 }
-#familyWrap > .content .btn_wrap .btn.prev {
+.btn.move.prev {
     top: -55px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-#familyWrap > .content .btn_wrap .btn.next {
+.btn.move.next {
     bottom: -55px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
-#familyWrap > .content .btn_wrap .btn:hover {
+.btn.move:hover {
     color: #fff;
     background-color: #ad59ac;
 }

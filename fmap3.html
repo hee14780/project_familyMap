@@ -74,18 +74,12 @@
 
                         </li>
                     </ul>
-                </div>
-            </div>
-
-            <!-- 세대이동버튼 -->
-            <div class="btn_wrap">
-                <div class="inner">
-                    <button type="button" class="btn prev" @click="tempMove(0)">
+                    <button v-if="index == 0" type="button" class="btn move prev" @click="tempMove(0)">
                         <i class="material-icons">
                             keyboard_arrow_up
                         </i>윗세대 이동
                     </button>
-                    <button type="button" class="btn next" @click="tempMove(1)">
+                    <button v-if="index == 1" type="button" class="btn move next" @click="tempMove(1)">
                         <i class="material-icons">
                             keyboard_arrow_down
                         </i>
