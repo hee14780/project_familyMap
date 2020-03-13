@@ -29,622 +29,211 @@ var family = new Vue({
     data: () => {
         return {
             originData: {
-                0: [
-                    {
-                        no: 11, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 0, //세수
-                        seq: 1, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 12, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 0, //세수
-                        seq: 2, //형제순서
-                        sex: 1, //성별 (0:남자, 1:여자)
-                        name: "강지안",
-                        marginRight: 0
-                    },
-                    {
-                        no: 13, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 0, //세수
-                        seq: 3, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강서준",
-                        marginRight: 0
-                    },
-                    {
-                        no: 14, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 0, //세수
-                        seq: 4, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강하준",
-                        marginRight: 0
-                    }
-                ],
-                1: [
-                    {
-                        no: 21, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 14, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 1, //세수
-                        seq: 1, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 22, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 11, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 1, //세수
-                        seq: 2, //형제순서
-                        sex: 1, //성별 (0:남자, 1:여자)
-                        name: "강지안",
-                        marginRight: 0
-                    },
-                    {
-                        no: 23, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 12, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 1, //세수
-                        seq: 3, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강서준",
-                        marginRight: 0
-                    },
-                    {
-                        no: 24, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 12, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 1, //세수
-                        seq: 4, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강하준",
-                        marginRight: 0
-                    }
-                ],
-                2: [
-                    {
-                        no: 30, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 23, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 0, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 31, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 23, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 1, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 32, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 23, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 2, //형제순서
-                        sex: 1, //성별 (0:남자, 1:여자)
-                        name: "강지안",
-                        marginRight: 0
-                    },
-                    {
-                        no: 34, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 3, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강하준",
-                        marginRight: 0
-                    },
-                    {
-                        no: 33, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 2, //세수
-                        seq: 4, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강서준",
-                        marginRight: 0
-                    }
-
-                ],
-                3: [
-                    {
-                        no: 41, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 1, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        marginRight: 0 //일생
-                    },
-                    {
-                        no: 42, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 2, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        marginRight: 0
-                    },
-                    {
-                        no: 43, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 3, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        marginRight: 0
-                    },
-                    {
-                        no: 44, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 33, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 4, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        marginRight: 0
-                    },
-                    {
-                        no: 45, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 5, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"],
-                        marginRight: 0 //일생
-                    },
-                    {
-                        no: 46, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 6, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 47, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 7, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 48, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 8, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 49, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 9, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"],
-                        marginRight: 0 //일생
-                    },
-                    {
-                        no: 50, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 10, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 51, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 11, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 52, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 12, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 53, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 13, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"],
-                        marginRight: 0 //일생
-                    },
-                    {
-                        no: 54, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 14, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 55, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 15, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 56, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 16, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 57, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 17, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"],
-                        marginRight: 0 //일생
-                    },
-                    {
-                        no: 58, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 18, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 59, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 19, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 60, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 3, //세수
-                        seq: 61, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    }
-                ],
-                4: [
-                    {
-                        no: 70, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 47, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 1, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 71, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 2, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 72, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 3, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 73, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 4, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"],
-                        marginRight: 0 //일생
-                    },
-                    {
-                        no: 74, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 5, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 75, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 6, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 76, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 7, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 77, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 8, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"],
-                        marginRight: 0 //일생
-                    },
-                    {
-                        no: 78, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 50, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 9, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 79, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: 50, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 10, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    },
-                    {
-                        no: 80, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        parent: null, //부모번호
-                        pa: 1, //권수
-                        page: 1, //페이지
-                        sesu: 4, //세수
-                        seq: 11, //형제순서
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        name: "강도윤", //이름
-                        lifeTime: ["나는 어디서 태어났으며", "나는 무슨일을 하였으며", "나는 어떻게 생을 마감하였다"], //일생
-                        marginRight: 0
-                    }
-                ]
+                0: [],
+                1: []
             },
             showFamilyMap: 0,
-            myFamilyCount: [],
-            startSesu: 0,
-            endSesu: 4,
+            parentSesu: 0,
             selectedParent: "",
-            selectedChildren: []
-
+            selectedChildren: [],
+            selectObject: [],
         };
     },
-    created: function () { },
+    created: function () {
+
+    },
+    mounted: function () {
+
+    },
     methods: {
+
+        async serach() {
+
+            this.originData[0] = [];
+            this.originData[1] = [];
+            let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
+
+            let form = new FormData()
+            form.append('sesu', this.parentSesu);
+            form.append('limit', 20);
+
+            await axios.post(url, form).then(res => {
+
+                let familyData = res.data;
+                if (res.data) {
+                    familyData.forEach(data => {
+
+                        let name;
+                        if (!data.option) {
+                            name = "미등록";
+                        } else {
+                            name = "미등록";
+                        }
+
+                        let sex = data.sex == "남" ? 0 : 1;
+
+                        this.originData[0].push({
+
+                            no: data.no,
+                            parent: null,
+                            pa: data.pa,
+                            page: data.page,
+                            sesu: data.sesu,
+                            seq: data.seq,
+                            sex: sex,
+                            name: name,
+                            marginRight: 0
+
+                        });
+
+                    });
+
+                } else {
+
+                    alert(this.parentSesu + "가 없습니다.");
+                    return;
+
+                }
+
+            });
+
+            if (this.originData[0].length == 0) {
+                return;
+            }
+
+            console.log(this.parentSesu + 1);
+
+            let form2 = new FormData()
+            form2.append('sesu', parseInt(this.parentSesu) + 1);
+            form2.append('limit', 20);
+
+            await axios.post(url, form2).then(res => {
+
+                let familyData = res.data;
+                if (res.data) {
+                    familyData.forEach(data => {
+
+                        let name;
+                        if (!data.option) {
+                            name = "미등록";
+                        } else {
+                            name = "미등록";
+                        }
+
+                        let parent = data.parent == 0 ? null : data.parent;
+                        let sex = data.sex == "남" ? 0 : 1;
+
+                        this.originData[1].push({
+
+                            no: data.no,
+                            parent: parent,
+                            pa: data.pa,
+                            page: data.page,
+                            sesu: data.sesu,
+                            seq: data.seq,
+                            sex: sex,
+                            name: name,
+                            marginRight: 0
+
+                        });
+
+                    });
+
+                }
+
+            });
+
+            await this.getFamilyMap2();
+
+        },
+
+        findData() {
+
+
+
+            // $("#familyWrap").on('mousewheel DOMMouseScroll', function (e) {
+            //     let parentSesu = this.parentSesu;
+            //     var E = e.originalEvent;
+            //     delta = 0;
+            //     count = 0;
+            //     if (E.detail) {
+            //         delta = E.detail * -40;
+            //         count += count;
+            //         if (count == 12) {
+            //             alert("good");
+            //             count = 0;
+            //         }
+
+
+            //     } else {
+
+            //         delta = E.wheelDelta;
+            //         move = 0;
+
+            //         if (delta > 500) {
+            //             // this.parentSesu = parseInt(this.parentSesu) + 1;
+            //             console.log(parentSesu);
+            //         }
+
+            //         if (delta < -500) {
+            //             alert("전 세대 조회");
+            //             delta = 0;
+            //             return;
+            //         }
+            //     };
+            // });
+
+        },
+
 
         getFamilyMap2() {
 
             this.showFamilyMap = 1;
 
-            for (let i = this.endSesu; i >= this.startSesu; i--) {
+            for (let i = 0; i <= 1; i++) {
 
                 this.originData[i].forEach(person => {
 
                     person.tempSort = 0;
 
-                    let nextIndex = person.sesu + 1;
-                    let prevIndex = person.sesu - 1;
-                    let parentIndex;
-                    let myIndex;
+                    if (i == 0) {
 
-                    // 트리 간격 맞추기
-                    if (this.originData[nextIndex]) {
-
-                        let myChildren = this.originData[nextIndex].filter(children => {
+                        let myChildren = this.originData[1].filter(children => {
                             return children.parent == person.no && children.parent != null;
                         });
 
-                        if (myChildren.length > 0) {
-                            person.marginRight = person.marginRight + myChildren.length - 1;
-                        } else {
-                            person.marginRight = person.marginRight + 0;
-                        }
-
-                        if (this.originData[prevIndex] && person.parent != null) {
-                            parentIndex = this.originData[prevIndex].findIndex(perant => perant.no == person.parent);
-                            this.originData[prevIndex][parentIndex].marginRight = this.originData[prevIndex][parentIndex].marginRight + person.marginRight;
-                        }
+                        person.marginRight = myChildren.length - 1;
 
                     }
 
-                }); // foreach
+                    let myIndex = 0;
 
-            } // for
+                    if (i == 1) {
 
-
-
-            for (let i = this.startSesu; i <= this.endSesu; i++) {
-
-                this.originData[i].forEach(person => {
-
-
-                    person.tempSort = 0;
-
-                    // let nextIndex = person.sesu + 1;
-                    // let prevIndex = person.sesu - 1;
-                    let nextIndex = i + 1;
-                    let prevIndex = i - 1;
-                    let parentIndex;
-                    let myIndex;
-
-                    if (this.originData[prevIndex]) {
-
-                        myIndex = this.originData[i].findIndex(my => my.no == person.no);
+                        myIndex = this.originData[1].findIndex(my => my.no == person.no);
 
                         if (person.parent != null) {
 
-                            // 내 배열의 첫번째 객체의 index
-                            // 위의 객체의 부모의 인덱스
+                            let parentIndex = this.originData[0].findIndex(perant => perant.no == person.parent);
+                            person.tempSort = parentIndex;
 
-
-
-                            let prevForFirstChildrenIndex = this.originData[prevIndex].findIndex(parent => parent.no == this.originData[i][0].parent);
-
-                            let add = 0;
-                            if (prevForFirstChildrenIndex != -1) {
-                                add = prevForFirstChildrenIndex;
-                            }
-
-                            parentIndex = this.originData[prevIndex].findIndex(perant => perant.no == person.parent);
-                            person.tempSort = parentIndex - add;
                         } else {
-                            person.tempSort = myIndex + 1;
+
+                            let temp = 0;
+
+                            for (let j = myIndex; j < this.originData[0].length; j++) {
+
+                                let findChildren = this.originData[1].findIndex(obj => obj.parent == this.originData[0][j].no);
+
+                                if (findChildren == -1) {
+
+                                    temp = j;
+                                    break;
+
+                                }
+
+                            }
+                            person.tempSort = myIndex + temp;
                         }
 
                     }
@@ -652,19 +241,19 @@ var family = new Vue({
 
                     // 왼쪽 간격 맞추기
                     // Step1 > 나의 인덱스가 0인가 / 내가 첫째인가
-                    if (person.parent != null && this.originData[prevIndex]) {
+                    if (person.parent != null) {
 
-                        person.firstchildren = "";
-                        person.lastChildren = "";
+                        person.firstchildren = 0;
+                        person.lastChildren = 0;
 
                         // 내가 첫째인지 확인
-                        let myBro = this.originData[i].filter(bro => {
-                            return bro.parent == person.parent && bro.seq < person.seq;
+                        let myBro = this.originData[1].filter(bro => {
+                            return bro.parent == person.parent && bro.no < person.no;
                         });
 
                         // 내가 막내인지 확인
-                        let myBro2 = this.originData[i].filter(bro => {
-                            return bro.parent == person.parent && bro.seq > person.seq;
+                        let myBro2 = this.originData[1].filter(bro => {
+                            return bro.parent == person.parent && bro.no > person.no;
                         })
 
 
@@ -697,14 +286,26 @@ var family = new Vue({
 
                         }
 
-                    }, 100);
+                        this.selectObject.forEach(obj => {
+
+                            $("#name_" + obj).children().children().children('.member-info').children().css("background-color", "pink");
+
+                        });
+
+                    }, 50);
 
                 }); // foreach
 
                 this.originData[i].sort((child1, child2) => {
 
                     if (child1.tempSort == child2.tempSort) {
-                        return child2.parent - child1.parent;
+
+                        if (child2.parent == child1.parent) {
+                            return child1.seq - child2.seq;
+                        } else {
+                            return child2.parent - child1.parent;
+                        }
+
                     }
 
                     return child1.tempSort - child2.tempSort;
@@ -717,18 +318,16 @@ var family = new Vue({
 
                 firstChildrenArray.forEach(child => {
 
-                    setTimeout(() => {
+                    console.log(child.no);
 
+                    setTimeout(() => {
                         let parentElementLeft = $("#name_" + child.parent).offset().left;
                         let myElementLeft = $("#name_" + child.no).offset().left;
 
                         if (myElementLeft < parentElementLeft) {
-
                             $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
-
                         }
-
-                    }, 100);
+                    }, 50);
 
                 });
 
@@ -740,386 +339,141 @@ var family = new Vue({
 
         },
 
+        reset() {
+            let temp = this.originData;
+            this.originData = {};
+            this.originData = temp;
+            this.getFamilyMap2();
+        },
+
+        disconnect() {
+
+            this.selectObject = [];
+            $(".child-member").children().children().children('.member-info').children().css("background-color", "#FFFFFF");
+            this.selectObject.push(this.selectedParent);
+
+            let findChildren = this.originData[1].filter(obj => {
+                return obj.parent == this.selectedParent;
+            });
+
+            findChildren.forEach(obj => {
+
+                let findIndex = this.originData[1].findIndex(object => object.no == obj.no);
+
+                this.originData[1][findIndex].parent = null;
+                this.selectObject.push(obj.no);
+
+            });
+
+            $(".child-member").removeClass("existParent");
+            $(".child-member").removeClass("existChildren");
+            $(".child-member").removeClass("firstChildren");
+            $(".child-member").removeClass("lastChildren");
+            $(".child-member").css("margin-left", "0px");
+            $(".conn").children().hide();
+            this.selectedParent = "";
+            this.selectedChildren = [];
+
+            this.originData[1].sort((child1, child2) => {
+                return child1.seq - child2.seq;
+            });
+
+            this.getFamilyMap2();
+        },
+
         connect() {
 
-            let next_tree = this.targetParentSesu + 1;
+            this.selectObject = [];
 
-            // 연결동작
+            $(".child-member").children().children().children('.member-info').children().css("background-color", "#FFFFFF");
+            this.selectObject.push(this.selectedParent);
 
+            this.selectedChildren.forEach(child => {
 
-            // 연결 후처리 동작
-            $(".member-info").css('border', '1px solid #ad59ac');
-            $(".name").css("background-color", "#FFFFFF");
+                let chkIndex = this.originData[1].findIndex(obj => obj.no == child);
 
-            $("#tree_" + this.targetParentSesu).removeClass('selectedParent');
-            $("#tree_" + next_tree).removeClass('rowScroll');
-            $(".moreInfo").fadeOut(300);
+                this.originData[1][chkIndex].parent = this.selectedParent;
+                this.selectObject.push(child);
 
-            this.targetParent = 0;
-            this.targetParentSesu = 0;
-            this.targetChildren = [];
+            });
 
+            setTimeout(() => {
+
+                $(".child-member").removeClass("existParent");
+                $(".child-member").removeClass("existChildren");
+                $(".child-member").removeClass("firstChildren");
+                $(".child-member").removeClass("lastChildren");
+                $(".child-member").css("margin-left", "0px");
+                $(".conn").children().hide();
+                this.selectedParent = "";
+                this.selectedChildren = [];
+                this.getFamilyMap2();
+
+            }, 500);
         },
 
         selectePerson(person) {
 
-            if (this.selectedParent == "") {
+            // 0번째 배열에 속해 있는지 여부
+            let checkIndex = this.originData[0].findIndex(obj => obj.no == person.no);
 
-                this.selectedParent = person;
+            if (checkIndex != -1) {
 
-            } else {
+                if (this.selectedParent == "") {
 
-                if (this.selectedParent.sesu < person.sesu) {
-
-                    this.selectedChildren.push(person);
+                    this.selectedParent = person.no;
+                    $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
 
                 } else {
 
-                    this.selectedChildren.push(this.selectedParent);
-                    this.selectedParent = person;
+                    $(".conn_" + this.selectedParent).children().hide();
+
+                    $("#name_" + this.selectedParent).children().children().children('.member-info').children().css("background-color", "#FFFFFF");
+                    $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
+                    this.selectedParent = person.no;
 
                 }
 
+            } else {
+
+                let checkExistChildren = this.selectedChildren.indexOf(person.no);
+
+                console.log(checkExistChildren);
+
+                if (checkExistChildren == -1) {
+
+                    $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
+                    this.selectedChildren.push(person.no);
+
+                } else {
+
+                    $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#FFFFFF");
+                    this.selectedChildren.splice(checkExistChildren, 1);
+
+                    console.log(this.selectedChildren);
+
+                }
 
             }
 
+            if (this.selectedParent && this.selectedChildren.length >= 1) {
 
-            $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid black');
-            $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
-
-            console.log("부모");
-            console.log(this.selectedParent);
-
-            console.log("자식");
-            console.log(this.selectedChildren);
-            console.log("===================");
-
-            // if (this.targetParent == 0) {
-
-            //     let myLeft = $("#name_" + person.no).children().children().children('.member-info').offset().left + 50;
-            //     let myTop = $("#name_" + person.no).children().children().children('.member-info').offset().top;
-
-            //     $(".moreInfo").css("left", myLeft).css("top", myTop);
-            //     $(".moreInfo").fadeIn(300);
-
-            //     this.targetParent = person.no;
-            //     this.targetParentSesu = person.sesu;
-
-            //     $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid black');
-            //     $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#eaeaea");
-
-            //     let next_tree = person.sesu + 1;
-            //     $("#tree_" + next_tree).addClass("rowScroll");
-            //     $("#tree_" + person.sesu).addClass("selectedParent");
-
-            // }
-
-
-            // if (this.targetParent != person.no) {
-
-            //     if (person.sesu == this.targetParentSesu + 1) {
-
-            //         let existChildrenArray = this.targetChildren.indexOf(person.no);
-
-            //         if (existChildrenArray == -1) {
-
-
-            //             $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid red');
-            //             $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "pink");
-
-            //             this.targetChildren.push(person.no);
-
-            //         } else {
-
-            //             $("#name_" + person.no).children().children().children('.member-info').css('border', '1px solid #ad59ac');
-            //             $("#name_" + person.no).children().children().children('.member-info').children().css("background-color", "#FFFFFF");
-
-            //             this.targetChildren.splice(existChildrenArray, 1);
-
-            //         }
-
-            //     } else {
-
-            //         alert("부모 - 자녀 연결이 불가합니다.");
-
-            //     }
-
-            // }
-
-
-
-        },
-
-        getFamilyMap() {
-
-            for (let i = this.startSesu; i <= this.endSesu; i++) {
-
-
-                this.originData[i].forEach(person => {
-
-                    let nextIndex = person.sesu + 1;
-                    let prevIndex = person.sesu - 1;
-                    let parentIndex;
-
-                    // 초기 설정
-                    person.marginRight = 0;
-
-                    // 만약 부모가 있다면
-                    if (this.originData[prevIndex] && person.parent != null) {
-
-                        // 내 부모의 인덱스와 나의 인덱스
-                        parentIndex = this.originData[prevIndex].findIndex(perant => perant.no == person.parent);
-                        let myIndex = this.originData[i].findIndex(my => my.no == person.no);
-
-                        // 내 형제가 있나
-                        let checkMyBro = this.originData[i].filter(bro => {
-
-                            return bro.parent == person.parent && bro.seq < person.seq;
-
-                        });
-
-                        // 사촌이 있나
-                        let checkMyCousin = this.originData[i].filter(cousin => {
-
-                            return cousin.parent < person.parent && cousin.parent != null;
-
-                        });
-                        let checkMyCousinLength = checkMyCousin.length > 0 ? checkMyCousin.length - 1 : 0;
-
-
-                        // 형제, 사촌 고려하여 스위칭 할 대상 선정 (인덱스가 < 0 || 인덱스 > Array.length 방지)
-                        let targetIndex = 0;
-
-                        if (parentIndex + checkMyBro.length + checkMyCousinLength < 0) {
-
-                            targetIndex = 0;
-
-                        } else {
-
-                            if (parentIndex + checkMyBro.length + checkMyCousinLength < this.originData[i].length) {
-
-                                targetIndex = parentIndex + checkMyBro.length + checkMyCousinLength;
-
-                            } else {
-
-                                targetIndex = this.originData[i].length - 1;
-
-                            }
-
-                        }
-
-
-                        let targetPesson = this.originData[i][targetIndex];
-
-                        console.log(person.no);
-                        console.log("부모 => " + parentIndex);
-                        console.log("형제 => " + checkMyBro.length);
-                        console.log("사촌 => " + checkMyCousin.length);
-                        console.log(targetIndex);
-                        console.log("-------------------");
-
-                        // 스위칭
-                        this.originData[i][myIndex] = targetPesson;
-                        this.originData[i][targetIndex] = person;
-
-                    }
-
-
-                    // 내 아래 세대가 있다면
-                    // if (this.originData[nextIndex]) {
-
-                    //     // 아들을 검색
-                    //     let myChildren = this.originData[nextIndex].filter(children => {
-
-                    //         return children.parent == person.no && children.parent != null;
-
-                    //     });
-
-                    //     if (myChildren.length > 0) {
-                    //         // 니의 marginRight 설정
-                    //         person.marginRight = myChildren.length - 1;
-
-                    //         // 부모가 있다면 부모의 marginRight 에 나의 marginRight 를 더함
-                    //         if (this.originData[prevIndex] && person.parent != null) {
-
-                    //             this.originData[prevIndex][parentIndex].marginRight = this.originData[prevIndex][parentIndex].marginRight + person.marginRight;
-
-                    //         }
-
-
-                    //     } else {
-
-                    //         person.marginRight = 0;
-
-                    //     }
-
-
-                    // }
-
-
-
-
-
-
-
-                    // let nextIndex = i + 1;
-                    // let checkMyChildren = 0;
-                    // let checkParentIndex = 0;
-                    // let checkMyIndex = 0;
-                    // person.childrenCount = 0;
-                    // // 자식 카운트 넣기
-                    // if (this.originData[nextIndex]) {
-
-                    //     checkMyChildren = this.checkChildren(person);
-                    //     if (checkMyChildren >= 1) {
-                    //         person.childrenCount = checkMyChildren;
-                    //         person.marginRight = 10;
-                    //     }
-
-                    //     if (checkMyChildren >= 2) {
-                    //         person.marginRight = (checkMyChildren - 1) * 50 + (checkMyChildren * 10);
-                    //     } else {
-                    //         person.marginRight = 10;
-                    //     }
-
-                    // } else {
-                    //     person.marginRight = 10;
-                    // }
-
-                    // // 부모의 인덱스가 몇번인지
-                    // let parentArrayIndex = i - 1;
-                    // if (this.originData[parentArrayIndex]) {
-
-                    //     checkParentIndex = this.originData[parentArrayIndex].findIndex(obj => obj.no == person.parent);
-                    //     checkMyIndex = this.originData[i].findIndex(obj => obj.no == person.no);
-
-                    //     if (checkParentIndex == -1) {
-                    //         person.parentIndex = 0;
-                    //         person.parentIndex = this.originData[i].length;
-
-                    //         // 정렬 값
-                    //         person.tempIndex = checkMyIndex;
-
-                    //     } else {
-
-                    //         let myMarginRihgt = person.marginRight;
-                    //         let myParentMarginRight = this.originData[parentArrayIndex][checkParentIndex].marginRight;
-
-                    //         if (myMarginRihgt > myParentMarginRight) {
-                    //             this.originData[parentArrayIndex][checkParentIndex].marginRight = myMarginRihgt;
-                    //         }
-
-                    //         person.parentIndex = checkParentIndex;
-
-                    //         // 정렬 값
-                    //         person.tempIndex = person.parentIndex;
-                    //     }
-
-                    // } else {
-                    //     checkMyIndex = this.originData[i].findIndex(obj => obj.no == person.no);
-                    // }
-
-                    // console.log(person.no);
-                    // console.log("부모 인덱스 ==> " + checkParentIndex);
-                    // console.log("나의 인덱스 ==> " + checkMyIndex);
-                    // console.log("나의 seq ==> " + person.seq);
-                    // console.log(person.tempIndex);
-                    // console.log("===============");
-
-                    // // // tempIndex 가 같으면 parent 가 우선
-                    // this.originData[i].sort((a, b) => {
-
-                    //     if (a.tempIndex == b.tempIndex) {
-                    //         return a.parentIndex - b.parentIndex;
-                    //     }
-
-                    //     return a.tempIndex - b.tempIndex;
-
-                    // });
-
-                });
+                $(".conn_" + this.selectedParent).children().show();
 
             }
 
-            setTimeout(() => {
-                console.log(this.originData);
-                this.showFamilyMap = 1;
-            }, 1000);
-        },
+            if (this.selectedParent) {
 
-        setMarginLeft() {
+                let check = this.originData[1].findIndex(obj => obj.parent == this.selectedParent);
+                if (check != -1) {
 
-            for (let i = this.startSesu; i <= this.endSesu; i++) {
+                    $(".conn_" + this.selectedParent).children('.disconnectBtn').show();
 
-                this.originData[i].forEach(person => {
-
-                    let nextIndex = i + 1;
-                    let parentArrayIndex = i - 1;
-                    if (this.originData[parentArrayIndex]) {
-
-                        let checkMyIndex = this.originData[i].findIndex(obj => obj.no == person.no);
-                        let checkParentIndex = this.originData[parentArrayIndex].findIndex(obj => obj.no == person.parent);
-
-                        let checkBro = this.originData[i].filter(obj => {
-                            return obj.parent == person.parent && obj.parent != null && obj.seq < person.seq
-                        });
-
-                        if (person.parent != null && checkMyIndex != checkParentIndex && !checkBro[0] && checkMyIndex == 0) {
-                            person.marginLeft = checkParentIndex * 50 + (checkParentIndex * 10);
-                        }
-
-                    }
-
-                    if (this.originData[nextIndex]) {
-
-                        let myChildren = this.originData[nextIndex].filter(val => {
-
-                            return val.parent == person.no;
-
-                        });
-
-                        if (myChildren.length != 0) {
-
-                            let myChildrenNo = myChildren[0];
-                            let findMyChildrenIndex = this.originData[nextIndex].findIndex(obj => obj.no == myChildrenNo.no);
-
-                            let prevFindMyChildrenIndex = findMyChildrenIndex - 1;
-
-                            if (prevFindMyChildrenIndex > 0) {
-
-                                let myChildrenPrevNodeMarginRigth = this.originData[nextIndex][prevFindMyChildrenIndex].marginRight;
-
-                                if (myChildrenPrevNodeMarginRigth > 10) {
-
-                                    person.marginLeft = myChildrenPrevNodeMarginRigth - 10;
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-
-                });
+                }
 
             }
 
         },
-
-        checkChildren(person) {
-
-            let count = this.originData[person.sesu + 1].filter(val => {
-
-                return val.parent == person.no;
-
-            });
-
-            return count.length;
-
-        }
-
     }
 
 });

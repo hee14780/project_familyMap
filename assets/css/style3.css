@@ -199,6 +199,7 @@ body {
 /* 같은 가족의 멤버이면서 마지막 자식의 스타일 */
 #familyWrap > .content .child-member.lastChildren .inner::before,
 #familyWrap > .content .tree-child.rowScroll .child-member.existParent .name::before,
+#familyWrap > .content .tree-child.rowScroll .child-member.existParent .inner::before,
 #familyWrap > .content .tree-child.selectedParent .child-member.existChildren .name::after {
     display: none !important;
 }
@@ -206,7 +207,7 @@ body {
 /* 부모선택시 다음세수 하단 스크롤 생성 */
 #familyWrap > .content .tree-child.rowScroll {
     overflow-x: auto;
-    background-color: #ad59ac;
+    background-color: #f2f2f2;
 }
 
 #familyWrap > .content .tree-node .member-info .name.rootParent::before,
@@ -390,4 +391,23 @@ body {
     margin-top:20px;
     margin-left:20px;
     text-align:center;
+}
+
+.connectBtn, .disconnectBtn {
+    width:60%;
+    height:30px;
+    line-height:30px;    
+    font-size:12px;
+    text-align:center;
+    margin:0 auto;
+    border:1px solid black;
+    display:none;
+    position:relative;
+    top:-10px;
+    background-color:#FFFFFF;
+}
+
+.conn {
+    display:flex;
+    justify-content: space-between;
 }

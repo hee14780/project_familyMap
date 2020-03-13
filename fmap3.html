@@ -21,9 +21,9 @@
 <body>
 
     <!-- the family root element -->
-    <div id="familyWrap">
+    <div id="familyWrap" v-on:mousewheel="findData()">
 
-        <div class="moreInfo">
+        <div class=" moreInfo">
 
             <div>
                 <p>회원 정보</p>
@@ -45,11 +45,13 @@
                 <h3 class="title">PROJECT:족보</h3>
                 <div class="filterWrap">
                     <div class="group">
-                        <div class="label">세대조회</div>
-                        <input type="text" size="5" id="sesuStart">~
-                        <input type="text" size="5" id="sesuEnd">
+                        <div class="label">부모세대 입력</div>
+                        <input type="text" size="5" id="sesuStart" v-model="parentSesu">
                     </div>
-                    <button type="button" class="btn" @click="getFamilyMap2()">검색</button>
+
+                    <button type="button" class="btn" @click="serach()">검색</button>
+                    <!-- <button type="button" class="btn" @click="getFamilyMap2(1)">검색1</button> -->
+                    <!-- <button type="button" class="btn" @click="getFamilyMap2(2)">검색2</button> -->
                 </div>
             </div>
         </div>
@@ -58,10 +60,10 @@
             <!-- 족보 리스트 -->
             <div class="group treeWrap">
                 <div class="wrapper" v-for="(family, index) in originData">
-                    <div class="tit">{{index}}세대</div>
+                    <div class="tit">{{parentSesu + index}}세대</div>
                     <ul class="tree-child" :id="'tree_' + index">
                         <li class="child-member" v-for="person in family" v-bind:style="{
-                                marginRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
+                                paddingRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
                             }" :class="'node_' + person.no" :id="'name_' + person.no">
 
                             <div class="tree-node">
@@ -77,6 +79,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div :class="'conn_' + person.no" class="conn">
+                                <div class="connectBtn" @click="connect()">
+                                    연결
+                                </div>
+                                <div class="disconnectBtn" @click="disconnect()">
+                                    해제
+                                </div>
+                            </div>
+
                         </li>
                     </ul>
                 </div>
@@ -97,5 +108,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <script src="fmap3.js"></script>
+
+<script>
+
+</script>
 
 </html>
