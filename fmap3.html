@@ -60,41 +60,48 @@
 
             <!-- 족보 리스트 -->
             <div class="group treeWrap" ref="treeWrap">
-                <div class="wrapper" v-for="(family, index) in originData">
-                    <div class="tit">{{parentSesu + index}}세대</div>
-                    <ul class="tree-child" :id="'tree_' + index">
-                        <li class="child-member" v-for="person in family" v-bind:style="{
-                                paddingRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
-                            }" :class="'node_' + person.no" :id="'name_' + person.no">
+                <div class="tree_inner" ref="tree_inner">
+                    <div class="wrapper" v-for="(family, index) in originData">
+                        <div class="tit">{{parentSesu + index}}세대</div>
+                        <ul class="tree-child" :id="'tree_' + index">
+                            <li class="child-member" v-for="person in family" v-bind:style="{
+                                    paddingRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
+                                }" :class="'node_' + person.no" :id="'name_' + person.no">
 
-                            <div class="tree-node">
-                                <div class="inner">
-                                    <div class="member-info">
-                                        <div class="name" @click="selectePerson(person)">
-                                            <div class="sex">
-                                                <span v-if="person.sex == 0">&#23376;</span>
-                                                <span v-else>&#22899;</span>
+                                <div class="tree-node">
+                                    <div class="inner">
+                                        <div class="member-info">
+                                            <div class="name" @click="selectePerson(person)">
+                                                <div class="sex">
+                                                    <span v-if="person.sex == 0">&#23376;</span>
+                                                    <span v-else>&#22899;</span>
+                                                </div>
+                                                {{ person.no }} {{ person.tempSort }}
                                             </div>
-                                            {{ person.no }} {{ person.tempSort }}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div :class="'conn_' + person.no" class="conn">
-                                <div class="connectBtn" @click="connect()">
-                                    연결
+                                <div :class="'conn_' + person.no" class="conn">
+                                    <div class="connectBtn" @click="connect()">
+                                        연결
+                                    </div>
+                                    <div class="disconnectBtn" @click="disconnect()">
+                                        해제
+                                    </div>
                                 </div>
-                                <div class="disconnectBtn" @click="disconnect()">
-                                    해제
-                                </div>
-                            </div>
 
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 가짜 스크롤 -->
+                    <div class="fake_scroll">
+                        <div class="inner">
+                            <div class="bar"></div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
 
     </div>

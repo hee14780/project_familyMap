@@ -85,18 +85,12 @@ body {
 
 /* tree style */
 #familyWrap > .content {
-    display: flex;
-    flex: 1;
-    width: 100%;
-    height: calc(100% - 85px);
+    width: calc(100% - 20px);
 }
 #familyWrap > .content > .group {
     position: relative;
     height: 100%;
     overflow-x: scroll;
-}
-#familyWrap > .content > .group.treeWrap {
-    width: 100%;
 }
 #familyWrap > .content > .group.previewWrap {
     /* width: 40%; */
@@ -151,6 +145,9 @@ body {
 /* 세대 표기 */
 #familyWrap > .content .wrapper {
     position: relative;
+}
+#familyWrap > .content .wrapper:first-child {
+    border-bottom: solid 1px #e7e7e7;
 }
 #familyWrap > .content .wrapper .tit {
     position: absolute;
@@ -262,6 +259,8 @@ body {
 
 #familyWrap > .content .tree-child {
     display: flex;
+}
+#familyWrap > .content .tree-child:first-child {
     border-bottom: solid 1px #e7e7e7;
     box-sizing: border-box;
 }
@@ -410,4 +409,35 @@ body {
 .conn {
     display: flex;
     justify-content: space-between;
+}
+
+/* 가짜 스크롤 */
+.tree_inner {
+    position: relative;
+    border-top: solid 1px #e7e7e7;
+    border-bottom: solid 1px #e7e7e7;
+}
+.fake_scroll {
+    position: fixed;
+    right: 0;
+    top: 83px;
+    height: calc(100% - 83px);
+}
+.fake_scroll .inner {
+    position: relative;
+    width: 16px;
+    height: 100%;
+    border-top: solid 1px #e7e7e7;
+    border-left: solid 1px #e7e7e7;
+    box-sizing: border-box;
+    background-color: #fafafa;
+}
+.fake_scroll .inner .bar {
+    position: absolute;
+    left: 3px;
+    top: calc(25% - 0px);
+    width: 10px;
+    height: 50%;
+    background-color: #c8c8c8;
+    border-radius: 999999px;
 }

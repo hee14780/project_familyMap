@@ -270,7 +270,11 @@ var family = new Vue({
                             $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
                         }
 
-                        this.$refs.treeWrap.addEventListener("scroll", this.handleScroll);
+                        this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
+
+                        this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
+
+                        $(".fake_scroll .bar").css("top", "25%"); //세로 스크롤 위치 초기화
                     }, 50);
                 });
             } // for
@@ -433,16 +437,44 @@ var family = new Vue({
             }
         },
 
+        //가로스크롤 동작
         handleScroll(event) {
             let getScrollWidth = this.$refs.treeWrap.scrollWidth;
-            let getScrollLeft = this.$refs.treeWrap.scrollLeft;
+            let getScrollLeft = this.$refs.treeWrap.scrollLeft - 20; //세로스크롤 넓이만큼 길이 줄임
             let getScrollEnd = getScrollWidth - window.innerWidth;
 
-            console.log("scrollWidth", getScrollWidth, getScrollEnd, getScrollLeft);
+            // console.log("scrollWidth", getScrollWidth, getScrollEnd, getScrollLeft);
 
             if (getScrollLeft === getScrollEnd) {
                 alert("스크롤이 가로 끝에 왔어요!!");
+
+                //이벤트가 한번만 실행할수 있도록 이벤트 제거
+                // this.$refs.treeWrap.removeEventListener("scroll", this.handleScroll);
             }
+        },
+
+        //세로 마우스휠 동작
+        handleWheel(event) {
+            if (event.wheelDelta >= 0) {
+                console.log("+", event.wheelDelta);
+                $(".fake_scroll .bar").animate(
+                    {
+                        top: "0%"
+                    },
+                    500
+                );
+            } else {
+                console.log("-", event.wheelDelta);
+                $(".fake_scroll .bar").animate(
+                    {
+                        top: "50%"
+                    },
+                    500
+                );
+            }
+
+            //이벤트가 한번만 실행할수 있도록 이벤트 제거
+            this.$refs.treeWrap.removeEventListener("mousewheel", this.handleWheel);
         }
     }
 });
