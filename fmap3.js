@@ -251,6 +251,8 @@ var family = new Vue({
                                 .children()
                                 .css("background-color", "pink");
                         });
+
+                        this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
                     }, 50);
                 }); // foreach
 
@@ -284,12 +286,9 @@ var family = new Vue({
                             }
                         }
 
-                        // 컨텐츠 가운데 정렬 (윈도우이너높이 - 헤더높이) / 2 - 세대높이
-                        let contMargin = (window.innerHeight - 83) / 2 - 193;
+                        this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
 
-                        $(".group.treeWrap").css("padding-top", contMargin + "px");
-                        $(".content > .btn_wrap").css("top", contMargin + 83 + "px");
-                        console.log("scrollWidth", this.$refs.treeWrap.scrollWidth);
+                        this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
                     }, 50);
                 });
             } // for
@@ -504,6 +503,56 @@ var family = new Vue({
                 this.parentSesu = parseInt(this.parentSesu) + 1;
                 this.serach();
             }
+        },
+
+        //가로스크롤 동작
+        handleScroll(event) {
+            let getScrollWidth = this.$refs.treeWrap.scrollWidth;
+            let getScrollLeft = this.$refs.treeWrap.scrollLeft - 20; //세로스크롤 넓이만큼 길이 줄임
+            let getScrollEnd = getScrollWidth - window.innerWidth;
+
+            // console.log("scrollWidth", getScrollWidth, getScrollEnd, getScrollLeft);
+
+            if (getScrollLeft === getScrollEnd) {
+                alert("스크롤이 가로 끝에 왔어요!!");
+
+                //이벤트가 한번만 실행할수 있도록 이벤트 제거
+                // this.$refs.treeWrap.removeEventListener("scroll", this.handleScroll);
+            }
+        },
+
+        //세로 마우스휠 동작 -> 세대 이동
+        handleWheel(event) {
+            let scrollBar = $(".fake_scroll .bar");
+
+            if (event.wheelDelta >= 0) {
+                scrollBar.animate(
+                    {
+                        top: "0%"
+                    },
+                    500,
+                    () => {
+                        alert("스크롤이 상단으로 이동됬어요!");
+                        scrollBar.css("top", 25 + "%");
+                        this.tempMove(0);
+                    }
+                );
+            } else {
+                scrollBar.animate(
+                    {
+                        top: "50%"
+                    },
+                    500,
+                    () => {
+                        alert("스크롤이 하단으로 이동됬어요!");
+                        scrollBar.css("top", 25 + "%");
+                        this.tempMove(1);
+                    }
+                );
+            }
+
+            //이벤트가 한번만 실행할수 있도록 이벤트 제거
+            this.$refs.treeWrap.removeEventListener("mousewheel", this.handleWheel); //마우스휠 동작
         }
     }
 });
