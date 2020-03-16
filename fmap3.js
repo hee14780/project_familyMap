@@ -274,7 +274,7 @@ var family = new Vue({
 
                         this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
 
-                        $(".fake_scroll .bar").css("top", "25%"); //세로 스크롤 위치 초기화
+                        // $(".fake_scroll .bar").css("top", "25%"); //세로 스크롤 위치 초기화
                     }, 50);
                 });
             } // for
@@ -455,26 +455,33 @@ var family = new Vue({
 
         //세로 마우스휠 동작
         handleWheel(event) {
+            let scrollBar = $(".fake_scroll .bar");
+
             if (event.wheelDelta >= 0) {
-                console.log("+", event.wheelDelta);
-                $(".fake_scroll .bar").animate(
+                console.log("+", event);
+                scrollBar.animate(
                     {
                         top: "0%"
                     },
-                    500
+                    500,
+                    function() {
+                        alert("스크롤이 상단으로 이동됬어요!");
+                        scrollBar.css("top", 25 + "%");
+                    }
                 );
             } else {
-                console.log("-", event.wheelDelta);
-                $(".fake_scroll .bar").animate(
+                console.log("-", event);
+                scrollBar.animate(
                     {
                         top: "50%"
                     },
-                    500
+                    500,
+                    function() {
+                        alert("스크롤이 하단으로 이동됬어요!");
+                        scrollBar.css("top", 25 + "%");
+                    }
                 );
             }
-
-            //이벤트가 한번만 실행할수 있도록 이벤트 제거
-            this.$refs.treeWrap.removeEventListener("mousewheel", this.handleWheel);
         }
     }
 });
