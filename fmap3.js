@@ -273,8 +273,6 @@ var family = new Vue({
                         this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
 
                         this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
-
-                        // $(".fake_scroll .bar").css("top", "25%"); //세로 스크롤 위치 초기화
                     }, 50);
                 });
             } // for
@@ -482,6 +480,9 @@ var family = new Vue({
                     }
                 );
             }
+
+            //이벤트가 한번만 실행할수 있도록 이벤트 제거
+            this.$refs.treeWrap.removeEventListener("mousewheel", this.handleWheel); //마우스휠 동작
         }
     }
 });
