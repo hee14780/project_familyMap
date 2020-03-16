@@ -64,7 +64,7 @@ var family = new Vue({
                         if (!data.option) {
                             name = "미등록";
                         } else {
-                            name = data.option[0].jogbo_field;
+                            name = data.option[0];
                         }
 
                         let sex = data.sex == "남" ? 0 : 1;
@@ -105,7 +105,7 @@ var family = new Vue({
                         if (!data.option) {
                             name = "미등록";
                         } else {
-                            name = data.option['jogbo_fieldName'];
+                            name = data.option[0];
                         }
 
                         let parent = data.parent == 0 ? null : data.parent;
@@ -535,34 +535,34 @@ var family = new Vue({
         },
 
         //세로 마우스휠 동작
-        handleWheel(event) {
-            let scrollBar = $(".fake_scroll .bar");
+        // handleWheel(event) {
+        //     let scrollBar = $(".fake_scroll .bar");
 
-            if (event.wheelDelta >= 0) {
-                console.log("+", event);
-                scrollBar.animate(
-                    {
-                        top: "0%"
-                    },
-                    500,
-                    function () {
-                        alert("스크롤이 상단으로 이동됬어요!");
-                        scrollBar.css("top", 25 + "%");
-                    }
-                );
-            } else {
-                console.log("-", event);
-                scrollBar.animate(
-                    {
-                        top: "50%"
-                    },
-                    500,
-                    function () {
-                        alert("스크롤이 하단으로 이동됬어요!");
-                        scrollBar.css("top", 25 + "%");
-                    }
-                );
-            }
-        }
+        //     if (event.wheelDelta >= 0) {
+        //         console.log("+", event);
+        //         scrollBar.animate(
+        //             {
+        //                 top: "0%"
+        //             },
+        //             500,
+        //             function () {
+        //                 alert("스크롤이 상단으로 이동됬어요!");
+        //                 scrollBar.css("top", 25 + "%");
+        //             }
+        //         );
+        //     } else {
+        //         console.log("-", event);
+        //         scrollBar.animate(
+        //             {
+        //                 top: "50%"
+        //             },
+        //             500,
+        //             function () {
+        //                 alert("스크롤이 하단으로 이동됬어요!");
+        //                 scrollBar.css("top", 25 + "%");
+        //             }
+        //         );
+        //     }
+        // }
     }
 });
