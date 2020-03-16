@@ -36,11 +36,14 @@ var family = new Vue({
             parentSesu: 0,
             selectedParent: "",
             selectedChildren: [],
-            selectObject: []
+            selectObject: [],
+            objStart: 0,
+            objLimit: 20
+
         };
     },
-    created: function() {},
-    mounted: function() {},
+    created: function () { },
+    mounted: function () { },
     methods: {
         async serach() {
             this.originData[0] = [];
@@ -49,7 +52,7 @@ var family = new Vue({
 
             let form = new FormData();
             form.append("sesu", this.parentSesu);
-            form.append("limit", 20);
+            form.append("limit", `${this.objStart}, ${this.objLimit}`);
 
             await axios.post(url, form).then(res => {
                 let familyData = res.data;
@@ -90,7 +93,7 @@ var family = new Vue({
 
             let form2 = new FormData();
             form2.append("sesu", parseInt(this.parentSesu) + 1);
-            form2.append("limit", 20);
+            form2.append("limit", `${this.objStart}, ${this.objLimit}`);
 
             await axios.post(url, form2).then(res => {
                 let familyData = res.data;
@@ -446,10 +449,97 @@ var family = new Vue({
             // console.log("scrollWidth", getScrollWidth, getScrollEnd, getScrollLeft);
 
             if (getScrollLeft === getScrollEnd) {
-                alert("스크롤이 가로 끝에 왔어요!!");
 
-                //이벤트가 한번만 실행할수 있도록 이벤트 제거
-                // this.$refs.treeWrap.removeEventListener("scroll", this.handleScroll);
+
+                this.objStart = this.objStart + 20;
+
+                let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
+
+                let form = new FormData();
+                form.append("sesu", this.parentSesu);
+                form.append("limit", `${this.objStart}, ${this.objLimit}`);
+
+                let addArray0 = [];
+                let addArray1 = [];
+
+                axios.post(url, form).then(res => {
+                    let familyData = res.data;
+                    if (res.data) {
+                        familyData.forEach(data => {
+                            let name;
+                            if (!data.option) {
+                                name = "미등록";
+                            } else {
+                                name = "미등록";
+                            }
+
+                            let sex = data.sex == "남" ? 0 : 1;
+
+                            addArray0.push({
+                                no: data.no,
+                                parent: null,
+                                pa: data.pa,
+                                page: data.page,
+                                sesu: data.sesu,
+                                seq: data.seq,
+                                sex: sex,
+                                name: name,
+                                marginRight: 0
+                            });
+                        });
+                    } else {
+                        alert(this.parentSesu + "가 없습니다.");
+                        return;
+                    }
+                }).then(() => {
+
+                    let temp = this.originData[0].concat(addArray0);
+                    this.originData[0] = temp;
+
+                });
+
+
+                let form2 = new FormData();
+                form2.append("sesu", parseInt(this.parentSesu) + 1);
+                form2.append("limit", `${this.objStart}, ${this.objLimit}`);
+
+                axios.post(url, form2).then(res => {
+                    let familyData = res.data;
+                    if (res.data) {
+                        familyData.forEach(data => {
+                            let name;
+                            if (!data.option) {
+                                name = "미등록";
+                            } else {
+                                name = "미등록";
+                            }
+
+                            let parent = data.parent == 0 ? null : data.parent;
+                            let sex = data.sex == "남" ? 0 : 1;
+
+                            addArray1.push({
+                                no: data.no,
+                                parent: parent,
+                                pa: data.pa,
+                                page: data.page,
+                                sesu: data.sesu,
+                                seq: data.seq,
+                                sex: sex,
+                                name: name,
+                                marginRight: 0
+                            });
+                        });
+                    }
+                }).then(() => {
+
+                    let temp = this.originData[1].concat(addArray1);
+                    this.originData[1] = temp;
+
+                });
+
+
+
+
             }
         },
 
