@@ -38,14 +38,17 @@ var family = new Vue({
             selectedChildren: [],
             selectObject: [],
             objStart: 0,
-            objLimit: 20
-
+            objLimit: 30,
+            pageUrlData: "",
+            pageInfo: "",
+            selectPerson: 0
         };
     },
     created: function () { },
     mounted: function () { },
     methods: {
         async serach() {
+            this.selectPerson = 0;
             this.objStart = 0;
             this.originData[0] = [];
             this.originData[1] = [];
@@ -86,17 +89,12 @@ var family = new Vue({
                             marginRight: 0
                         });
                     });
-                } else {
-                    // alert(this.parentSesu + "세대가 없습니다.");
-                    this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
-                    this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
-                    return;
                 }
             });
 
-            if (this.originData[0].length == 0) {
-                return;
-            }
+            // if (this.originData[0].length == 0) {
+            //     return;
+            // }
 
             let form2 = new FormData();
             form2.append("sesu", parseInt(this.parentSesu) + 1);
@@ -136,6 +134,7 @@ var family = new Vue({
             });
 
             await this.getFamilyMap2();
+
         },
 
         getFamilyMap2() {
@@ -184,27 +183,22 @@ var family = new Vue({
                                 }
                             }
                             person.tempSort = myIndex + temp;
-
-                            // console.log(person.no);
-                            // console.log(myIndex);
-                            // console.log("==============");
                         }
                     }
 
-                    // �쇱そ 媛꾧꺽 留욎텛湲�
-                    // Step1 > �섏쓽 �몃뜳�ㅺ� 0�멸� / �닿� 泥レ㎏�멸�
                     if (person.parent != null) {
                         person.firstchildren = 0;
                         person.lastChildren = 0;
 
+
                         // �닿� 泥レ㎏�몄� �뺤씤
                         let myBro = this.originData[1].filter(bro => {
-                            return bro.parent == person.parent && bro.seq < person.seq;
+                            return bro.parent == person.parent && parseInt(bro.no) < parseInt(person.no);
                         });
 
                         // �닿� 留됰궡�몄� �뺤씤
                         let myBro2 = this.originData[1].filter(bro => {
-                            return bro.parent == person.parent && bro.seq > person.seq;
+                            return bro.parent == person.parent && parseInt(bro.no) > parseInt(person.no);
                         });
 
                         let myBroCount = myBro.length;
@@ -216,6 +210,7 @@ var family = new Vue({
                         if (myBro2.length == 0) {
                             person.lastChildren = 1;
                         }
+
                     }
 
                     setTimeout(() => {
@@ -243,7 +238,7 @@ var family = new Vue({
                 this.originData[i].sort((child1, child2) => {
                     if (child1.tempSort == child2.tempSort) {
                         if (child2.parent == child1.parent) {
-                            return child1.seq - child2.seq;
+                            return child1.no - child2.no;
                         } else {
                             return child2.parent - child1.parent;
                         }
@@ -270,16 +265,15 @@ var family = new Vue({
                             }
                         }
 
-                        this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
-                        this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
-
                     }, 50);
                 });
             } // for
 
             setTimeout(() => {
+                this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
+                this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
                 console.log(this.originData);
-            }, 1000);
+            }, 500);
         },
 
         reset() {
@@ -384,12 +378,18 @@ var family = new Vue({
         },
 
         selectePerson(person) {
+
+            // if (this.selectPerson == 0) {
+
+            //     this.selectPerson = 1;
+            // }
+
             // 0번째 배열에 속해 있는지 여부
             let checkIndex = this.originData[0].findIndex(obj => obj.no == person.no);
 
             if (checkIndex != -1) {
+                this.findPage(person);
                 // $("#tree_1").addClass("rowScroll");
-
                 if (this.selectedParent == "") {
                     this.selectedParent = person.no;
                     $("#name_" + person.no)
@@ -461,7 +461,11 @@ var family = new Vue({
 
         tempMove(direction) {
             if (direction == 0) {
-                if (this.parentSesu == 0) {
+
+                let moveSesu = parseInt(this.parentSesu) - 1;
+
+                if (moveSesu == 0) {
+                    alert("가장 윗 세대 입니다.");
                     return;
                 } else {
                     this.parentSesu = parseInt(this.parentSesu) - 1;
@@ -478,19 +482,111 @@ var family = new Vue({
         //가로스크롤 동작
         handleScroll(event) {
             let getScrollWidth = this.$refs.treeWrap.scrollWidth;
-            let getScrollLeft = this.$refs.treeWrap.scrollLeft - 20; //세로스크롤 넓이만큼 길이 줄임
+            let getScrollLeft = this.$refs.treeWrap.scrollLeft - 12; //세로스크롤 넓이만큼 길이 줄임
             let getScrollEnd = getScrollWidth - window.innerWidth;
+            let imgWidth = this.$refs.previewWrap.scrollWidth;
 
-            // console.log("scrollWidth", getScrollWidth, getScrollEnd, getScrollLeft);
-
-            if (getScrollLeft === getScrollEnd) {
-
-
+            // console.log("scrollWidth", getScrollWidth, getScrollEnd, getScrollLeft, imgWidth);
+            console.log(getScrollLeft - imgWidth, getScrollEnd);
 
 
+            if (getScrollLeft - imgWidth === getScrollEnd) {
 
-                //이벤트가 한번만 실행할수 있도록 이벤트 제거
-                // this.$refs.treeWrap.removeEventListener("scroll", this.handleScroll);
+                this.objStart = this.objStart + 20;
+
+                let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
+
+                let form = new FormData();
+                form.append("sesu", this.parentSesu);
+                form.append("limit", `${this.objStart}, ${this.objLimit}`);
+
+                let addArray0 = [];
+                let addArray1 = [];
+
+                axios.post(url, form).then(res => {
+                    let familyData = res.data;
+                    if (res.data) {
+                        familyData.forEach(data => {
+                            let objName = "";
+                            let name = data.option.filter(obj => {
+                                return obj.jogbo_fieldName == "이름";
+                            });
+
+                            if (name.length != 0) {
+                                objName = name[0].jogbo_field;
+                            } else {
+                                objName = "미등록";
+                            }
+
+                            let sex = data.sex == "남" ? 0 : 1;
+
+                            addArray0.push({
+                                no: data.no,
+                                parent: null,
+                                pa: data.pa,
+                                page: data.page,
+                                sesu: data.sesu,
+                                seq: data.seq,
+                                sex: sex,
+                                name: objName,
+                                option: data.option,
+                                marginRight: 0
+                            });
+                        });
+                    } else {
+                        alert(this.parentSesu + "가 없습니다.");
+                        return;
+                    }
+                }).then(() => {
+
+                    let temp = this.originData[0].concat(addArray0);
+                    this.originData[0] = temp;
+
+                });
+
+
+                let form2 = new FormData();
+                form2.append("sesu", parseInt(this.parentSesu) + 1);
+                form2.append("limit", `${this.objStart}, ${this.objLimit}`);
+
+                axios.post(url, form2).then(res => {
+                    let familyData = res.data;
+                    if (res.data) {
+                        familyData.forEach(data => {
+                            let objName = "";
+                            let name = data.option.filter(obj => {
+                                return obj.jogbo_fieldName == "이름";
+                            });
+
+                            if (name.length != 0) {
+                                objName = name[0].jogbo_field;
+                            } else {
+                                objName = "미등록";
+                            }
+
+                            let parent = data.parent == 0 ? null : data.parent;
+                            let sex = data.sex == "남" ? 0 : 1;
+
+                            addArray1.push({
+                                no: data.no,
+                                parent: parent,
+                                pa: data.pa,
+                                page: data.page,
+                                sesu: data.sesu,
+                                seq: data.seq,
+                                sex: sex,
+                                name: objName,
+                                option: data.option,
+                                marginRight: 0
+                            });
+                        });
+                    }
+                }).then(() => {
+
+                    let temp = this.originData[1].concat(addArray1);
+                    this.originData[1] = temp;
+
+                });
             }
         },
 
@@ -524,6 +620,24 @@ var family = new Vue({
 
             //이벤트가 한번만 실행할수 있도록 이벤트 제거
             this.$refs.treeWrap.removeEventListener("mousewheel", this.handleWheel); //마우스휠 동작
+        },
+
+        findPage(person) {
+
+            let pa = person.pa;
+            let page = person.page;
+
+            if (page.length == 2) {
+                page = "0" + page;
+            }
+
+            if (page.length == 1) {
+                page = "00" + page;
+            }
+
+            this.pageUrlData = "http://jogboapi.appmowa.com/source/" + pa + page + ".png";
+            this.pageInfo = pa + " / " + page;
+
         }
     }
 });

@@ -10,8 +10,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -26,7 +25,12 @@
 
         <div class="header">
             <div class="inner">
-                <h3 class="title">PROJECT:족보</h3>
+                <span>
+                    <h3 class="title">족보 연결 등록</h3>
+                </span>
+                <!-- <span>
+                    <h3 class="title">족보 연결 등록</h3>
+                </span> -->
                 <div class="filterWrap">
                     <div class="group">
                         <div class="label">부모세대 입력</div>
@@ -60,7 +64,7 @@
                                                     <span v-if="person.sex == 0">&#23376;</span>
                                                     <span v-else>&#22899;</span>
                                                 </div>
-                                                {{ person.no }} {{ person.tempSort }}
+                                                {{ person.name }}
                                             </div>
                                         </div>
                                     </div>
@@ -106,13 +110,12 @@
         </div>
 
         <!-- 족보 디테일 영역-->
-        <div class="previewWrap">
+        <div class="previewWrap" v-if="showFamilyMap == 1" ref="previewWrap">
             <div class="head">
-                <h3 class="title">족보 페이지</h3>
+                <h3 class="title">권수 / 페이지 ({{this.pageInfo}})</h3>
             </div>
             <div class="content">
-                <!-- <img class="width-100" src="http://placehold.it/500x800" /> -->
-                dddfdsdf kjbsdf akljbasdf kljbsfdaglkjbsafgk.jbm,jb
+                <img alt="" :src="pageUrlData" style="height:800px;">
             </div>
         </div>
 
