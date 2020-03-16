@@ -85,19 +85,12 @@ body {
 
 /* tree style */
 #familyWrap > .content {
-    display: flex;
-    flex: 1;
-    width: 100%;
-    height: calc(100% - 85px);
+    width: calc(100% - 20px);
 }
 #familyWrap > .content > .group {
     position: relative;
     height: 100%;
-    overflow: scroll;
-}
-#familyWrap > .content > .group.treeWrap {
-    width: 100%;
-    overflow-y: scroll;
+    overflow-x: scroll;
 }
 #familyWrap > .content > .group.previewWrap {
     /* width: 40%; */
@@ -152,6 +145,9 @@ body {
 /* 세대 표기 */
 #familyWrap > .content .wrapper {
     position: relative;
+}
+#familyWrap > .content .wrapper:first-child {
+    border-bottom: solid 1px #e7e7e7;
 }
 #familyWrap > .content .wrapper .tit {
     position: absolute;
@@ -263,6 +259,8 @@ body {
 
 #familyWrap > .content .tree-child {
     display: flex;
+}
+#familyWrap > .content .tree-child:first-child {
     border-bottom: solid 1px #e7e7e7;
     box-sizing: border-box;
 }
@@ -374,8 +372,8 @@ body {
     border: 1px solid gray;
     background-color: #ffffff;
     position: absolute;
-    display:none;
-    z-index:10;
+    display: none;
+    z-index: 10;
 }
 
 .moreInfo > div {
@@ -384,30 +382,62 @@ body {
 }
 
 .moreInfoArea {
-    text-align:center !important;
+    text-align: center !important;
 }
 
-.moreInfoArea>div {
-    margin-top:20px;
-    margin-left:20px;
-    text-align:center;
+.moreInfoArea > div {
+    margin-top: 20px;
+    margin-left: 20px;
+    text-align: center;
 }
 
-.connectBtn, .disconnectBtn {
-    width:60%;
-    height:30px;
-    line-height:30px;    
-    font-size:12px;
-    text-align:center;
-    margin:0 auto;
-    border:1px solid black;
-    display:none;
-    position:relative;
-    top:-10px;
-    background-color:#FFFFFF;
+.connectBtn,
+.disconnectBtn {
+    width: 60%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    text-align: center;
+    margin: 0 auto;
+    border: 1px solid black;
+    display: none;
+    position: relative;
+    top: -10px;
+    background-color: #ffffff;
 }
 
 .conn {
-    display:flex;
+    display: flex;
     justify-content: space-between;
+}
+
+/* 가짜 스크롤 */
+.tree_inner {
+    position: relative;
+    border-top: solid 1px #e7e7e7;
+    border-bottom: solid 1px #e7e7e7;
+}
+.fake_scroll {
+    position: fixed;
+    right: 0;
+    top: 83px;
+    height: calc(100% - 83px);
+}
+.fake_scroll .inner {
+    position: relative;
+    width: 16px;
+    height: 100%;
+    border-top: solid 1px #e7e7e7;
+    border-left: solid 1px #e7e7e7;
+    box-sizing: border-box;
+    background-color: #fafafa;
+}
+.fake_scroll .inner .bar {
+    position: absolute;
+    left: 3px;
+    top: calc(25% - 0px);
+    width: 10px;
+    height: 50%;
+    background-color: #c8c8c8;
+    border-radius: 999999px;
 }
