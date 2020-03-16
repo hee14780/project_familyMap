@@ -38,7 +38,7 @@ var family = new Vue({
             selectedChildren: [],
             selectObject: [],
             objStart: 0,
-            objLimit: 10
+            objLimit: 20
 
         };
     },
@@ -60,11 +60,15 @@ var family = new Vue({
                 let familyData = res.data;
                 if (res.data) {
                     familyData.forEach(data => {
-                        let name;
-                        if (!data.option) {
-                            name = "미등록";
+                        let objName = "";
+                        let name = data.option.filter(obj => {
+                            return obj.jogbo_fieldName == "이름";
+                        });
+
+                        if (name.length != 0) {
+                            objName = name[0].jogbo_field;
                         } else {
-                            name = data.option[0];
+                            objName = "미등록";
                         }
 
                         let sex = data.sex == "남" ? 0 : 1;
@@ -77,12 +81,15 @@ var family = new Vue({
                             sesu: data.sesu,
                             seq: data.seq,
                             sex: sex,
-                            name: name,
+                            name: objName,
+                            option: data.option,
                             marginRight: 0
                         });
                     });
                 } else {
-                    alert(this.parentSesu + "가 없습니다.");
+                    // alert(this.parentSesu + "세대가 없습니다.");
+                    this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
+                    this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
                     return;
                 }
             });
@@ -90,8 +97,6 @@ var family = new Vue({
             if (this.originData[0].length == 0) {
                 return;
             }
-
-            console.log(this.parentSesu + 1);
 
             let form2 = new FormData();
             form2.append("sesu", parseInt(this.parentSesu) + 1);
@@ -101,13 +106,16 @@ var family = new Vue({
                 let familyData = res.data;
                 if (res.data) {
                     familyData.forEach(data => {
-                        let name;
-                        if (!data.option) {
-                            name = "미등록";
-                        } else {
-                            name = data.option[0];
-                        }
+                        let objName = "";
+                        let name = data.option.filter(obj => {
+                            return obj.jogbo_fieldName == "이름";
+                        });
 
+                        if (name.length != 0) {
+                            objName = name[0].jogbo_field;
+                        } else {
+                            objName = "미등록";
+                        }
                         let parent = data.parent == 0 ? null : data.parent;
                         let sex = data.sex == "남" ? 0 : 1;
 
@@ -119,7 +127,8 @@ var family = new Vue({
                             sesu: data.sesu,
                             seq: data.seq,
                             sex: sex,
-                            name: name,
+                            name: objName,
+                            option: data.option,
                             marginRight: 0
                         });
                     });
@@ -182,24 +191,24 @@ var family = new Vue({
                         }
                     }
 
-                    // 왼쪽 간격 맞추기
-                    // Step1 > 나의 인덱스가 0인가 / 내가 첫째인가
+                    // �쇱そ 媛꾧꺽 留욎텛湲�
+                    // Step1 > �섏쓽 �몃뜳�ㅺ� 0�멸� / �닿� 泥レ㎏�멸�
                     if (person.parent != null) {
                         person.firstchildren = 0;
                         person.lastChildren = 0;
 
-                        // 내가 첫째인지 확인
+                        // �닿� 泥レ㎏�몄� �뺤씤
                         let myBro = this.originData[1].filter(bro => {
-                            return bro.parent == person.parent && bro.no < person.no;
+                            return bro.parent == person.parent && bro.seq < person.seq;
                         });
 
-                        // 내가 막내인지 확인
+                        // �닿� 留됰궡�몄� �뺤씤
                         let myBro2 = this.originData[1].filter(bro => {
-                            return bro.parent == person.parent && bro.no > person.no;
+                            return bro.parent == person.parent && bro.seq > person.seq;
                         });
 
                         let myBroCount = myBro.length;
-                        // 내가 첫째라는 소리
+                        // �닿� 泥レ㎏�쇰뒗 �뚮━
                         if (myIndex == 0 || myBroCount == 0) {
                             person.firstchildren = 1;
                         }
@@ -228,15 +237,13 @@ var family = new Vue({
                                 .children()
                                 .css("background-color", "pink");
                         });
-
-                        this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
                     }, 50);
                 }); // foreach
 
                 this.originData[i].sort((child1, child2) => {
                     if (child1.tempSort == child2.tempSort) {
                         if (child2.parent == child1.parent) {
-                            return child1.no - child2.no;
+                            return child1.seq - child2.seq;
                         } else {
                             return child2.parent - child1.parent;
                         }
@@ -245,7 +252,7 @@ var family = new Vue({
                     return child1.tempSort - child2.tempSort;
                 });
 
-                // 왼쪽 정렬
+                // �쇱そ �뺣젹
                 let firstChildrenArray = this.originData[i].filter(child => {
                     return child.firstchildren == 1;
                 });
@@ -264,8 +271,8 @@ var family = new Vue({
                         }
 
                         this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
-
                         this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
+
                     }, 50);
                 });
             } // for
@@ -317,7 +324,7 @@ var family = new Vue({
 
                 console.log(this.originData[0][parentIndex]);
 
-                $("#tree_1").removeClass("rowScroll");
+                // $("#tree_1").removeClass("rowScroll");
                 $(".child-member").removeClass("existParent");
                 $(".child-member").removeClass("existChildren");
                 $(".child-member").removeClass("firstChildren");
@@ -328,10 +335,6 @@ var family = new Vue({
                     .hide();
                 this.selectedParent = "";
                 this.selectedChildren = [];
-
-                this.originData[1].sort((child1, child2) => {
-                    return child1.seq - child2.seq;
-                });
 
                 this.getFamilyMap2();
             }, 50);
@@ -364,7 +367,7 @@ var family = new Vue({
             });
 
             setTimeout(() => {
-                $("#tree_1").removeClass("rowScroll");
+                // $("#tree_1").removeClass("rowScroll");
                 $(".child-member").removeClass("existParent");
                 $(".child-member").removeClass("existChildren");
                 $(".child-member").removeClass("firstChildren");
@@ -375,6 +378,7 @@ var family = new Vue({
                     .hide();
                 this.selectedParent = "";
                 this.selectedChildren = [];
+
                 this.getFamilyMap2();
             }, 50);
         },
@@ -384,7 +388,7 @@ var family = new Vue({
             let checkIndex = this.originData[0].findIndex(obj => obj.no == person.no);
 
             if (checkIndex != -1) {
-                $("#tree_1").addClass("rowScroll");
+                // $("#tree_1").addClass("rowScroll");
 
                 if (this.selectedParent == "") {
                     this.selectedParent = person.no;
@@ -482,6 +486,9 @@ var family = new Vue({
             if (getScrollLeft === getScrollEnd) {
 
 
+
+
+
                 //이벤트가 한번만 실행할수 있도록 이벤트 제거
                 // this.$refs.treeWrap.removeEventListener("scroll", this.handleScroll);
             }
@@ -498,7 +505,6 @@ var family = new Vue({
                     },
                     500,
                     () => {
-                        alert("스크롤이 상단으로 이동됬어요!");
                         scrollBar.css("top", 25 + "%");
                         this.tempMove(0);
                     }
@@ -510,7 +516,6 @@ var family = new Vue({
                     },
                     500,
                     () => {
-                        alert("스크롤이 하단으로 이동됬어요!");
                         scrollBar.css("top", 25 + "%");
                         this.tempMove(1);
                     }

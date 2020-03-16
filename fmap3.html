@@ -41,11 +41,12 @@
 
         <div class="content" v-if="showFamilyMap == 1">
             <!-- 세대 ROW 시작 -->
-            <div class="group treeWrap" ref="treeWrap">
+            <div class="group treeWrap" ref="treeWrap" style="background-color:red; width:70%;">
                 <div class="tree_inner" ref="tree_inner">
                     <div class="wrapper" v-for="(family, index) in originData">
-                        <div class="tit">{{parentSesu + index}}세대</div>
-                        <ul class="tree-child" :id="'tree_' + index">
+                        <div class="tit">{{parseInt(parentSesu) + parseInt(index)}}세대</div>
+
+                        <ul class="tree-child" :id="'tree_' + index" v-if="family.length > 0">
                             <li class="child-member" v-for="person in family" v-bind:style="{
                                     paddingRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
                                 }" :class="'node_' + person.no" :id="'name_' + person.no">
@@ -74,6 +75,21 @@
 
                             </li>
                         </ul>
+
+                        <ul class="tree-child" v-if="family.length == 0">
+                            <li class="child-member">
+                                <div class="tree-node">
+                                    <div class="inner">
+                                        <div class="member-info">
+                                            <div class="name" style="width:800px;">
+                                                등록 데이터 없음
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
                     </div>
 
                     <!-- 가짜 스크롤 -->
@@ -86,6 +102,11 @@
                 </div>
             </div>
             <!-- 세대 ROW 끝 -->
+
+            <div style="width:30%; background-color:black;">
+                dddfdsdf kjbsdf akljbasdf kljbsfdaglkjbsafgk.jbm,jb
+            </div>
+
         </div>
 
     </div>
