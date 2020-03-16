@@ -22,6 +22,7 @@
 
     <!-- the family root element -->
     <div id="familyWrap">
+
         <div class="header">
             <div class="inner">
                 <h3 class="title">PROJECT:족보</h3>
@@ -37,13 +38,13 @@
                 </div>
             </div>
         </div>
-        <div class="content" v-if="showFamilyMap == 1">
 
-            <!-- 족보 리스트 -->
+        <div class="content" v-if="showFamilyMap == 1">
+            <!-- 세대 ROW 시작 -->
             <div class="group treeWrap" ref="treeWrap">
                 <div class="tree_inner" ref="tree_inner">
                     <div class="wrapper" v-for="(family, index) in originData">
-                        <div class="tit">{{parseInt(parentSesu) + parseInt(index)}}세대</div>
+                        <div class="tit">{{parentSesu + index}}세대</div>
                         <ul class="tree-child" :id="'tree_' + index">
                             <li class="child-member" v-for="person in family" v-bind:style="{
                                     paddingRight : (person.marginRight * 50) + (person.marginRight * 16) + 'px'
@@ -81,8 +82,10 @@
                             <div class="bar"></div>
                         </div>
                     </div>
+
                 </div>
             </div>
+            <!-- 세대 ROW 끝 -->
         </div>
 
     </div>

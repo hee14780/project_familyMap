@@ -38,7 +38,7 @@ var family = new Vue({
             selectedChildren: [],
             selectObject: [],
             objStart: 0,
-            objLimit: 20
+            objLimit: 10
 
         };
     },
@@ -135,6 +135,7 @@ var family = new Vue({
             for (let i = 0; i <= 1; i++) {
                 this.originData[i].forEach(person => {
                     person.tempSort = 0;
+                    person.marginRight = 0;
 
                     if (i == 0) {
                         let myChildren = this.originData[1].filter(children => {
@@ -142,6 +143,9 @@ var family = new Vue({
                         });
 
                         person.marginRight = myChildren.length - 1;
+                        if (person.marginRight < 0) {
+                            person.marginRight = 0;
+                        }
                     }
 
                     let myIndex = 0;
@@ -164,8 +168,17 @@ var family = new Vue({
                                     temp = j;
                                     break;
                                 }
+
+                                if (this.originData[0].length - 1 == j) {
+                                    temp = j;
+                                    break;
+                                }
                             }
                             person.tempSort = myIndex + temp;
+
+                            // console.log(person.no);
+                            // console.log(myIndex);
+                            // console.log("==============");
                         }
                     }
 
@@ -215,13 +228,15 @@ var family = new Vue({
                                 .children()
                                 .css("background-color", "pink");
                         });
+
+                        this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
                     }, 50);
                 }); // foreach
 
                 this.originData[i].sort((child1, child2) => {
                     if (child1.tempSort == child2.tempSort) {
                         if (child2.parent == child1.parent) {
-                            return child1.seq - child2.seq;
+                            return child1.no - child2.no;
                         } else {
                             return child2.parent - child1.parent;
                         }
@@ -236,21 +251,21 @@ var family = new Vue({
                 });
 
                 firstChildrenArray.forEach(child => {
-                    console.log(child.no);
+                    let checkMyParent = this.originData[0].findIndex(obj => obj.no == child.parent);
 
                     setTimeout(() => {
-                        let parentElementLeft = $("#name_" + child.parent).offset().left;
-                        let myElementLeft = $("#name_" + child.no).offset().left;
+                        if (checkMyParent != -1) {
+                            let parentElementLeft = $("#name_" + child.parent).offset().left;
+                            let myElementLeft = $("#name_" + child.no).offset().left;
 
-                        if (myElementLeft < parentElementLeft) {
-                            $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
+                            if (myElementLeft < parentElementLeft) {
+                                $("#name_" + child.no).css("margin-left", parentElementLeft - myElementLeft + "px");
+                            }
                         }
 
                         this.$refs.treeWrap.addEventListener("scroll", this.handleScroll); //가로 스크롤 동작
 
                         this.$refs.treeWrap.addEventListener("mousewheel", this.handleWheel); //마우스휠 동작
-
-                        // $(".fake_scroll .bar").css("top", "25%"); //세로 스크롤 위치 초기화
                     }, 50);
                 });
             } // for
@@ -289,30 +304,37 @@ var family = new Vue({
                 this.originData[1][findIndex].parent = null;
                 this.selectObject.push(obj.no);
 
-                let form = new FormData()
-                form.append('no', obj.no);
-                form.append('chk', "1");
+                let form = new FormData();
+                form.append("no", obj.no);
+                form.append("chk", "1");
 
                 axios.post(url, form);
-
             });
 
-            $(".child-member").removeClass("existParent");
-            $(".child-member").removeClass("existChildren");
-            $(".child-member").removeClass("firstChildren");
-            $(".child-member").removeClass("lastChildren");
-            $(".child-member").css("margin-left", "0px");
-            $(".conn")
-                .children()
-                .hide();
-            this.selectedParent = "";
-            this.selectedChildren = [];
+            setTimeout(() => {
+                let parentIndex = this.originData[0].findIndex(obj => obj.no == this.selectedParent);
+                this.originData[0][parentIndex].marginRight = 0;
 
-            this.originData[1].sort((child1, child2) => {
-                return child1.seq - child2.seq;
-            });
+                console.log(this.originData[0][parentIndex]);
 
-            this.getFamilyMap2();
+                $("#tree_1").removeClass("rowScroll");
+                $(".child-member").removeClass("existParent");
+                $(".child-member").removeClass("existChildren");
+                $(".child-member").removeClass("firstChildren");
+                $(".child-member").removeClass("lastChildren");
+                $(".child-member").css("margin-left", "0px");
+                $(".conn")
+                    .children()
+                    .hide();
+                this.selectedParent = "";
+                this.selectedChildren = [];
+
+                this.originData[1].sort((child1, child2) => {
+                    return child1.seq - child2.seq;
+                });
+
+                this.getFamilyMap2();
+            }, 50);
         },
 
         connect() {
@@ -334,15 +356,15 @@ var family = new Vue({
                 this.originData[1][chkIndex].parent = this.selectedParent;
                 this.selectObject.push(child);
 
-                let form = new FormData()
-                form.append('no', child);
-                form.append('parent', this.selectedParent);
-                form.append('chk', "1");
+                let form = new FormData();
+                form.append("no", child);
+                form.append("parent", this.selectedParent);
+                form.append("chk", "1");
                 axios.post(url, form);
-
             });
 
             setTimeout(() => {
+                $("#tree_1").removeClass("rowScroll");
                 $(".child-member").removeClass("existParent");
                 $(".child-member").removeClass("existChildren");
                 $(".child-member").removeClass("firstChildren");
@@ -354,7 +376,7 @@ var family = new Vue({
                 this.selectedParent = "";
                 this.selectedChildren = [];
                 this.getFamilyMap2();
-            }, 500);
+            }, 50);
         },
 
         selectePerson(person) {
@@ -362,6 +384,8 @@ var family = new Vue({
             let checkIndex = this.originData[0].findIndex(obj => obj.no == person.no);
 
             if (checkIndex != -1) {
+                $("#tree_1").addClass("rowScroll");
+
                 if (this.selectedParent == "") {
                     this.selectedParent = person.no;
                     $("#name_" + person.no)
@@ -431,6 +455,22 @@ var family = new Vue({
             }
         },
 
+        tempMove(direction) {
+            if (direction == 0) {
+                if (this.parentSesu == 0) {
+                    return;
+                } else {
+                    this.parentSesu = parseInt(this.parentSesu) - 1;
+                    this.serach();
+                }
+            }
+
+            if (direction == 1) {
+                this.parentSesu = parseInt(this.parentSesu) + 1;
+                this.serach();
+            }
+        },
+
         //가로스크롤 동작
         handleScroll(event) {
             let getScrollWidth = this.$refs.treeWrap.scrollWidth;
@@ -442,127 +482,43 @@ var family = new Vue({
             if (getScrollLeft === getScrollEnd) {
 
 
-                this.objStart = this.objStart + 20;
-
-                let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
-
-                let form = new FormData();
-                form.append("sesu", this.parentSesu);
-                form.append("limit", `${this.objStart}, ${this.objLimit}`);
-
-                let addArray0 = [];
-                let addArray1 = [];
-
-                axios.post(url, form).then(res => {
-                    let familyData = res.data;
-                    if (res.data) {
-                        familyData.forEach(data => {
-                            let name;
-                            if (!data.option) {
-                                name = "미등록";
-                            } else {
-                                name = "미등록";
-                            }
-
-                            let sex = data.sex == "남" ? 0 : 1;
-
-                            addArray0.push({
-                                no: data.no,
-                                parent: null,
-                                pa: data.pa,
-                                page: data.page,
-                                sesu: data.sesu,
-                                seq: data.seq,
-                                sex: sex,
-                                name: name,
-                                marginRight: 0
-                            });
-                        });
-                    } else {
-                        alert(this.parentSesu + "가 없습니다.");
-                        return;
-                    }
-                }).then(() => {
-
-                    let temp = this.originData[0].concat(addArray0);
-                    this.originData[0] = temp;
-
-                });
-
-
-                let form2 = new FormData();
-                form2.append("sesu", parseInt(this.parentSesu) + 1);
-                form2.append("limit", `${this.objStart}, ${this.objLimit}`);
-
-                axios.post(url, form2).then(res => {
-                    let familyData = res.data;
-                    if (res.data) {
-                        familyData.forEach(data => {
-                            let name;
-                            if (!data.option) {
-                                name = "미등록";
-                            } else {
-                                name = "미등록";
-                            }
-
-                            let parent = data.parent == 0 ? null : data.parent;
-                            let sex = data.sex == "남" ? 0 : 1;
-
-                            addArray1.push({
-                                no: data.no,
-                                parent: parent,
-                                pa: data.pa,
-                                page: data.page,
-                                sesu: data.sesu,
-                                seq: data.seq,
-                                sex: sex,
-                                name: name,
-                                marginRight: 0
-                            });
-                        });
-                    }
-                }).then(() => {
-
-                    let temp = this.originData[1].concat(addArray1);
-                    this.originData[1] = temp;
-
-                });
-
-
-
-
+                //이벤트가 한번만 실행할수 있도록 이벤트 제거
+                // this.$refs.treeWrap.removeEventListener("scroll", this.handleScroll);
             }
         },
 
-        //세로 마우스휠 동작
-        // handleWheel(event) {
-        //     let scrollBar = $(".fake_scroll .bar");
+        //세로 마우스휠 동작 -> 세대 이동
+        handleWheel(event) {
+            let scrollBar = $(".fake_scroll .bar");
 
-        //     if (event.wheelDelta >= 0) {
-        //         console.log("+", event);
-        //         scrollBar.animate(
-        //             {
-        //                 top: "0%"
-        //             },
-        //             500,
-        //             function () {
-        //                 alert("스크롤이 상단으로 이동됬어요!");
-        //                 scrollBar.css("top", 25 + "%");
-        //             }
-        //         );
-        //     } else {
-        //         console.log("-", event);
-        //         scrollBar.animate(
-        //             {
-        //                 top: "50%"
-        //             },
-        //             500,
-        //             function () {
-        //                 alert("스크롤이 하단으로 이동됬어요!");
-        //                 scrollBar.css("top", 25 + "%");
-        //             }
-        //         );
-        //     }
-        // }
+            if (event.wheelDelta >= 0) {
+                scrollBar.animate(
+                    {
+                        top: "0%"
+                    },
+                    500,
+                    () => {
+                        alert("스크롤이 상단으로 이동됬어요!");
+                        scrollBar.css("top", 25 + "%");
+                        this.tempMove(0);
+                    }
+                );
+            } else {
+                scrollBar.animate(
+                    {
+                        top: "50%"
+                    },
+                    500,
+                    () => {
+                        alert("스크롤이 하단으로 이동됬어요!");
+                        scrollBar.css("top", 25 + "%");
+                        this.tempMove(1);
+                    }
+                );
+            }
+
+            //이벤트가 한번만 실행할수 있도록 이벤트 제거
+            this.$refs.treeWrap.removeEventListener("mousewheel", this.handleWheel); //마우스휠 동작
+        }
     }
 });
