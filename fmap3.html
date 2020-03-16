@@ -10,7 +10,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
@@ -41,7 +42,7 @@
 
         <div class="content" v-if="showFamilyMap == 1">
             <!-- 세대 ROW 시작 -->
-            <div class="group treeWrap" ref="treeWrap" style="background-color:red; width:70%;">
+            <div class="group treeWrap" ref="treeWrap">
                 <div class="tree_inner" ref="tree_inner">
                     <div class="wrapper" v-for="(family, index) in originData">
                         <div class="tit">{{parseInt(parentSesu) + parseInt(index)}}세대</div>
@@ -102,11 +103,17 @@
                 </div>
             </div>
             <!-- 세대 ROW 끝 -->
+        </div>
 
-            <div style="width:30%; background-color:black;">
+        <!-- 족보 디테일 영역-->
+        <div class="previewWrap">
+            <div class="head">
+                <h3 class="title">족보 페이지</h3>
+            </div>
+            <div class="content">
+                <!-- <img class="width-100" src="http://placehold.it/500x800" /> -->
                 dddfdsdf kjbsdf akljbasdf kljbsfdaglkjbsafgk.jbm,jb
             </div>
-
         </div>
 
     </div>

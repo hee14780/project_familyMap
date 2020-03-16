@@ -63,8 +63,7 @@ body {
     display: flex;
     justify-content: flex-end;
 }
-.header .filterWrap .btn,
-.group.previewWrap .head .btn {
+.header .filterWrap .btn {
     color: #ad59ac;
     border: solid 1px #ad59ac;
     border-radius: 5px;
@@ -92,9 +91,8 @@ body {
     height: 100%;
     overflow-x: scroll;
 }
-#familyWrap > .content > .group.previewWrap {
-    /* width: 40%; */
-    background-color: #fff;
+#familyWrap > .content > .group.treeWrap {
+    width: 60%;
 }
 #familyWrap > .content .tree-map {
     display: flex;
@@ -317,10 +315,16 @@ body {
 }
 
 /* 족보디테일 영역 */
-#familyWrap .group.previewWrap .sec {
+.previewWrap {
+    position: absolute;
+    top: 84px;
+    right: 0;
     padding: 16px 16px 32px;
+    width: calc(40% - 32px);
+    height: calc(100% - 84px);
+    background-color: #fff;
 }
-#familyWrap .group.previewWrap .sec .head {
+.previewWrap .head {
     padding-bottom: 16px;
     margin-bottom: 16px;
     font-size: 20px;
@@ -328,17 +332,7 @@ body {
     color: #ad59ac;
     border-bottom: solid 1px #e7e7e7;
 }
-#familyWrap .group.previewWrap input {
-    margin-left: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    border: solid 1px #e7e7e7;
-}
-#familyWrap .group.previewWrap .sec.joinMember .fild {
-    display: flex;
-    padding: 5px 0;
-    align-items: center;
-}
+
 .connect_area {
     width: 136px;
     height: 140px;
@@ -419,7 +413,7 @@ body {
 }
 .fake_scroll {
     position: fixed;
-    right: 0;
+    left: calc(60% - 16px);
     top: 83px;
     height: calc(100% - 83px);
 }
