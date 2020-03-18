@@ -1,0 +1,228 @@
+/*common*/
+html {
+    font-size: 16px;
+}
+body {
+    width: 100%;
+    height: 100%;
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #f8f8f8;
+}
+/* google icon*/
+.material-icons {
+    font-family: "Material Icons";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: "liga";
+}
+.width-100 {
+    width: 100%;
+}
+#wrap {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* header */
+header .info_wrap {
+    display: flex;
+    padding: 5px;
+}
+.info_wrap > .group {
+    display: flex;
+    justify-content: space-between;
+}
+.info_wrap > .group.first {
+    width: 40%;
+}
+.info_wrap > .group.last {
+    width: 60%;
+}
+.info_wrap > .group.first .list {
+    margin-right: 15px;
+}
+.info_wrap > .group.last .list {
+    margin-left: 30px;
+}
+.info_wrap > .group.last .list:first-child {
+    flex: 1.5;
+    margin-left: 15px;
+    font-size: 14px;
+}
+.info_wrap .list {
+    flex: 1;
+    padding: 5px;
+    text-align: center;
+    border: solid 1px #cfcfcf;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.info_wrap .list.first {
+    background-color: #cdf0ff;
+}
+.info_wrap .list.last {
+    background-color: #feeecc;
+}
+
+/* content */
+.content {
+    padding: 5px;
+    height: 100%;
+}
+.sec_wrap {
+    display: flex;
+    height: 100%;
+    border: solid 1px #cfcfcf;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.sec_wrap > .sec {
+    position: relative;
+}
+/* 세대 및 트리 영역*/
+.sec_wrap > .sec.treeWrap {
+    position: relative;
+    width: 60%;
+    display: flex;
+}
+.sec.treeWrap > .inner.first {
+    padding: 0 10px;
+    border-right: dashed 1px #ccc;
+}
+.sec.treeWrap .head {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    border-bottom: dashed 1px #cccccc;
+    letter-spacing: 0.2em;
+}
+.sec.treeWrap .group {
+    display: flex;
+    align-items: center;
+    color: #858484;
+    font-size: 30px;
+    font-weight: bold;
+}
+.sec.treeWrap .group.last {
+    font-size: 16px;
+}
+.sec.treeWrap .group.last > .inner {
+    padding: 3px 10px;
+    border: solid 1px #bbcdf1;
+    box-sizing: border-box;
+}
+.sec.treeWrap .group.last .btn.move {
+    margin-left: 10px;
+    padding: 5px 12px;
+    font-size: 16px;
+    color: #fff;
+    border: solid 1px #aba8a6;
+    box-sizing: border-box;
+    background-color: #b9ccf1;
+}
+.sec.treeWrap .btn.prev,
+.sec.treeWrap .btn.next {
+    border: none;
+    background-color: transparent;
+}
+.sec.treeWrap .btn i {
+    font-size: 40px;
+    line-height: 160%;
+    color: #858484;
+}
+
+.sec.treeWrap .cont {
+    overflow-x: auto;
+    border-bottom: dashed 1px #cccccc;
+}
+.sec.treeWrap > .inner {
+    width: calc(100% - 60px);
+    border-left: dashed 1px #cccccc;
+}
+.child_wrap > .inner {
+    display: flex;
+    padding: 50px 30px;
+}
+.child_wrap .tree_child {
+    margin-right: 10px;
+}
+.child_wrap .tree_child .name {
+    padding: 10px;
+    min-height: 200px;
+    font-size: 20px;
+    border: solid 1px #ccc;
+    box-sizing: border-box;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    vertical-align: top;
+}
+.child_wrap .tree_child .name .sex,
+.sesu_list .year {
+    font-size: 14px;
+    color: #cecece;
+    display: inline;
+    writing-mode: horizontal-tb;
+}
+
+.sesu_list {
+    margin-top: 70px;
+}
+.sesu_list .list {
+    padding: 50px 15px;
+    min-height: 200px;
+}
+.sesu_list .sesu {
+    margin-top: 20px;
+    color: #9e6a44;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    vertical-align: top;
+    letter-spacing: 1em;
+}
+
+/* 족보 책 이미지 영역 */
+.sec.preview {
+    padding: 30px 5px;
+    width: 40%;
+    text-align: center;
+    font-weight: bold;
+}
+.sec.preview .head .tit {
+    padding-bottom: 10px;
+}
+.sec.preview .cont {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 30px);
+    overflow-y: auto;
+}
+.sec.preview .cont > .photo {
+    position: absolute;
+    left: 0;
+    top: 0;
+}

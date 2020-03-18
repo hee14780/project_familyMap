@@ -1,21 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>FamilyMap</title>
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
-    <script>
-        var c = paper.rect(10, 10, 50, 50);
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style4.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
+
 </head>
 
 <body>
+    <div id="wrap">
+        <!-- header -->
+        <header>
+            <div class="info_wrap">
+                <ul class="group first">
+                    <li class="list first">ㄱㄴㄷㄹㅁㅂ</li>
+                    <li class="list">ㄱㄴㄷㄹ : 53,321</li>
+                    <li class="list">ㄱㄴㄷㄹ : 21.234</li>
+                </ul>
+                <ul class="group last">
+                    <li class="list">세보 추가 및 수정문의 연락처 종친회 사무국 : 000-0000-0000</li>
+                    <li class="list last">세보 시스템 기부자 : 19세손 최 ㅇ ㅇ 회장</li>
+                </ul>
+            </div>
+        </header>
 
+        <!-- content -->
+        <div class="content">
+            <div class="sec_wrap">
+                <!-- 세대 및 트리 영역 -->
+                <div class="sec treeWrap">
+                    <div class="sesu_list">
+                        <div class="list">
+                            <p class="year">19세</p>
+                            <ul class="sesu">
+                                <li>임근식상</li>
+                                <li>ㄱㄴㄷㄹ</li>
+                            </ul>
+                        </div>
+                        <div class="list">
+                            <p class="year">20세</p>
+                            <ul class="sesu">
+                                <li>병환열</li>
+                                <li>ㄱㄴㄷ</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 트리표기영역 -->
+                    <div class="inner">
+                        <div class="head">
+                            <div class="group">
+                                <button type="button" class="btn prev">
+                                    <i class="material-icons">
+                                        keyboard_arrow_up
+                                    </i>
+                                </button>
+                                <h3 class="tit">부모세대 : 19세</h3>
+                                <button type="button" class="btn next">
+                                    <i class="material-icons">
+                                        keyboard_arrow_down
+                                    </i>
+                                </button>
+                            </div>
+                            <div class="group last">
+                                <div class="inner">
+                                    <label for="">바로가기</label>
+                                    <input type="text" size="4">세
+                                </div>
+                                <button tpye="button" class="btn move">이동</button>
+                            </div>
+                        </div>
 
+                        <div class="cont">
+                            <div class="tree_row">
+                                <!-- tree row -->
+                                <div class="child_wrap">
+                                    <ul class="inner">
+                                        <li class="tree_child">
+                                            <div class="name">
+                                                <span class="sex">
+                                                    <i>&#23376;</i>
+                                                    <!-- <i>&#22899;</i> -->
+                                                </span>
+                                                ㄱㄴㄷ
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="child_wrap">
+                                    <ul class="inner">
+                                        <li class="tree_child">
+                                            <div class="name">
+                                                <span class="sex">
+                                                    <!-- <i>&#23376;</i> -->
+                                                    <i>&#22899;</i>
+                                                </span>
+                                                ㄱㄴㄷ
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 트리표기 영역 끝-->
+                </div>
 
+                <!-- 족보 책 이미지 영역 -->
+                <div class="sec preview">
+                    <div class="head">
+                        <h3 class="tit">0권 000페이지</h3>
+                    </div>
+                    <div class="cont">
+                        <img class="photo"
+                            src="https://lh3.googleusercontent.com/proxy/A25zSGV-uSrejKRX-YDoqWDyEzUDOydNWR551tRwia_H89GlrYJzit08Os2ViRieOquiJDC2yycg2cLiNmHyUOCPqYQd7HjkhI9EXl2CKTgObXOFxZgSTHVNkz2kDfyxPhUY3lTVl9_KSt5iXaBzzftZhpnehH01JZvSL4lgbsjL"
+                            alt="" width="100%">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </body>
 
 </html>
