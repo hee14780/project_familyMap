@@ -17,10 +17,61 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 </head>
 
 <body>
-    <div id="wrap">
+    <!-- family list -->
+    <script type="text/x-template" id="item-template">
+        <li>
+            <!-- 부모정보 -->
+            <!-- 
+                TODO: .tree-node의 형제클래스를 상황에 맞는 추가해 주세요
+                1. 자식이 없으면 => not_child
+                2. 부모가 없으면 => not_parent
+                3. 같은 세대의 가족 중 마지막 자녀이면 => last_member
+            -->
+            <div class="tree-node" >
+                <div class="inner">
+                    <div class="member-info">
+                        <div class="name">
+                            <div class="sex">
+                                <span v-if="item.sex == 0">&#23376;</span>
+                                <span v-else>&#22899;</span>
+                            </div>
+                            {{item.no}}
+                        </div>
+                        <div class="life-time">
+                            <!-- <ul class="life-wrap">
+                                <li class="list">
+                                    <div>부모: 부모정보</div>
+                                </li>
+                                <li class="list">
+                                    <div>세대순서: 세대정보</div>
+                                </li>
+                                <li class="list">
+                                    <div>자기번호: 자기번호</div>
+                                </li>
+                            </ul> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 자녀리스트 -->
+            <ul class="tree-child">
+                <tree-item
+                class="child"
+                v-for="(child, index) in item.children"
+                :key="index"
+                :item="child"
+                >
+                </tree-item>
+            </ul>
+        </li>
+    </script>
+
+    <div id="familyWrap">
         <!-- header -->
         <header>
             <div class="info_wrap">
@@ -84,33 +135,17 @@
 
                         <div class="cont">
                             <div class="tree_row">
-                                <!-- tree row -->
-                                <div class="child_wrap">
-                                    <ul class="inner">
-                                        <li class="tree_child">
-                                            <div class="name">
-                                                <span class="sex">
-                                                    <i>&#23376;</i>
-                                                    <!-- <i>&#22899;</i> -->
-                                                </span>
-                                                ㄱㄴㄷ
-                                            </div>
+                                <!-- 트리구조 -->
+                                <div class="tree-map">
+                                    <ul class="tree-child">
+                                        <li class="child" v-for="family in familyMap">
+                                            <ul class="tree-child">
+                                                <tree-item class="member" :item="family"></tree-item>
+                                            </ul>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="child_wrap">
-                                    <ul class="inner">
-                                        <li class="tree_child">
-                                            <div class="name">
-                                                <span class="sex">
-                                                    <!-- <i>&#23376;</i> -->
-                                                    <i>&#22899;</i>
-                                                </span>
-                                                ㄱㄴㄷ
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -124,7 +159,7 @@
                     </div>
                     <div class="cont">
                         <img class="photo"
-                            src="https://lh3.googleusercontent.com/proxy/A25zSGV-uSrejKRX-YDoqWDyEzUDOydNWR551tRwia_H89GlrYJzit08Os2ViRieOquiJDC2yycg2cLiNmHyUOCPqYQd7HjkhI9EXl2CKTgObXOFxZgSTHVNkz2kDfyxPhUY3lTVl9_KSt5iXaBzzftZhpnehH01JZvSL4lgbsjL"
+                            src="https://lh3.googleusercontent.com/proxy/fp4YLfsyu_p9HdwgQzFYZ7O-6C48KxvrE1bOnM9zL0wL7dArVzJURkh0BbAmo_JdSBFxE4L27pC2NE8fwA"
                             alt="" width="100%">
                     </div>
                 </div>
@@ -134,5 +169,55 @@
 
     </div>
 </body>
+
+<script>
+    // define the tree-item component
+    Vue.component('tree-item', {
+        template: '#item-template',
+        props: {
+            item: Object
+        },
+        data: function () {
+            return {
+
+            }
+        },
+        methods: {}
+
+    })
+
+    // boot up the family
+    var family = new Vue({
+        el: '#familyWrap',
+        data: () => {
+            return {
+                familyMap: [{
+                        no: 1,
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        children: [{
+                            no: "ㄱㄴ",
+                            sex: 1, //성별 (0:남자, 1:여자)
+                        }, {
+                            no: "ㄱㄴ",
+                            sex: 0, //성별 (0:남자, 1:여자)
+                        }]
+                    },
+                    {
+                        no: 3, //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                        sex: 0, //성별 (0:남자, 1:여자)
+                        children: [{
+                            no: "ㄷㄹ", //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                            sex: 1, //성별 (0:남자, 1:여자)
+                        }, {
+                            no: "ㄷㄹ", //자신의 키값이면서 자녀가 부모를 찾을때의 값
+                            sex: 0, //성별 (0:남자, 1:여자)
+                        }]
+
+                    }
+                ],
+            }
+        }
+    })
+</script>
 
 </html>
