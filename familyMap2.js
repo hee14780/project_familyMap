@@ -574,33 +574,6 @@ var family = new Vue({
             }, 500);
         },
 
-        checkChildren(person, i) {
-            let index = i + 1;
 
-            if (!this.originData[index]) {
-                return;
-            }
-
-            let chkChildred = this.originData[index].filter(obj => {
-                return obj.parent == person.no;
-            });
-
-            let persionIndex = this.originData[i].findIndex(obj => obj.no == person.no);
-
-            if (chkChildred.length == 0 && persionIndex != -1) {
-                return;
-            } else {
-                person.children = [];
-                person.testCount = 0;
-
-                chkChildred.forEach(children => {
-                    person.children.push(children);
-                    person.testCount++;
-                    let child_no = this.originData[index].findIndex(obj => obj.no == children.no);
-                    this.originData[index].splice(child_no, 1);
-                    this.checkChildren(children, children.sesu);
-                });
-            }
-        }
     }
 });

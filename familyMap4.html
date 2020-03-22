@@ -13,8 +13,7 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -22,54 +21,108 @@
 </head>
 
 <body>
+
     <!-- family list -->
     <script type="text/x-template" id="item-template">
-        <li>
-            <!-- 부모정보 -->
-            <!-- 
-                TODO: .tree-node의 형제클래스를 상황에 맞는 추가해 주세요
-                1. 자식이 없으면 => not_child
-                2. 부모가 없으면 => not_parent
-                3. 같은 세대의 가족 중 마지막 자녀이면 => last_member
-            -->
-            <div class="tree-node" >
-                <div class="inner">
-                    <div class="member-info">
-                        <div class="name">
-                            <div class="sex">
-                                <span v-if="item.sex == 0">&#23376;</span>
-                                <span v-else>&#22899;</span>
+
+        <ul class="tree-child">
+            <!--동적 엘리먼트로 item == familyMap-->
+            <li class="child" v-for="(family, index) in item">
+                <ul class="tree-child">
+                    <li>
+                        <div class="tree-node not_parent last_member" @click="selectPerson(family.no, 0, index, '')">
+                            <div class="inner">
+                                <div class="member-info">
+                                    <div class="name">
+                                        <div class="sex">
+                                            남
+                                        </div>
+                                        {{family.no}}
+                                    </div>
+                                </div>
                             </div>
-                            {{item.no}}
                         </div>
-                        <div class="life-time">
-                            <!-- <ul class="life-wrap">
-                                <li class="list">
-                                    <div>부모: 부모정보</div>
-                                </li>
-                                <li class="list">
-                                    <div>세대순서: 세대정보</div>
-                                </li>
-                                <li class="list">
-                                    <div>자기번호: 자기번호</div>
-                                </li>
-                            </ul> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 자녀리스트 -->
-            <ul class="tree-child">
-                <tree-item
-                class="child"
-                v-for="(child, index) in item.children"
-                :key="index"
-                :item="child"
-                >
-                </tree-item>
-            </ul>
-        </li>
+
+                        <ul class="tree-child">
+                            <li class="child" v-for="(child, index2) in family.children">
+                                <ul class="tree-child">
+                                    <li>
+                                        <div class="tree-node not_child" :class="{last_member : child.youngerBro == 0}" @click="selectPerson(child.no, 1, index, index2)">
+                                            <div class="inner">
+                                                <div class="member-info">
+                                                    <div class="name">
+                                                        <div class="sex">
+                                                            남
+                                                        </div>
+                                                        {{child.no}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>    
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
     </script>
+    <!-- family list -->
+
+    <script type="text/x-template" id="nonFamily-template">
+
+        <div>
+
+            <ul class="tree-child">
+                <li class="child" v-for="obj in item[0]">
+                    <ul>
+                        <li>
+                            <div class="tree-node not_child not_parent last_member">
+                                <div class="inner">
+                                    <div class="member-info">
+                                        <div class="name">
+                                            <div class="sex">
+                                                남
+                                            </div>
+                                            {{obj.no}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>    
+                </li>
+            </ul>
+
+            <ul class="tree-child">
+                <li class="child" v-for="obj in item[1]">
+                    <ul>
+                        <li>
+                            <div class="tree-node not_child not_parent last_member">
+                                <div class="inner">
+                                    <div class="member-info">
+                                        <div class="name">
+                                            <div class="sex">
+                                                남
+                                            </div>
+                                            {{obj.no}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>    
+                </li>
+            </ul>
+
+        </div>
+
+    </script>
+
+
 
     <div id="familyWrap">
         <!-- header -->
@@ -127,9 +180,10 @@
                             <div class="group last">
                                 <div class="inner">
                                     <label for="">바로가기</label>
-                                    <input type="text" size="4">세
+                                    <input type="text" size="4" v-model="parentSesu">세
                                 </div>
-                                <button tpye="button" class="btn move">이동</button>
+                                <button tpye="button" class="btn move" @click="search()">이동</button>
+                                <!-- <button tpye="button" class="btn move" @click="test()">연결</button> -->
                             </div>
                         </div>
 
@@ -137,15 +191,12 @@
                             <div class="tree_row">
                                 <!-- 트리구조 -->
                                 <div class="tree-map">
-                                    <ul class="tree-child">
-                                        <li class="child" v-for="family in familyMap">
-                                            <ul class="tree-child">
-                                                <tree-item class="member" :item="family"></tree-item>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                                    <tree-item class="member" :item="familyMap"></tree-item>
                                 </div>
 
+                                <div class="tree-map">
+                                    <non-item class="member" :item="notConnectData"></non-item>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -170,52 +221,316 @@
     </div>
 </body>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js">
+</script>
+
 <script>
     // define the tree-item component
     Vue.component('tree-item', {
         template: '#item-template',
         props: {
-            item: Object
+            item: {
+                type: Array,
+                required: true
+            }
+        },
+        watch: {
+            item: {
+                deep: true,
+                handler() {}
+            }
+        },
+        data: function () {
+            return {
+                parentInfo: [],
+                selectedChildren: []
+            }
+        },
+        methods: {
+            selectPerson(no, status, index, index2) {
+
+                if (status == 0) {
+
+                    this.parentInfo['no'] = no;
+                    this.parentInfo['index'] = index;
+
+                }
+
+                if (status == 1) {
+
+                    this.selectedChildren['no'] = no;
+                    this.selectedChildren['parentIndex'] = index;
+                    this.selectedChildren['myIndex'] = index2;
+
+                }
+
+                if (this.parentInfo['no'] && this.selectedChildren['no']) {
+
+                    let objParentIdx = this.selectedChildren['parentIndex'];
+                    let objIdx = this.selectedChildren['myIndex'];
+
+                    let moveObj = this.item[objParentIdx].children[objIdx];
+
+                    // 이동
+                    this.item[this.parentInfo['index']].children.push(moveObj);
+                    this.item[objParentIdx].children.splice(objIdx, 1);
+
+                    // 부모가 된자와 
+
+
+
+
+                    this.item.push();
+
+
+                }
+
+
+            }
+        }
+
+    });
+
+    Vue.component('non-item', {
+        template: '#nonFamily-template',
+        props: {
+            item: {
+                type: Object,
+                required: true
+            }
+        },
+        watch: {
+            item: {
+                deep: true,
+                handler() {}
+            }
         },
         data: function () {
             return {
 
             }
-        },
-        methods: {}
+        }
 
-    })
+    });
 
     // boot up the family
     var family = new Vue({
         el: '#familyWrap',
         data: () => {
             return {
-                familyMap: [{
-                        no: 1,
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        children: [{
-                            no: "ㄱㄴ",
-                            sex: 1, //성별 (0:남자, 1:여자)
-                        }, {
-                            no: "ㄱㄴ",
-                            sex: 0, //성별 (0:남자, 1:여자)
-                        }]
-                    },
-                    {
-                        no: 3, //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                        sex: 0, //성별 (0:남자, 1:여자)
-                        children: [{
-                            no: "ㄷㄹ", //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                            sex: 1, //성별 (0:남자, 1:여자)
-                        }, {
-                            no: "ㄷㄹ", //자신의 키값이면서 자녀가 부모를 찾을때의 값
-                            sex: 0, //성별 (0:남자, 1:여자)
-                        }]
-
-                    }
-                ],
+                originData: {
+                    0: [],
+                    1: []
+                },
+                notConnectData: {
+                    0: [],
+                    1: []
+                },
+                parentSesu: 0,
+                familyMap: [],
+                start: 0,
+                limit: 30,
             }
+        },
+        methods: {
+
+            test() {
+
+                console.log(this.originData[0][0].no);
+                console.log(this.originData[0][2].children[0].no);
+                // console.log(this.originData[0][2]);
+
+                let target = this.originData[0][2].children[0];
+
+                this.originData[0][0].children.push(target);
+                this.originData[0][2].children.splice(0, 1);
+
+                // 재배열
+                this.originData[0][0].children.forEach(child => {
+
+                    let checkBro = this.originData[0][0].children.filter(obj => {
+                        return parseInt(obj.no) > parseInt(child.no);
+                    });
+
+                    child.youngerBro = checkBro.length;
+
+                    this.originData[0][0].children.sort((child1, child2) => {
+                        return child1.no - child2.no;
+                    });
+
+                });
+
+
+                this.familyMap = this.originData[0];
+                this.familyMap.push();
+
+            },
+
+            async search() {
+
+                let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
+
+                let form = new FormData();
+                form.append("sesu", this.parentSesu);
+                form.append("limit", `${this.start}, ${this.limit}`);
+
+                // 자식
+                let form1 = new FormData();
+                form1.append("sesu", parseInt(this.parentSesu) + 1);
+                form1.append("limit", `${this.start}, ${this.limit}`);
+
+                await axios.post(url, form1).then(res => {
+                    if (res.data) {
+                        res.data.forEach(data => {
+                            let objName = "";
+                            let name = data.option.filter(obj => {
+                                return obj.jogbo_fieldName == "이름";
+                            });
+
+                            if (name.length != 0) {
+                                objName = name[0].jogbo_field;
+                            } else {
+                                objName = "미등록";
+                            }
+
+                            let sex = data.sex == "남" ? 0 : 1;
+
+                            if (data.parent != 0) {
+
+                                let checkBro = res.data.filter(obj => {
+                                    return obj.parent == data.parent && parseInt(obj.no) > parseInt(data.no) &&
+                                        obj.parent != 0;
+                                });
+
+                                this.originData[1].push({
+                                    no: data.no,
+                                    parent: data.parent,
+                                    pa: data.pa,
+                                    page: data.page,
+                                    sesu: data.sesu,
+                                    seq: data.seq,
+                                    sex: sex,
+                                    name: objName,
+                                    option: data.option,
+                                    root: 1,
+                                    youngerBro: checkBro.length
+                                });
+
+                            } else {
+
+                                this.notConnectData[1].push({
+                                    no: data.no,
+                                    parent: data.parent,
+                                    pa: data.pa,
+                                    page: data.page,
+                                    sesu: data.sesu,
+                                    seq: data.seq,
+                                    sex: sex,
+                                    name: objName,
+                                    option: data.option,
+                                    root: 1,
+                                    youngerBro: 0
+                                });
+
+                            }
+                        });
+                    }
+                });
+
+                // 부모 
+                await axios.post(url, form).then(res => {
+                    if (res.data) {
+                        res.data.forEach(data => {
+                            let objName = "";
+                            let name = data.option.filter(obj => {
+                                return obj.jogbo_fieldName == "이름";
+                            });
+
+                            if (name.length != 0) {
+                                objName = name[0].jogbo_field;
+                            } else {
+                                objName = "미등록";
+                            }
+
+                            let sex = data.sex == "남" ? 0 : 1;
+
+                            let checkChildren = this.originData[1].findIndex(obj => obj.parent == data.no);
+
+                            if (checkChildren != -1) {
+
+                                this.originData[0].push({
+                                    no: data.no,
+                                    parent: null,
+                                    pa: data.pa,
+                                    page: data.page,
+                                    sesu: data.sesu,
+                                    seq: data.seq,
+                                    sex: sex,
+                                    name: objName,
+                                    option: data.option,
+                                    root: 0,
+                                });
+
+                            } else {
+
+                                this.notConnectData[0].push({
+                                    no: data.no,
+                                    parent: null,
+                                    pa: data.pa,
+                                    page: data.page,
+                                    sesu: data.sesu,
+                                    seq: data.seq,
+                                    sex: sex,
+                                    name: objName,
+                                    option: data.option,
+                                    root: 0,
+                                });
+
+                            }
+                        });
+                    }
+                });
+
+                for (let i = 0; i <= 1; i++) {
+                    this.originData[i].forEach(person => {
+                        this.checkChildren(person, i);
+                    });
+                }
+
+                console.log(this.originData);
+                this.familyMap = this.originData[0];
+            },
+
+            checkChildren(person, i) {
+                let index = i + 1;
+
+                if (!this.originData[index]) {
+                    return;
+                }
+
+                let chkChildred = this.originData[index].filter(obj => {
+                    return obj.parent == person.no;
+                });
+
+                let persionIndex = this.originData[i].findIndex(obj => obj.no == person.no);
+
+                if (chkChildred.length == 0 && persionIndex != -1) {
+                    return;
+                } else {
+                    person.children = [];
+                    person.testCount = 0;
+
+                    chkChildred.forEach(children => {
+                        person.children.push(children);
+                        person.testCount++;
+                        let child_no = this.originData[index].findIndex(obj => obj.no == children.no);
+                        this.originData[index].splice(child_no, 1);
+                        this.checkChildren(children, children.sesu);
+                    });
+                }
+            }
+
         }
     })
 </script>

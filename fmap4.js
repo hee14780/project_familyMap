@@ -142,11 +142,6 @@ var family = new Vue({
     created: function () { },
     methods: {
         getFamilyMap() {
-            // for (let i = 0; i <= 1; i++) {
-            //     this.originData[i].forEach(person => {
-            //         this.checkChildren(person, i);
-            //     });
-            // }
 
             for (let i = 0; i <= 1; i++) {
                 this.originData[i].forEach(person => {
@@ -159,34 +154,6 @@ var family = new Vue({
                 this.showFamilyMap = 1;
             }, 500);
         },
-
-        // checkChildren(person, i) {
-        //     let index = i + 1;
-
-        //     if (!this.originData[index]) {
-        //         return;
-        //     }
-
-        //     let chkChildred = this.originData[index].filter(obj => {
-        //         return obj.parent == person.no;
-        //     });
-
-        //     let persionIndex = this.originData[i].findIndex(obj => obj.no == person.no);
-
-        //     if (chkChildred.length == 0 && persionIndex != -1) {
-        //         return;
-        //     } else {
-        //         person.children = [];
-        //         person.noChildren = [];
-
-        //         chkChildred.forEach(children => {
-        //             person.children.push(children);
-        //             let child_no = this.originData[index].findIndex(obj => obj.no == children.no);
-        //             this.originData[index].splice(child_no, 1);
-        //             this.checkChildren(children, children.sesu);
-        //         });
-        //     }
-        // }
 
         checkMyNode(person, i) {
 
