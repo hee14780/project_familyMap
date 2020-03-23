@@ -13,7 +13,8 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -187,7 +188,7 @@
                             </div>
                         </div>
 
-                        <div class="cont">
+                        <div class="cont" ref="treeCont">
                             <div class="tree_row">
                                 <!-- 트리구조 -->
                                 <div class="tree-map">
@@ -399,7 +400,8 @@
                             if (data.parent != 0) {
 
                                 let checkBro = res.data.filter(obj => {
-                                    return obj.parent == data.parent && parseInt(obj.no) > parseInt(data.no) &&
+                                    return obj.parent == data.parent && parseInt(obj
+                                            .no) > parseInt(data.no) &&
                                         obj.parent != 0;
                                 });
 
@@ -455,7 +457,8 @@
 
                             let sex = data.sex == "남" ? 0 : 1;
 
-                            let checkChildren = this.originData[1].findIndex(obj => obj.parent == data.no);
+                            let checkChildren = this.originData[1].findIndex(obj => obj
+                                .parent == data.no);
 
                             if (checkChildren != -1) {
 
@@ -500,6 +503,10 @@
 
                 console.log(this.originData);
                 this.familyMap = this.originData[0];
+
+                this.$refs.treeCont.addEventListener("scroll", this.handleScroll); //수평스크롤
+                this.$refs.treeCont.addEventListener("mousewheel", this.handleWheel); //수평스크롤+마우스휠
+
             },
 
             checkChildren(person, i) {
@@ -529,7 +536,31 @@
                         this.checkChildren(children, children.sesu);
                     });
                 }
-            }
+            },
+
+            //가로 스크롤 이벤트 
+            handleScroll(event) {
+
+                let treeCont = this.$refs.treeCont
+                let getScrollWidth = treeCont.scrollWidth; //컨텐츠 전체 크기
+                let getScrollLeft = treeCont.scrollLeft; //수평 스크롤의 위치 
+                let getScrollEnd = getScrollWidth - treeCont.clientWidth;
+
+                // console.log("scrollWidth", getScrollWidth, getScrollLeft, getScrollEnd, treeCont.clientWidth);
+
+                if (getScrollLeft === getScrollEnd) {
+                    alert("수평 스크롤의 끝에 도착했어요!!");
+                }
+            },
+
+            //수평스크롤+마우스휠
+            handleWheel(event) {
+                // console.log(this.$refs.treeCont.scrollLeft, event.wheelDelta)
+
+                this.$refs.treeCont.scrollLeft += (event.wheelDelta / 60);
+
+                event.preventDefault();
+            },
 
         }
     })
