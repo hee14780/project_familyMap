@@ -160,6 +160,10 @@ header .info_wrap {
     overflow-x: auto;
     border-bottom: dashed 1px #cccccc;
 }
+.sec.treeWrap .cont > .tree_row {
+    display: flex;
+    align-items: center;
+}
 .sec.treeWrap > .inner {
     width: calc(100% - 60px);
     border-left: dashed 1px #cccccc;
