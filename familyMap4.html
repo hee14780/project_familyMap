@@ -13,8 +13,7 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -22,108 +21,6 @@
 </head>
 
 <body>
-
-    <!-- family list -->
-    <script type="text/x-template" id="item-template">
-
-        <ul class="tree-child">
-            <!--동적 엘리먼트로 item == familyMap-->
-            <li class="child" v-for="(family, index) in item">
-                <ul class="tree-child">
-                    <li>
-                        <div class="tree-node not_parent last_member" @click="selectPerson(family.no, 0, index, '')">
-                            <div class="inner">
-                                <div class="member-info">
-                                    <div class="name">
-                                        <div class="sex">
-                                            남
-                                        </div>
-                                        {{family.no}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <ul class="tree-child">
-                            <li class="child" v-for="(child, index2) in family.children">
-                                <ul class="tree-child">
-                                    <li>
-                                        <div class="tree-node not_child" :class="{last_member : child.youngerBro == 0}" @click="selectPerson(child.no, 1, index, index2)">
-                                            <div class="inner">
-                                                <div class="member-info">
-                                                    <div class="name">
-                                                        <div class="sex">
-                                                            남
-                                                        </div>
-                                                        {{child.no}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>    
-                            </li>
-                        </ul>
-
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
-    </script>
-    <!-- family list -->
-
-    <script type="text/x-template" id="nonFamily-template">
-
-        <div>
-
-            <ul class="tree-child">
-                <li class="child" v-for="obj in item[0]">
-                    <ul>
-                        <li>
-                            <div class="tree-node not_child not_parent last_member">
-                                <div class="inner">
-                                    <div class="member-info">
-                                        <div class="name">
-                                            <div class="sex">
-                                                남
-                                            </div>
-                                            {{obj.no}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>    
-                </li>
-            </ul>
-
-            <ul class="tree-child">
-                <li class="child" v-for="obj in item[1]">
-                    <ul>
-                        <li>
-                            <div class="tree-node not_child not_parent last_member">
-                                <div class="inner">
-                                    <div class="member-info">
-                                        <div class="name">
-                                            <div class="sex">
-                                                남
-                                            </div>
-                                            {{obj.no}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>    
-                </li>
-            </ul>
-
-        </div>
-
-    </script>
-
-
 
     <div id="familyWrap">
         <!-- header -->
@@ -148,14 +45,14 @@
                 <div class="sec treeWrap">
                     <div class="sesu_list">
                         <div class="list">
-                            <p class="year">19세</p>
+                            <p class="year">{{this.parentSesu}}세</p>
                             <ul class="sesu">
                                 <li>임근식상</li>
                                 <li>ㄱㄴㄷㄹ</li>
                             </ul>
                         </div>
                         <div class="list">
-                            <p class="year">20세</p>
+                            <p class="year">{{parseInt(this.parentSesu) + 1}}세</p>
                             <ul class="sesu">
                                 <li>병환열</li>
                                 <li>ㄱㄴㄷ</li>
@@ -167,13 +64,13 @@
                         <div class="head">
                             <div class="group">
                                 <button type="button" class="btn prev">
-                                    <i class="material-icons">
+                                    <i class="material-icons" @click="moveSesu(0)">
                                         keyboard_arrow_up
                                     </i>
                                 </button>
-                                <h3 class="tit">부모세대 : 19세</h3>
+                                <h3 class="tit">부모세대 : {{this.parentSesu}}세</h3>
                                 <button type="button" class="btn next">
-                                    <i class="material-icons">
+                                    <i class="material-icons" @click="moveSesu(1)">
                                         keyboard_arrow_down
                                     </i>
                                 </button>
@@ -192,11 +89,134 @@
                             <div class="tree_row">
                                 <!-- 트리구조 -->
                                 <div class="tree-map">
-                                    <tree-item class="member" :item="familyMap"></tree-item>
+                                    <ul class="tree-child member">
+                                        <!--동적 엘리먼트로 item == familyMap-->
+                                        <li class="child" v-for="(family, index) in familyMap">
+                                            <ul class="tree-child">
+                                                <li>
+                                                    <div class="tree-node not_parent last_member" :id="'pnode_' + family.no"
+                                                        @click="selectPerson('parent', index, '')">
+                                                        <div class="inner">
+                                                            <div class="member-info">
+                                                                <div class="name">
+                                                                    <div class="sex">
+                                                                        <span v-if="family.sex == 0">&#23376;</span>
+                                                                        <span v-else>&#22899;</span>
+                                                                    </div>
+                                                                    {{family.name}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <ul class="tree-child">
+                                                        <li class="child" v-for="(child, index2) in family.children">
+                                                            <ul class="tree-child">
+                                                                <li>
+                                                                    <div class="tree-node not_child" :id="'node_' + child.no"
+                                                                        :class="{last_member : child.youngerBro == 0}"
+                                                                        @click="selectPerson('children', index, index2)">
+                                                                        <div class="inner">
+                                                                            <div class="member-info">
+                                                                                <div class="name">
+                                                                                    <div class="sex">
+                                                                                        <span v-if="child.sex == 0">&#23376;</span>
+                                                                                        <span v-else>&#22899;</span>
+                                                                                    </div>
+                                                                                    {{child.name}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
 
                                 <div class="tree-map">
-                                    <non-item class="member" :item="notConnectData"></non-item>
+                                    <div class="member">
+                                        <ul class="tree-child">
+                                            <li class="child" v-for="(obj, index) in notConnectData[0]">
+                                                <ul>
+                                                    <li>
+                                                        <div class="tree-node not_child not_parent last_member" :id="'pnode_' + obj.no"
+                                                            @click="selectPerson('nonParent', index, '')">
+                                                            <div class="inner">
+                                                                <div class="member-info">
+                                                                    <div class="name">
+                                                                        <div class="sex">
+                                                                            <span v-if="obj.sex == 0">&#23376;</span>
+                                                                            <span v-else>&#22899;</span>
+                                                                        </div>
+                                                                        {{obj.name}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="child" v-if="notConnectData[0].length == 0">
+                                                <ul>
+                                                    <li>
+                                                        <div class="tree-node not_child not_parent last_member">
+                                                            <div class="inner" style="border:1px solid #FFFFFF;">
+                                                                <div class="member-info">
+                                                                    <div class="name">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                        <ul class="tree-child">
+                                            <li class="child" v-for="(obj, index) in notConnectData[1]">
+                                                <ul>
+                                                    <li>
+                                                        <div class="tree-node not_child not_parent last_member" :id="'node_' + obj.no"
+                                                            @click="selectPerson('nonChildren', index, '')">
+                                                            <div class="inner">
+                                                                <div class="member-info">
+                                                                    <div class="name">
+                                                                        <div class="sex">
+                                                                            <span v-if="obj.sex == 0">&#23376;</span>
+                                                                            <span v-else>&#22899;</span>
+                                                                        </div>
+                                                                        {{obj.name}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="child" v-if="notConnectData[1].length == 0">
+                                                <ul>
+                                                    <li>
+                                                        <div class="tree-node not_child not_parent last_member">
+                                                            <div class="inner" style="border:1px solid #FFFFFF;">
+                                                                <div class="member-info">
+                                                                    <div class="name">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,12 +227,10 @@
                 <!-- 족보 책 이미지 영역 -->
                 <div class="sec preview">
                     <div class="head">
-                        <h3 class="tit">0권 000페이지</h3>
+                        <h3 class="tit">{{this.pageInfo}}</h3>
                     </div>
                     <div class="cont">
-                        <img class="photo"
-                            src="https://lh3.googleusercontent.com/proxy/fp4YLfsyu_p9HdwgQzFYZ7O-6C48KxvrE1bOnM9zL0wL7dArVzJURkh0BbAmo_JdSBFxE4L27pC2NE8fwA"
-                            alt="" width="100%">
+                        <img class="photo" :src="this.jogboUrl" alt="" width="100%">
                     </div>
                 </div>
 
@@ -227,94 +245,6 @@
 </script>
 
 <script>
-    // define the tree-item component
-    Vue.component('tree-item', {
-        template: '#item-template',
-        props: {
-            item: {
-                type: Array,
-                required: true
-            }
-        },
-        watch: {
-            item: {
-                deep: true,
-                handler() {}
-            }
-        },
-        data: function () {
-            return {
-                parentInfo: [],
-                selectedChildren: []
-            }
-        },
-        methods: {
-            selectPerson(no, status, index, index2) {
-
-                if (status == 0) {
-
-                    this.parentInfo['no'] = no;
-                    this.parentInfo['index'] = index;
-
-                }
-
-                if (status == 1) {
-
-                    this.selectedChildren['no'] = no;
-                    this.selectedChildren['parentIndex'] = index;
-                    this.selectedChildren['myIndex'] = index2;
-
-                }
-
-                if (this.parentInfo['no'] && this.selectedChildren['no']) {
-
-                    let objParentIdx = this.selectedChildren['parentIndex'];
-                    let objIdx = this.selectedChildren['myIndex'];
-
-                    let moveObj = this.item[objParentIdx].children[objIdx];
-
-                    // 이동
-                    this.item[this.parentInfo['index']].children.push(moveObj);
-                    this.item[objParentIdx].children.splice(objIdx, 1);
-
-                    // 부모가 된자와 
-
-
-
-
-                    this.item.push();
-
-
-                }
-
-
-            }
-        }
-
-    });
-
-    Vue.component('non-item', {
-        template: '#nonFamily-template',
-        props: {
-            item: {
-                type: Object,
-                required: true
-            }
-        },
-        watch: {
-            item: {
-                deep: true,
-                handler() {}
-            }
-        },
-        data: function () {
-            return {
-
-            }
-        }
-
-    });
-
     // boot up the family
     var family = new Vue({
         el: '#familyWrap',
@@ -332,43 +262,370 @@
                 familyMap: [],
                 start: 0,
                 limit: 30,
+                selectedParent: [],
+                selectedChildren: [],
+                selectedNonChildren: [],
+                jogboUrl: "",
+                pageInfo: ""
             }
         },
         methods: {
 
-            test() {
+            makePage(pa, page) {
 
-                console.log(this.originData[0][0].no);
-                console.log(this.originData[0][2].children[0].no);
-                // console.log(this.originData[0][2]);
+                if (page.length == 2) {
+                    page = "0" + page;
+                }
 
-                let target = this.originData[0][2].children[0];
+                if (page.length == 1) {
+                    page = "00" + page;
+                }
 
-                this.originData[0][0].children.push(target);
-                this.originData[0][2].children.splice(0, 1);
-
-                // 재배열
-                this.originData[0][0].children.forEach(child => {
-
-                    let checkBro = this.originData[0][0].children.filter(obj => {
-                        return parseInt(obj.no) > parseInt(child.no);
-                    });
-
-                    child.youngerBro = checkBro.length;
-
-                    this.originData[0][0].children.sort((child1, child2) => {
-                        return child1.no - child2.no;
-                    });
-
-                });
-
-
-                this.familyMap = this.originData[0];
-                this.familyMap.push();
+                this.jogboUrl = "http://jogboapi.appmowa.com/source/" + pa + page + ".png";
+                this.pageInfo = pa + " " + page + "페이지";
 
             },
 
+            selectPerson(type, index, index2) {
+                if (type == "parent") {
+
+                    this.selectedParent['myIndex'] = index;
+                    this.selectedParent['my'] = this.familyMap[index];
+                    this.selectedParent['parentType'] = 1;
+
+                    this.makePage(this.familyMap[index].pa, this.familyMap[index].page);
+
+                    $(".member-info").css("background-color", "#FFFFFF");
+                    $("#pnode_" + this.selectedParent['my'].no).find(".member-info").css("background-color", "#eaeaea");
+                }
+
+                if (type == "nonParent") {
+
+                    this.selectedParent['myIndex'] = index;
+                    this.selectedParent['my'] = this.notConnectData[0][index];
+                    this.selectedParent['parentType'] = 2;
+
+                    this.makePage(this.notConnectData[0][index].pa, this.notConnectData[0][index].page);
+
+                    $(".member-info").css("background-color", "#FFFFFF");
+                    $("#pnode_" + this.selectedParent['my'].no).find(".member-info").css("background-color", "#eaeaea");
+
+                }
+
+                if (type == "children") {
+
+                    if (!this.selectedParent['my']) {
+                        alert("부모를 먼저 선택하세요.");
+                        return;
+                    }
+
+                    this.selectedChildren['parantIndex'] = index;
+                    this.selectedChildren['parent'] = this.familyMap[index];
+                    this.selectedChildren['myIndex'] = index2;
+                    this.selectedChildren['my'] = this.familyMap[index].children[index2];
+
+                }
+
+                if (type == "nonChildren") {
+
+                    if (!this.selectedParent['my']) {
+                        alert("부모를 먼저 선택하세요.");
+                        return;
+                    }
+
+                    this.selectedNonChildren['myIndex'] = index;
+                    this.selectedNonChildren['my'] = this.notConnectData[1][index];
+
+                }
+
+
+
+
+                if (this.selectedParent['my'] && this.selectedChildren['my']) {
+
+                    // // 부모에 속해 있었다면 해제
+                    if (this.selectedParent['my']['no'] == this.selectedChildren['parent']['no']) {
+
+                        this.familyMap[this.selectedParent['myIndex']].children.splice(this.selectedChildren['myIndex'], 1);
+
+                        this.disconnect(this.selectedChildren['my']['no']);
+
+                        // 떨어진 자녀는 nonFamily 로 이동
+                        this.notConnectData[1].push(this.selectedChildren['my']);
+                        this.notConnectData[1].sort((child1, child2) => {
+                            return child1.no - child2.no;
+                        });
+
+                        // 부모 체크
+                        if (this.familyMap[this.selectedParent['myIndex']].children.length == 0) {
+
+                            this.familyMap.splice(this.selectedParent['myIndex'], 1);
+                            this.notConnectData[0].push(this.selectedParent['my']);
+                            $(".member-info").css("background-color", "#FFFFFF");
+
+                            this.notConnectData[0].sort((child1, child2) => {
+                                return child1.no - child2.no;
+                            });
+
+                        } else {
+
+                            this.familyMap[this.selectedParent['myIndex']].children.forEach(child => {
+
+                                let checkBro = this.familyMap[this.selectedParent['myIndex']].children.filter(obj => {
+                                    return parseInt(obj.no) > parseInt(child.no);
+                                });
+
+                                child.youngerBro = checkBro.length;
+                                this.familyMap[this.selectedParent['myIndex']].children.sort((child1, child2) => {
+                                    return child1.no - child2.no;
+                                });
+
+                            });
+
+                            $("#node_" + this.selectedChildren['my'].no).find(".member-info").css("background-color", "#FFFFFF");
+
+                        }
+
+                        this.selectedChildren = [];
+                        this.familyMap.push();
+                        return;
+
+                    }
+                    // 부모에 속해 있다면 끝
+
+
+                    // 부모에 속해 있지 않다면 연결
+                    if ((this.selectedParent['my']['no'] != this.selectedChildren['parent']['no']) && this.selectedParent['parentType'] ==
+                        1) {
+
+                        this.familyMap[this.selectedChildren['parantIndex']].children.splice(this.selectedChildren['myIndex'], 1);
+                        this.familyMap[this.selectedParent['myIndex']].children.push(this.selectedChildren['my']);
+
+                        this.connect(this.selectedParent['my']['no'], this.selectedChildren['parent']['no']);
+
+                        // 자식을 얻은 부모
+                        this.familyMap[this.selectedParent['myIndex']].children.forEach(child => {
+
+                            let checkBro = this.familyMap[this.selectedParent['myIndex']].children.filter(obj => {
+                                return parseInt(obj.no) > parseInt(child.no);
+                            });
+
+                            child.youngerBro = checkBro.length;
+                            this.familyMap[this.selectedParent['myIndex']].children.sort((child1, child2) => {
+                                return child1.no - child2.no;
+                            });
+
+                        });
+
+                        // 자식을 잃은 부모
+                        if (this.familyMap[this.selectedChildren['parantIndex']].children.length == 0) {
+
+                            this.notConnectData[0].push(this.selectedChildren['parent']);
+                            this.familyMap.splice(this.selectedChildren['parantIndex'], 1);
+
+                            this.notConnectData[0].sort((child1, child2) => {
+                                return child1.no - child2.no;
+                            });
+
+                        } else {
+
+                            this.familyMap[this.selectedChildren['parantIndex']].children.forEach(child => {
+
+                                let checkBro = this.familyMap[this.selectedChildren['parantIndex']].children.filter(obj => {
+                                    return parseInt(obj.no) > parseInt(child.no);
+                                });
+
+                                child.youngerBro = checkBro.length;
+                                this.familyMap[this.selectedChildren['parantIndex']].children.sort((child1, child2) => {
+                                    return child1.no - child2.no;
+                                });
+
+                            });
+
+                        }
+
+                        this.selectedChildren = [];
+                        this.familyMap.push();
+                        return;
+
+                    }
+                    // 부모에 속해 있지 않다면 연결
+
+
+                }
+
+                if (this.selectedParent['my'] && (this.selectedNonChildren['my'] || this.selectedChildren['my'])) {
+
+                    if (this.selectedParent['parentType'] == 1) {
+
+                        this.familyMap[this.selectedParent['myIndex']].children.push(this.selectedNonChildren['my']);
+                        this.notConnectData[1].splice(this.selectedNonChildren['myIndex'], 1);
+
+                        this.connect(this.selectedParent['my']['no'], this.selectedNonChildren['my']['no']);
+
+                        this.familyMap[this.selectedParent['myIndex']].children.forEach(child => {
+
+                            let checkBro = this.familyMap[this.selectedParent['myIndex']].children.filter(obj => {
+                                return parseInt(obj.no) > parseInt(child.no);
+                            });
+
+                            child.youngerBro = checkBro.length;
+                            this.familyMap[this.selectedParent['myIndex']].children.sort((child1, child2) => {
+                                return child1.no - child2.no;
+                            });
+
+                        });
+
+                        this.selectedNonChildren = [];
+                        this.notConnectData[1].push();
+                        this.familyMap.push();
+                        return;
+
+                    }
+
+                    if (this.selectedParent['parentType'] == 2) {
+
+                        if (this.selectedChildren['my']) {
+
+                            console.log(this.selectedChildren['my']);
+
+                            this.notConnectData[0][this.selectedParent['myIndex']].children.push(this.selectedChildren['my']);
+                            this.familyMap.push(this.notConnectData[0][this.selectedParent['myIndex']]);
+
+                            this.connect(this.selectedParent['my']['no'], this.selectedChildren['my']['no']);
+
+                            this.notConnectData[0].splice(this.selectedParent['myIndex'], 1);
+                            this.familyMap[this.selectedChildren['parantIndex']].children.splice(this.selectedChildren['myIndex'], 1);
+
+                            // 자식을 잃은 부모
+                            if (this.familyMap[this.selectedChildren['parantIndex']].children.length == 0) {
+
+                                this.notConnectData[0].push(this.selectedChildren['parent']);
+                                this.familyMap.splice(this.selectedChildren['parantIndex'], 1);
+
+                                this.notConnectData[0].sort((child1, child2) => {
+                                    return child1.no - child2.no;
+                                });
+
+                            } else {
+
+                                this.familyMap[this.selectedChildren['parantIndex']].children.forEach(child => {
+
+                                    let checkBro = this.familyMap[this.selectedChildren['parantIndex']].children.filter(obj => {
+                                        return parseInt(obj.no) > parseInt(child.no);
+                                    });
+
+                                    child.youngerBro = checkBro.length;
+                                    this.familyMap[this.selectedChildren['parantIndex']].children.sort((child1, child2) => {
+                                        return child1.no - child2.no;
+                                    });
+
+                                });
+
+                            }
+
+                            this.selectedChildren = [];
+
+                        }
+
+
+                        if (this.selectedNonChildren['my']) {
+
+                            this.notConnectData[0][this.selectedParent['myIndex']].children.push(this.selectedNonChildren['my']);
+                            this.familyMap.push(this.notConnectData[0][this.selectedParent['myIndex']]);
+
+                            this.connect(this.selectedParent['my']['no'], this.selectedNonChildren['my']['no']);
+
+                            this.notConnectData[0].splice(this.selectedParent['myIndex'], 1);
+                            this.notConnectData[1].splice(this.selectedNonChildren['myIndex'], 1);
+
+                            this.familyMap.sort((child1, child2) => {
+
+                                return child1.no - child2.no;
+                            });
+
+                            this.selectedNonChildren = [];
+                        }
+
+                        this.selectedParent['parentType'] = 1;
+                        this.selectedParent['myIndex'] = this.familyMap.findIndex(obj => obj.no == this.selectedParent['my']['no']);
+
+                        setTimeout(() => {
+                            $(".member-info").css("background-color", "#FFFFFF");
+                            $("#pnode_" + this.selectedParent['my']['no']).find(".member-info").css("background-color",
+                                "#eaeaea");
+                        }, 100);
+
+                        return;
+
+                    }
+
+                }
+
+
+
+            },
+
+            connect(parentNo, childrenNo) {
+
+                let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
+                let form = new FormData();
+                form.append("no", childrenNo);
+                form.append("parent", parentNo);
+                form.append("chk", "1");
+                axios.post(url, form);
+
+            },
+
+            disconnect(childrenNo) {
+
+                let url = "http://jogboapi.appmowa.com/jogbo_parent_set.php";
+                let form = new FormData();
+                form.append("no", childrenNo);
+                form.append("chk", "1");
+
+                axios.post(url, form);
+
+            },
+
+            moveSesu(direction) {
+
+                if (direction == 1) {
+
+                    this.parentSesu = parseInt(this.parentSesu) + 1;
+                    this.search();
+
+                }
+
+                if (direction == 0) {
+
+                    this.parentSesu = parseInt(this.parentSesu) - 1;
+
+                    if (this.parentSesu < 0) {
+
+                        this.parentSesu = 0;
+                        alert("최초 세수 입니다.");
+                        return;
+
+                    }
+
+                    this.search();
+
+                }
+
+            },
+
+
             async search() {
+
+                this.familyMap = [];
+                this.originData[0] = [];
+                this.originData[1] = [];
+                this.notConnectData[0] = [];
+                this.notConnectData[1] = [];
+                this.selectedParent = [];
+                this.selectedChildren = [];
+                this.selectedNonChildren = [];
 
                 let url = "http://jogboapi.appmowa.com/jogbo_join_list.php";
 
@@ -488,6 +745,7 @@
                                     name: objName,
                                     option: data.option,
                                     root: 0,
+                                    children: []
                                 });
 
                             }
@@ -501,7 +759,6 @@
                     });
                 }
 
-                console.log(this.originData);
                 this.familyMap = this.originData[0];
 
                 this.$refs.treeCont.addEventListener("scroll", this.handleScroll); //수평스크롤
@@ -549,7 +806,8 @@
                 // console.log("scrollWidth", getScrollWidth, getScrollLeft, getScrollEnd, treeCont.clientWidth);
 
                 if (getScrollLeft === getScrollEnd) {
-                    alert("수평 스크롤의 끝에 도착했어요!!");
+
+
                 }
             },
 
