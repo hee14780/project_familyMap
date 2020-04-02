@@ -176,21 +176,26 @@ header .info_wrap {
 .tree-map .member .inner {
     position: relative;
     display: inline-block;
-    min-height: 200px;
+    min-height: 220px;
     font-size: 20px;
     border: solid 1px #ccc;
     box-sizing: border-box;
-    writing-mode: vertical-lr;
+    writing-mode: vertical-rl;
+    /* writing-mode: vertical-lr;
     text-orientation: upright;
-    vertical-align: top;
+    vertical-align: top; */
+}
+.tree-map .member .inner:hover {
+    cursor: pointer;
 }
 .tree-map .member .tree-node {
     margin: 50px 8px;
 }
 .tree-map .member .tree-node .member-info .name {
     position: relative;
-    padding: 10px;
-    font-weight: 900;
+    /* padding: 10px; */
+    padding: 10px 8px 10px 10px;
+    font-weight: 500;
 }
 .tree-map .member .tree-node .inner::before {
     content: "";
@@ -198,8 +203,8 @@ header .info_wrap {
     position: absolute;
     width: calc(100% + 16px);
     height: 2px;
-    top: -51px;
-    left: 21px;
+    top: -52px;
+    left: 20px;
     background-color: #aec5f0;
 }
 .tree-map .member .tree-node .member-info .name::before {
@@ -207,8 +212,8 @@ header .info_wrap {
     position: absolute;
     display: inline-block;
     width: 2px;
-    height: 51px;
-    top: -51px;
+    height: 52px;
+    top: -52px;
     left: calc(50% - 1px);
     background-color: #aec5f0;
 }
@@ -217,8 +222,8 @@ header .info_wrap {
     position: absolute;
     display: inline-block;
     width: 2px;
-    height: 51px;
-    bottom: -51px;
+    height: 52px;
+    bottom: -52px;
     left: calc(50% - 1px);
     background-color: #aec5f0;
 }
@@ -227,7 +232,7 @@ header .info_wrap {
     font-size: 14px;
     color: #cecece;
     display: inline;
-    writing-mode: horizontal-tb;
+    /* writing-mode: horizontal-tb; */
 }
 .tree-map .member .tree-node.not_child .member-info .name::after,
 .tree-map .member .tree-node.not_parent .member-info .name::before,
@@ -241,7 +246,7 @@ header .info_wrap {
 }
 .sesu_list .list {
     padding: 50px 15px;
-    min-height: 200px;
+    min-height: 220px;
 }
 .sesu_list .sesu {
     margin-top: 20px;
