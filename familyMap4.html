@@ -95,7 +95,7 @@
                                             <ul class="tree-child">
                                                 <li>
                                                     <div class="tree-node not_parent last_member" :id="'pnode_' + family.no"
-                                                        @click="selectPerson('parent', index, '')">
+                                                        @click="selectObj('parent', index, '', 'family')">
                                                         <div class="inner">
                                                             <div class="member-info">
                                                                 <div class="name">
@@ -115,7 +115,7 @@
                                                                 <li>
                                                                     <div class="tree-node not_child" :id="'node_' + child.no"
                                                                         :class="{last_member : child.youngerBro == 0}"
-                                                                        @click="selectPerson('children', index, index2)">
+                                                                        @click="selectObj('children', index, index2, 'family')">
                                                                         <div class="inner">
                                                                             <div class="member-info">
                                                                                 <div class="name">
@@ -146,7 +146,7 @@
                                                 <ul>
                                                     <li>
                                                         <div class="tree-node not_child not_parent last_member" :id="'pnode_' + obj.no"
-                                                            @click="selectPerson('nonParent', index, '')">
+                                                            @click="selectObj('parent', index, '', 'nonFamily')">
                                                             <div class="inner">
                                                                 <div class="member-info">
                                                                     <div class="name">
@@ -184,7 +184,7 @@
                                                 <ul>
                                                     <li>
                                                         <div class="tree-node not_child not_parent last_member" :id="'node_' + obj.no"
-                                                            @click="selectPerson('nonChildren', index, '')">
+                                                            @click="selectObj('children', '', index, 'nonFamily')">
                                                             <div class="inner">
                                                                 <div class="member-info">
                                                                     <div class="name">
@@ -286,237 +286,214 @@
 
             },
 
-            selectPerson(type, index, index2) {
+
+            selectObj(type, index, index2, option1) {
+
                 if (type == "parent") {
+                    if (option1 == "family") {
+                        this.selectedParent = this.familyMap[index];
+                    }
 
-                    this.selectedParent['myIndex'] = index;
-                    this.selectedParent['my'] = this.familyMap[index];
-                    this.selectedParent['parentType'] = 1;
-
-                    this.makePage(this.familyMap[index].pa, this.familyMap[index].page);
-
-                    $(".member-info").css("background-color", "#FFFFFF");
-                    $("#pnode_" + this.selectedParent['my'].no).find(".member-info").css("background-color", "#eaeaea");
-                }
-
-                if (type == "nonParent") {
-
-                    this.selectedParent['myIndex'] = index;
-                    this.selectedParent['my'] = this.notConnectData[0][index];
-                    this.selectedParent['parentType'] = 2;
-
-                    this.makePage(this.notConnectData[0][index].pa, this.notConnectData[0][index].page);
+                    if (option1 == "nonFamily") {
+                        this.selectedParent = this.notConnectData[0][index];
+                    }
 
                     $(".member-info").css("background-color", "#FFFFFF");
-                    $("#pnode_" + this.selectedParent['my'].no).find(".member-info").css("background-color", "#eaeaea");
+                    $("#pnode_" + this.selectedParent.no).find(".member-info").css("background-color", "#eaeaea");
+
+                    this.makePage(this.selectedParent.pa, this.selectedParent.page);
 
                 }
 
                 if (type == "children") {
 
-                    if (!this.selectedParent['my']) {
-                        alert("부모를 먼저 선택하세요.");
+                    if (!this.selectedParent.no) {
+                        alert("부모를 먼저 선택해 주세요.");
+                        this.selectedChildren = [];
                         return;
                     }
 
-                    this.selectedChildren['parantIndex'] = index;
-                    this.selectedChildren['parent'] = this.familyMap[index];
-                    this.selectedChildren['myIndex'] = index2;
-                    this.selectedChildren['my'] = this.familyMap[index].children[index2];
-
-                }
-
-                if (type == "nonChildren") {
-
-                    if (!this.selectedParent['my']) {
-                        alert("부모를 먼저 선택하세요.");
-                        return;
+                    if (option1 == "family") {
+                        this.selectedChildren = this.familyMap[index].children[index2];
                     }
 
-                    this.selectedNonChildren['myIndex'] = index;
-                    this.selectedNonChildren['my'] = this.notConnectData[1][index];
-
+                    if (option1 == "nonFamily") {
+                        this.selectedChildren = this.notConnectData[1][index2];
+                    }
                 }
 
+                if (this.selectedParent.no && this.selectedChildren.no) {
 
+                    if (this.selectedParent.no == this.selectedChildren.parent) {
 
+                        this.disconnect(this.selectedChildren.no);
 
-                if (this.selectedParent['my'] && this.selectedChildren['my']) {
+                        let findIndex = this.selectedParent.children.findIndex(obj => obj.no == this.selectedChildren.no);
+                        this.selectedParent.children.splice(findIndex, 1);
+                        this.selectedChildren.parent = 0;
+                        this.notConnectData[1].push(this.selectedChildren);
 
-                    // // 부모에 속해 있었다면 해제
-                    if (this.selectedParent['my']['no'] == this.selectedChildren['parent']['no']) {
+                        if (this.selectedParent.children.length == 0) {
 
-                        this.familyMap[this.selectedParent['myIndex']].children.splice(this.selectedChildren['myIndex'], 1);
+                            let findIndex = this.familyMap.findIndex(obj => obj.no == this.selectedParent.no);
+                            this.notConnectData[0].push(this.selectedParent);
+                            this.familyMap.splice(findIndex, 1);
+                            this.selectedParent = [];
 
-                        this.disconnect(this.selectedChildren['my']['no']);
+                        } else {
 
-                        // 떨어진 자녀는 nonFamily 로 이동
-                        this.notConnectData[1].push(this.selectedChildren['my']);
+                            this.selectedParent.children.forEach(child => {
+
+                                let checkBro = this.selectedParent.children.filter(obj => {
+                                    return parseInt(obj.no) > parseInt(child.no);
+                                });
+
+                                child.youngerBro = checkBro.length;
+                                this.selectedParent.children.sort((child1, child2) => {
+                                    return child1.no - child2.no;
+                                });
+
+                            });
+
+                        }
+
+                        this.selectedChildren = [];
+                        this.notConnectData[0].sort((child1, child2) => {
+                            return child1.no - child2.no;
+                        });
                         this.notConnectData[1].sort((child1, child2) => {
                             return child1.no - child2.no;
                         });
 
-                        // 부모 체크
-                        if (this.familyMap[this.selectedParent['myIndex']].children.length == 0) {
+                    } else {
 
-                            this.familyMap.splice(this.selectedParent['myIndex'], 1);
-                            this.notConnectData[0].push(this.selectedParent['my']);
-                            $(".member-info").css("background-color", "#FFFFFF");
+                        // 연결
+                        if (this.selectedParent.children.length != 0 && this.selectedChildren.parent != 0) {
+                            // 연결된 부모 - 연결된 자식
+                            console.log("case1");
+                            this.connect(this.selectedParent.no, this.selectedChildren.no);
 
-                            this.notConnectData[0].sort((child1, child2) => {
-                                return child1.no - child2.no;
-                            });
+                            let findIndex = this.familyMap.findIndex(obj => obj.no == this.selectedChildren.parent);
+                            let findIndex2 = this.familyMap[findIndex].children.findIndex(obj => obj.no == this.selectedChildren.no);
+                            let oldParent = this.familyMap[findIndex];
 
-                        } else {
+                            this.familyMap[findIndex].children.splice(findIndex2, 1);
 
-                            this.familyMap[this.selectedParent['myIndex']].children.forEach(child => {
+                            this.selectedChildren.parent = this.selectedParent.no;
+                            this.selectedParent.children.unshift(this.selectedChildren);
 
-                                let checkBro = this.familyMap[this.selectedParent['myIndex']].children.filter(obj => {
+                            this.selectedParent.children.forEach(child => {
+
+                                let checkBro = this.selectedParent.children.filter(obj => {
                                     return parseInt(obj.no) > parseInt(child.no);
                                 });
 
-                                child.youngerBro = checkBro.length;
-                                this.familyMap[this.selectedParent['myIndex']].children.sort((child1, child2) => {
-                                    return child1.no - child2.no;
-                                });
+                                setTimeout(() => {
+                                    child.youngerBro = checkBro.length;
+                                    this.selectedParent.children.sort((child1, child2) => {
+                                        return child1.no - child2.no;
+                                    });
+                                }, 1);
 
                             });
 
-                            $("#node_" + this.selectedChildren['my'].no).find(".member-info").css("background-color", "#FFFFFF");
+                            if (oldParent.children.length == 0) {
 
-                        }
-
-                        this.selectedChildren = [];
-                        this.familyMap.push();
-                        return;
-
-                    }
-                    // 부모에 속해 있다면 끝
-
-
-                    // 부모에 속해 있지 않다면 연결
-                    if ((this.selectedParent['my']['no'] != this.selectedChildren['parent']['no']) && this.selectedParent['parentType'] ==
-                        1) {
-
-                        this.familyMap[this.selectedChildren['parantIndex']].children.splice(this.selectedChildren['myIndex'], 1);
-                        this.familyMap[this.selectedParent['myIndex']].children.push(this.selectedChildren['my']);
-
-                        this.connect(this.selectedParent['my']['no'], this.selectedChildren['parent']['no']);
-
-                        // 자식을 얻은 부모
-                        this.familyMap[this.selectedParent['myIndex']].children.forEach(child => {
-
-                            let checkBro = this.familyMap[this.selectedParent['myIndex']].children.filter(obj => {
-                                return parseInt(obj.no) > parseInt(child.no);
-                            });
-
-                            child.youngerBro = checkBro.length;
-                            this.familyMap[this.selectedParent['myIndex']].children.sort((child1, child2) => {
-                                return child1.no - child2.no;
-                            });
-
-                        });
-
-                        // 자식을 잃은 부모
-                        if (this.familyMap[this.selectedChildren['parantIndex']].children.length == 0) {
-
-                            this.notConnectData[0].push(this.selectedChildren['parent']);
-                            this.familyMap.splice(this.selectedChildren['parantIndex'], 1);
-
-                            this.notConnectData[0].sort((child1, child2) => {
-                                return child1.no - child2.no;
-                            });
-
-                        } else {
-
-                            this.familyMap[this.selectedChildren['parantIndex']].children.forEach(child => {
-
-                                let checkBro = this.familyMap[this.selectedChildren['parantIndex']].children.filter(obj => {
-                                    return parseInt(obj.no) > parseInt(child.no);
-                                });
-
-                                child.youngerBro = checkBro.length;
-                                this.familyMap[this.selectedChildren['parantIndex']].children.sort((child1, child2) => {
-                                    return child1.no - child2.no;
-                                });
-
-                            });
-
-                        }
-
-                        this.selectedChildren = [];
-                        this.familyMap.push();
-                        return;
-
-                    }
-                    // 부모에 속해 있지 않다면 연결
-
-
-                }
-
-                if (this.selectedParent['my'] && (this.selectedNonChildren['my'] || this.selectedChildren['my'])) {
-
-                    if (this.selectedParent['parentType'] == 1) {
-
-                        this.familyMap[this.selectedParent['myIndex']].children.push(this.selectedNonChildren['my']);
-                        this.notConnectData[1].splice(this.selectedNonChildren['myIndex'], 1);
-
-                        this.connect(this.selectedParent['my']['no'], this.selectedNonChildren['my']['no']);
-
-                        this.familyMap[this.selectedParent['myIndex']].children.forEach(child => {
-
-                            let checkBro = this.familyMap[this.selectedParent['myIndex']].children.filter(obj => {
-                                return parseInt(obj.no) > parseInt(child.no);
-                            });
-
-                            child.youngerBro = checkBro.length;
-                            this.familyMap[this.selectedParent['myIndex']].children.sort((child1, child2) => {
-                                return child1.no - child2.no;
-                            });
-
-                        });
-
-                        this.selectedNonChildren = [];
-                        this.notConnectData[1].push();
-                        this.familyMap.push();
-                        return;
-
-                    }
-
-                    if (this.selectedParent['parentType'] == 2) {
-
-                        if (this.selectedChildren['my']) {
-
-                            console.log(this.selectedChildren['my']);
-
-                            this.notConnectData[0][this.selectedParent['myIndex']].children.push(this.selectedChildren['my']);
-                            this.familyMap.push(this.notConnectData[0][this.selectedParent['myIndex']]);
-
-                            this.connect(this.selectedParent['my']['no'], this.selectedChildren['my']['no']);
-
-                            this.notConnectData[0].splice(this.selectedParent['myIndex'], 1);
-                            this.familyMap[this.selectedChildren['parantIndex']].children.splice(this.selectedChildren['myIndex'], 1);
-
-                            // 자식을 잃은 부모
-                            if (this.familyMap[this.selectedChildren['parantIndex']].children.length == 0) {
-
-                                this.notConnectData[0].push(this.selectedChildren['parent']);
-                                this.familyMap.splice(this.selectedChildren['parantIndex'], 1);
-
-                                this.notConnectData[0].sort((child1, child2) => {
-                                    return child1.no - child2.no;
-                                });
+                                let oldIndex = this.familyMap.findIndex(obj => obj.no == oldParent.no);
+                                this.notConnectData[0].push(oldParent);
+                                this.familyMap.splice(oldIndex, 1);
 
                             } else {
 
-                                this.familyMap[this.selectedChildren['parantIndex']].children.forEach(child => {
+                                oldParent.children.forEach(child => {
 
-                                    let checkBro = this.familyMap[this.selectedChildren['parantIndex']].children.filter(obj => {
+                                    let checkBro = oldParent.children.filter(obj => {
+                                        return parseInt(obj.no) > parseInt(child.no);
+                                    });
+
+                                    setTimeout(() => {
+                                        child.youngerBro = checkBro.length;
+                                        oldParent.children.sort((child1, child2) => {
+                                            return child1.no - child2.no;
+                                        });
+                                    }, 1);
+
+                                });
+
+                            }
+
+                            this.selectedChildren = [];
+                            setTimeout(() => {
+                                $(".member-info").css("background-color", "#FFFFFF");
+                                $("#pnode_" + this.selectedParent.no).find(".member-info").css("background-color", "#eaeaea");
+                            }, 1);
+
+                        }
+
+                        if (this.selectedParent.children.length != 0 && this.selectedChildren.parent == 0) {
+                            // 연결된 부모 - 연결안된 자식
+                            console.log("case2");
+                            this.connect(this.selectedParent.no, this.selectedChildren.no);
+
+                            this.selectedChildren.parent = this.selectedParent.no;
+                            this.selectedParent.children.unshift(this.selectedChildren);
+
+                            let findIndex = this.notConnectData[1].findIndex(obj => obj.no == this.selectedChildren.no);
+                            this.notConnectData[1].splice(findIndex, 1);
+                            this.selectedParent.children.forEach(child => {
+
+                                let checkBro = this.selectedParent.children.filter(obj => {
+                                    return parseInt(obj.no) > parseInt(child.no);
+                                });
+
+                                setTimeout(() => {
+                                    child.youngerBro = checkBro.length;
+                                    this.selectedParent.children.sort((child1, child2) => {
+                                        return child1.no - child2.no;
+                                    });
+                                }, 1);
+
+                            });
+
+                            this.selectedChildren = [];
+                        }
+
+                        if (this.selectedParent.children.length == 0 && this.selectedChildren.parent != 0) {
+                            // 연결안된 부모 - 연결된 자식
+                            console.log("case3");
+                            this.connect(this.selectedParent.no, this.selectedChildren.no);
+
+                            let findIndex = this.familyMap.findIndex(obj => obj.no == this.selectedChildren.parent);
+                            let findIndex2 = this.familyMap[findIndex].children.findIndex(obj => obj.no == this.selectedChildren.no);
+                            let oldParent = this.familyMap[findIndex];
+
+                            this.familyMap[findIndex].children.splice(findIndex2, 1);
+
+                            this.selectedChildren.parent = this.selectedParent.no;
+                            this.selectedChildren.youngerBro = 0;
+                            this.selectedParent.children.unshift(this.selectedChildren);
+
+                            this.familyMap.push(this.selectedParent);
+
+                            let myIndex = this.notConnectData[0].findIndex(obj => obj.no == this.selectedParent.no);
+                            this.notConnectData[0].splice(myIndex, 1);
+
+                            if (oldParent.children.length == 0) {
+
+                                let oldIndex = this.familyMap.findIndex(obj => obj.no == oldParent.no);
+                                this.notConnectData[0].push(oldParent);
+                                this.familyMap.splice(oldIndex, 1);
+
+                            } else {
+
+                                oldParent.children.forEach(child => {
+
+                                    let checkBro = oldParent.children.filter(obj => {
                                         return parseInt(obj.no) > parseInt(child.no);
                                     });
 
                                     child.youngerBro = checkBro.length;
-                                    this.familyMap[this.selectedChildren['parantIndex']].children.sort((child1, child2) => {
+                                    oldParent.children.sort((child1, child2) => {
                                         return child1.no - child2.no;
                                     });
 
@@ -525,44 +502,48 @@
                             }
 
                             this.selectedChildren = [];
+                            setTimeout(() => {
+                                $(".member-info").css("background-color", "#FFFFFF");
+                                $("#pnode_" + this.selectedParent.no).find(".member-info").css("background-color", "#eaeaea");
+                            }, 1);
 
                         }
 
+                        if (this.selectedParent.children.length == 0 && this.selectedChildren.parent == 0) {
+                            // 연결안된 부모 - 연결된 자식
+                            console.log("case4");
+                            this.connect(this.selectedParent.no, this.selectedChildren.no);
 
-                        if (this.selectedNonChildren['my']) {
+                            this.selectedChildren.parent = this.selectedParent.no;
+                            this.selectedChildren.youngerBro = 0;
+                            this.selectedParent.children.push(this.selectedChildren);
 
-                            this.notConnectData[0][this.selectedParent['myIndex']].children.push(this.selectedNonChildren['my']);
-                            this.familyMap.push(this.notConnectData[0][this.selectedParent['myIndex']]);
+                            this.familyMap.push(this.selectedParent);
 
-                            this.connect(this.selectedParent['my']['no'], this.selectedNonChildren['my']['no']);
+                            let findIndexNew = this.familyMap.findIndex(obj => obj.no == this.selectedParent.no);
+                            this.selectedParent = this.familyMap[findIndexNew];
 
-                            this.notConnectData[0].splice(this.selectedParent['myIndex'], 1);
-                            this.notConnectData[1].splice(this.selectedNonChildren['myIndex'], 1);
+                            let findIndexOldParent = this.notConnectData[0].findIndex(obj => obj.no == this.selectedParent.no);
+                            let findIndexOldChild = this.notConnectData[1].findIndex(obj => obj.no == this.selectedChildren.no);
 
-                            this.familyMap.sort((child1, child2) => {
+                            this.notConnectData[0].splice(findIndexOldParent, 1);
+                            this.notConnectData[1].splice(findIndexOldChild, 1);
 
-                                return child1.no - child2.no;
-                            });
+                            this.selectedChildren = [];
 
-                            this.selectedNonChildren = [];
+                            setTimeout(() => {
+                                $(".member-info").css("background-color", "#FFFFFF");
+                                $("#pnode_" + this.selectedParent.no).find(".member-info").css("background-color", "#eaeaea");
+                            }, 1);
+
                         }
 
-                        this.selectedParent['parentType'] = 1;
-                        this.selectedParent['myIndex'] = this.familyMap.findIndex(obj => obj.no == this.selectedParent['my']['no']);
-
-                        setTimeout(() => {
-                            $(".member-info").css("background-color", "#FFFFFF");
-                            $("#pnode_" + this.selectedParent['my']['no']).find(".member-info").css("background-color",
-                                "#eaeaea");
-                        }, 100);
-
-                        return;
 
                     }
 
-                }
+                } // 부모 - 자녀가 다 있다면
 
-
+                this.familyMap.push();
 
             },
 
